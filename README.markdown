@@ -12,6 +12,7 @@ Tell Gettext where your mo-files lie:
 
 Choose text domain, and locale for translation
     FastGettext.text_domain = 'my_app'
+    FastGettext.available_locales = ['de','en','fr','en_US','en_UK'] # only allow these locales to be set (optional)
     FastGettext.locale = 'de'
 
 Start translating
@@ -20,11 +21,6 @@ Start translating
     _('not-found') == 'not-found'
     s_('Namespace|no-found') == 'not-found'
     n_('Axis','Axis',3) == 'Achsen' #German plural of Axis
-
-Thread-safety
-=============
-locale/text_domain/available_locales are not shared between threads.  
-But text_domains is, so that found translations can be reused.
 
 Speed
 =====
@@ -54,7 +50,7 @@ ATM you have to use the [original GetText](http://github.com/mutoh/gettext) to c
 
 Author
 ======
-Mofile parsing from Masao Mutoh, see vender/README
+Mofile parsing from Masao Mutoh, see vendor/README
 
 Michael Grosser  
 grosser.michael@gmail.com  

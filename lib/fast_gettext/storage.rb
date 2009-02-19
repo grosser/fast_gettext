@@ -1,24 +1,30 @@
 module FastGettext
   module Storage
-    [:locale,:text_domain,:available_locales].each do |method|
-      key = "FastGettext.#{method}"
+    [:text_domain,:available_locales,:text_domains].each do |method|
       define_method method do
-        Thread.current[key]
+        thread_store(method)
       end
       define_method "#{method}=" do |value|
-        Thread.current[key] = value
+        write_thread_store(method,value)
       end
     end
 
-    #NOT THREADSAFE, for speed/caching
-    @@text_domains = {}
-    
-    def text_domains
-      @@text_domains
+    def locale
+      thread_store(:locale) || (available_locales||[]).first || 'en'
     end
 
-    def text_domains=(value)
-      @@text_domains=value
+    def locale=(value)
+      write_thread_store(:locale,value) if not available_locales or available_locales.include?(value)
+    end
+
+    private
+
+    def thread_store(key)
+      Thread.current["FastGettext.#{key}"]
+    end
+
+    def write_thread_store(key,value)
+      Thread.current["FastGettext.#{key}"]=value
     end
   end
 end

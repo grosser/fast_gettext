@@ -5,25 +5,41 @@ include FastGettext::Storage
 
 describe Storage do
   def thread_save(method)
-    send("#{method}=",1)
+    send("#{method}=",'de')
 
     # mess around with other threads
-    threads = []
     100.times do |i|
-      threads << Thread.new {send("#{method}=",i)}
+      Thread.new {FastGettext.send("#{method}=",'en')}
     end
-    threads.each(&:join)
     
-    send(method) == 1
+    send(method) == 'de'
   end
 
-  [:locale, :available_locales, :text_domain].each do |method|
+  [:locale, :available_locales, :text_domain, :text_domains].each do |method|
     it "stores #{method} thread-save" do
-      thread_save(:locale).should == true
+      thread_save(method).should == true
     end
   end
 
-  it "does not store text_domains thread-save" do
-    thread_save(:text_domains).should == false
+  describe :locale do
+    it "stores everything as long as available_locales is not set" do
+      self.available_locales = nil
+      self.locale = 'XXX'
+      locale.should == 'XXX'
+    end
+    it "is en if no locale and no available_locale were set" do
+      Thread.current['FastGettext.locale']=nil
+      self.available_locales = nil
+      locale.should == 'en'
+    end
+    it "is the first available_locale if one was set" do
+      self.available_locales = ['de']
+      locale.should == 'de'
+    end
+    it "does not store a locale if it is not available" do
+      self.available_locales = ['de']
+      self.locale = 'en'
+      locale.should == 'de'
+    end
   end
 end

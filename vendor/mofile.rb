@@ -15,7 +15,7 @@
     $Id: mo.rb,v 1.10 2008/06/17 16:40:52 mutoh Exp $
 =end
 
-require 'gettext/core_ext/iconv'
+require 'iconv'
 require 'stringio'
 
 module GetText
