@@ -35,6 +35,16 @@ module FastGettext
     end
   end
 
+  #tell gettext: this string need translation (will be found during parsing)
+  def N_(translate)
+    translate
+  end
+
+  #tell gettext: this string need translation (will be found during parsing)
+  def Nn_(singular,plural)
+    [singular,plural]
+  end
+
   def add_text_domain(name,options)
     self.text_domains ||= {}
     domain = self.text_domains[name] = {:path=>options.delete(:path),:mo_files=>{}}

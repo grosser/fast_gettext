@@ -40,4 +40,16 @@ describe FastGettext do
       s_("XXX/not found",'/').should == "not found"
     end
   end
+
+  describe :N_ do
+    it "returns the msgid" do
+      N_('XXXXX').should == 'XXXXX'
+    end
+  end
+
+  describe :Nn_ do
+    it "returns the msgids as array" do
+      Nn_('X','Y').should == ['X','Y']
+    end
+  end
 end
