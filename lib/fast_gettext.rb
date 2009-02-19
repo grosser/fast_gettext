@@ -1,5 +1,6 @@
 require 'fast_gettext/mo_file'
 require 'fast_gettext/storage'
+require File.join(File.dirname(__FILE__),'..','vendor','string')
 
 module FastGettext
   include FastGettext::Storage
