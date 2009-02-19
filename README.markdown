@@ -10,15 +10,16 @@ Tell Gettext where your mo-files lie:
     #e.g. for locale/de/LC_MESSAGES/my_app.mo
     FastGettext.add_text_domain('my_app',:path=>'locale')
 
-Set a text domain, and locale
+Choose text domain, and locale for translation
     FastGettext.text_domain = 'my_app'
     FastGettext.locale = 'de'
 
 Start translating
     include FastGettext
     _('Car') == 'Auto'
+    _('not-found') == 'not-found'
     s_('Namespace|no-found') == 'not-found'
-    n_('Axis','Axis',3) == 'Achsen' #that the German plural of Axis
+    n_('Axis','Axis',3) == 'Achsen' #German plural of Axis
 
 Thread-safety
 =============
@@ -49,10 +50,12 @@ GetText
 
 Updating translations
 =====================
-ATM you have to use the (original GetText)[http://github.com/mutoh/gettext] to create your po/mo-files.
+ATM you have to use the [original GetText](http://github.com/mutoh/gettext) to create and manage your po/mo-files.
 
 Author
 ======
+Mofile parsing from Masao Mutoh, see vender/README
+
 Michael Grosser  
 grosser.michael@gmail.com  
 Hereby placed under public domain, do what you want, just do not hold me accountable...  

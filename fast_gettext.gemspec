@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors = ["Michael Grosser"]
   s.date = %q{2009-02-19}
   s.email = %q{grosser.michael@gmail.com}
-  s.files = ["lib/fast_gettext.rb", "lib/fast_gettext", "lib/fast_gettext/storage.rb", "lib/fast_gettext/mo_file.rb", "vendor/mofile.rb", "spec/fast_gettext_spec.rb", "spec/spec_helper.rb", "spec/locale", "spec/locale/en", "spec/locale/en/LC_MESSAGES", "spec/locale/en/LC_MESSAGES/test.mo", "spec/locale/de", "spec/locale/de/LC_MESSAGES", "spec/locale/de/LC_MESSAGES/test.mo", "spec/fast_gettext", "spec/fast_gettext/storage_spec.rb", "spec/fast_gettext/mo_file_spec.rb", "benchmark/original.rb", "benchmark/fast_gettext.rb", "benchmark/locale", "benchmark/locale/de", "benchmark/locale/de/LC_MESSAGES", "benchmark/locale/de/LC_MESSAGES/large.mo", "benchmark/base.rb"]
+  s.files = ["VERSION.yml", "README.markdown", "lib/fast_gettext.rb", "lib/fast_gettext", "lib/fast_gettext/storage.rb", "lib/fast_gettext/mo_file.rb", "spec/fast_gettext_spec.rb", "spec/spec_helper.rb", "spec/locale", "spec/locale/en", "spec/locale/en/LC_MESSAGES", "spec/locale/en/LC_MESSAGES/test.mo", "spec/locale/de", "spec/locale/de/LC_MESSAGES", "spec/locale/de/LC_MESSAGES/test.mo", "spec/fast_gettext", "spec/fast_gettext/storage_spec.rb", "spec/fast_gettext/mo_file_spec.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/grosser/fast_gettext}
   s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
