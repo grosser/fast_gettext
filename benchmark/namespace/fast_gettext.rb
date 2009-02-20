@@ -5,7 +5,11 @@ initial = methods.count + Module.constants.count
 #FastGettext
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__),'..','..','lib')
 require 'fast_gettext'
+FastGettext.locale = 'de'
+FastGettext.add_text_domain 'test', :path=>'spec/locale'
+FastGettext.text_domain = 'test'
 include FastGettext::Translation
+raise unless _('car')=='Auto'
 
 puts "FastGettext"
 puts methods.count + Module.constants.count - initial
