@@ -5,11 +5,7 @@ require File.join(File.dirname(__FILE__),'..','vendor','string')
 
 module FastGettext
   include FastGettext::Storage
-  
   extend self
-  def self.included(mod)  #:nodoc:
-    mod.extend self
-  end
 
   LOCALE_REX =  /^[a-z]{2}$|^[a-z]{2}_[A-Z]{2}$/
   NAMESPACE_SEPERATOR = '|'

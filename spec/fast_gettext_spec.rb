@@ -9,6 +9,7 @@ include FastGettext
 
 describe FastGettext do
   it "provides access to FastGettext::Translations methods" do
+    FastGettext._('car').should == 'Auto'
     _('car').should == 'Auto'
     s_("XXX|not found").should == "not found"
     n_('Axis','Axis',1).should == 'Achse'
