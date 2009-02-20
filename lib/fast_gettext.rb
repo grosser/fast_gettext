@@ -63,6 +63,7 @@ module FastGettext
   
   private
 
+  #TODO geht nicht <-> {}.plural
   def current_mo
     mo = text_domains[text_domain][:mo_files][locale] rescue nil
     mo || {}

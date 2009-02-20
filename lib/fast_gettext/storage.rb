@@ -1,12 +1,17 @@
 module FastGettext
   module Storage
-    [:text_domain,:available_locales,:text_domains].each do |method|
+    [:text_domain,:available_locales].each do |method|
       define_method method do
         thread_store(method)
       end
       define_method "#{method}=" do |value|
         write_thread_store(method,value)
       end
+    end
+
+    @@text_domains={}
+    def text_domains
+      @@text_domains
     end
 
     def locale

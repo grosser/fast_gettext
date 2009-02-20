@@ -44,6 +44,37 @@ GetText
     mapped: 9156K    writeable/private: 6124K    shared: 28K
 
 
+Thread Safety and Rails
+=======================
+`text_domains` is not stored thread-save, so that they can be added inside the `environment.rb`,  
+and do not need to be readded for every thread (parsing takes time...).
+
+Setting `available_locales`,`text_domain` or `locale` will not work inside the `evironment.rb`, since it runs in a different thread
+then e.g. controllers, so set them inside your application_controller.
+
+    #environment.rb after initializers
+    FastGettext.add_text_domain('accounting',:path=>'locale')
+    FastGettext.add_text_domain('frontend',:path=>'locale')
+    ...
+
+    #application_controller.rb
+    FastGettext.available_locales = ['de','en',...]
+    FastGettext.text_domain = 'frontend'
+    
+    class ApplicationController ...
+      include FastGettext
+      before_filter :set_locale
+      def set_locale
+        sessions[:locale] = I18n.locale = FastGettext.locale = params[:locale] || sessions[:locale] || 'en'
+      end
+
+    #application_helper.rb
+    module ApplicationHelper
+      include FastGettext
+      ...
+
+Try the [gettext_i18n_rails plugin](http://github.com/grosser/gettext_i18n_rails), it simplifies the setup.
+
 Updating translations
 =====================
 ATM you have to use the [original GetText](http://github.com/mutoh/gettext) to create and manage your po/mo-files.
