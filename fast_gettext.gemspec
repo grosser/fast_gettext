@@ -2,13 +2,13 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fast_gettext}
-  s.version = "0.2.5"
+  s.version = "0.2.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
   s.date = %q{2009-02-20}
   s.email = %q{grosser.michael@gmail.com}
-  s.files = ["vendor/iconv.rb", "vendor/string.rb", "vendor/mofile.rb", "vendor/README.rdoc", "lib/fast_gettext.rb", "lib/fast_gettext", "lib/fast_gettext/translation.rb", "lib/fast_gettext/storage.rb", "lib/fast_gettext/mo_file.rb", "spec/fast_gettext_spec.rb", "spec/spec_helper.rb", "spec/locale", "spec/locale/en", "spec/locale/en/LC_MESSAGES", "spec/locale/en/LC_MESSAGES/test.mo", "spec/locale/de", "spec/locale/de/LC_MESSAGES", "spec/locale/de/LC_MESSAGES/test.mo", "spec/fast_gettext", "spec/fast_gettext/translation_spec.rb", "spec/fast_gettext/storage_spec.rb", "spec/fast_gettext/mo_file_spec.rb", "spec/vendor", "spec/vendor/iconv_spec.rb", "spec/vendor/fake_load_path", "spec/vendor/fake_load_path/iconv.rb", "spec/vendor/string_spec.rb", "VERSION.yml", "README.markdown"]
+  s.files = ["vendor/iconv.rb", "vendor/string.rb", "vendor/mofile.rb", "vendor/empty.mo", "vendor/README.rdoc", "lib/fast_gettext.rb", "lib/fast_gettext", "lib/fast_gettext/translation.rb", "lib/fast_gettext/storage.rb", "lib/fast_gettext/mo_file.rb", "spec/fast_gettext_spec.rb", "spec/spec_helper.rb", "spec/locale", "spec/locale/en", "spec/locale/en/LC_MESSAGES", "spec/locale/en/LC_MESSAGES/test.mo", "spec/locale/de", "spec/locale/de/LC_MESSAGES", "spec/locale/de/LC_MESSAGES/test.mo", "spec/fast_gettext", "spec/fast_gettext/translation_spec.rb", "spec/fast_gettext/storage_spec.rb", "spec/fast_gettext/mo_file_spec.rb", "spec/aa_unconfigued_spec.rb", "spec/vendor", "spec/vendor/iconv_spec.rb", "spec/vendor/fake_load_path", "spec/vendor/fake_load_path/iconv.rb", "spec/vendor/string_spec.rb", "VERSION.yml", "README.markdown"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/grosser/fast_gettext}
   s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
