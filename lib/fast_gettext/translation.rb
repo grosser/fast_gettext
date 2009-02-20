@@ -11,7 +11,7 @@ module FastGettext
       if translation = FastGettext.current_translations.plural(singular,plural,count)
         translation
       else
-        count > 1 ? plural : singular
+        count == 1 ? singular : plural
       end
     end
 
