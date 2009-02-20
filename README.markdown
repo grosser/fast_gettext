@@ -58,13 +58,12 @@ then e.g. controllers, so set them inside your application_controller.
     ...
 
     #application_controller.rb
-    FastGettext.available_locales = ['de','en',...]
-    FastGettext.text_domain = 'frontend'
-    
     class ApplicationController ...
       include FastGettext
       before_filter :set_locale
       def set_locale
+        FastGettext.available_locales = ['de','en',...]
+        FastGettext.text_domain = 'frontend'
         sessions[:locale] = I18n.locale = FastGettext.locale = params[:locale] || sessions[:locale] || 'en'
       end
 
