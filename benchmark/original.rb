@@ -6,6 +6,7 @@ include GetText
 
 self.locale = 'de'
 
+puts "GetText:"
 bindtextdomain('test',:path=>locale_folder('test'))
 results_test
 

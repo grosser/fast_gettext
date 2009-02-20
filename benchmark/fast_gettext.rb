@@ -7,7 +7,7 @@ include FastGettext
 FastGettext.available_locales  = ['de','en']
 FastGettext.locale = 'de'
 
-
+puts "FastGettext:"
 FastGettext.add_text_domain('test',:path=>locale_folder('test'))
 FastGettext.text_domain = 'test'
 results_test

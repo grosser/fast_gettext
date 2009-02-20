@@ -24,25 +24,33 @@ Start translating
 
 Speed
 =====
-FastGettext
-    small:
-    1.000000   0.130000   1.130000 (  1.132578)
-    mapped: 8620K    writeable/private: 5588K    shared: 28K
+50_000 translations:
+Ideal: (primitive Hash lookup)
+    small translation file:
+    1.070000   0.190000   1.260000 (  1.266628)
+    mapped: 5832K    writeable/private: 3016K    shared: 28K
 
-    large:
-    1.060000   0.100000   1.160000 (  1.163962)
-    mapped: 8620K    writeable/private: 5588K    shared: 28K
+    large translation file:
+    1.150000   0.160000   1.310000 (  1.327283)
+    mapped: 5832K    writeable/private: 3016K    shared: 28K
 
+FastGettext:
+    small translation file:
+    6.830000   0.670000   7.500000 (  7.498320)
+    mapped: 5840K    writeable/private: 3024K    shared: 28K
 
-GetText
-    small:
-    3.220000   0.260000   3.480000 (  3.478093)
-    mapped: 9036K    writeable/private: 6004K    shared: 28K
+    large translation file:
+    7.010000   0.780000   7.790000 (  7.907242)
+    mapped: 5972K    writeable/private: 3156K    shared: 28K
 
-    large:
-    3.280000   0.230000   3.510000 (  3.511891)
-    mapped: 9156K    writeable/private: 6124K    shared: 28K
+GetText:
+    small translation file:
+   16.090000   1.400000  17.490000 ( 17.652287)
+    mapped: 8964K    writeable/private: 5932K    shared: 28K
 
+    large translation file:
+   16.800000   1.290000  18.090000 ( 18.173813)
+    mapped: 9024K    writeable/private: 5992K    shared: 28K
 
 Thread Safety and Rails
 =======================

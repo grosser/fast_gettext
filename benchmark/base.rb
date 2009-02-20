@@ -13,18 +13,22 @@ def locale_folder(domain)
 end
 
 def results_test
-  puts result {_('car') == 'Auto'}
-  puts memory
+  puts "    small translation file:"
+  puts "  #{result {_('car') == 'Auto'}}"
+  puts "    #{memory}"
+  puts ""
 end
 
 def results_large
-  puts result {_('login') == 'anmelden'}
-  puts memory
+  puts "    large translation file:"
+  puts "  #{result {_('login') == 'anmelden'}}"
+  puts "    #{memory}"
+  puts ""
 end
 
 def result
   result =Benchmark.measure do
-    10_0000.times do
+    50_0000.times do
       raise "not translated" unless yield
     end
   end
