@@ -15,7 +15,7 @@ describe Storage do
     send(method) == 'de'
   end
 
-  [:locale, :available_locales, :text_domain].each do |method|
+  [:locale, :available_locales, :text_domain, :current_translations].each do |method|
     it "stores #{method} thread-save" do
       thread_save(method).should == true
     end

@@ -1,6 +1,6 @@
 FastGettext
 ===========
-GetText but fast + simple + threadsave!
+GetText but 4 times faster, simple, clean namespace (7 vs 34) and threadsave!
 
 Setup
 =====
@@ -16,7 +16,7 @@ Choose text domain, and locale for translation
     FastGettext.locale = 'de'
 
 Start translating
-    include FastGettext
+    include FastGettext::Translation
     _('Car') == 'Auto'
     _('not-found') == 'not-found'
     s_('Namespace|no-found') == 'not-found'
@@ -27,30 +27,32 @@ Speed
 50_000 translations:
 Ideal: (primitive Hash lookup)
     small translation file:
-    1.070000   0.190000   1.260000 (  1.266628)
+    1.100000   0.180000   1.280000 (  1.287230)
     mapped: 5832K    writeable/private: 3016K    shared: 28K
 
     large translation file:
-    1.150000   0.160000   1.310000 (  1.327283)
+    1.150000   0.150000   1.300000 (  1.296114)
     mapped: 5832K    writeable/private: 3016K    shared: 28K
 
 FastGettext:
     small translation file:
-    6.830000   0.670000   7.500000 (  7.498320)
-    mapped: 5840K    writeable/private: 3024K    shared: 28K
+    3.980000   0.430000   4.410000 (  4.407260)
+    mapped: 5852K    writeable/private: 3036K    shared: 28K
 
     large translation file:
-    7.010000   0.780000   7.790000 (  7.907242)
+    4.070000   0.450000   4.520000 (  4.515585)
     mapped: 5972K    writeable/private: 3156K    shared: 28K
 
 GetText:
     small translation file:
-   16.090000   1.400000  17.490000 ( 17.652287)
-    mapped: 8964K    writeable/private: 5932K    shared: 28K
+    16.280000   1.340000  17.620000 ( 17.630391)
+    mapped: 8976K    writeable/private: 5944K    shared: 28K
 
     large translation file:
-   16.800000   1.290000  18.090000 ( 18.173813)
+    16.590000   1.430000  18.020000 ( 18.042926)
     mapped: 9024K    writeable/private: 5992K    shared: 28K
+
+
 
 Thread Safety and Rails
 =======================
@@ -67,7 +69,7 @@ then e.g. controllers, so set them inside your application_controller.
 
     #application_controller.rb
     class ApplicationController ...
-      include FastGettext
+      include FastGettext::Translation
       before_filter :set_locale
       def set_locale
         FastGettext.available_locales = ['de','en',...]
@@ -77,7 +79,7 @@ then e.g. controllers, so set them inside your application_controller.
 
     #application_helper.rb
     module ApplicationHelper
-      include FastGettext
+      include FastGettext::Translation
       ...
 
 Try the [gettext_i18n_rails plugin](http://github.com/grosser/gettext_i18n_rails), it simplifies the setup.

@@ -1,5 +1,6 @@
 require 'fast_gettext/mo_file'
 require 'fast_gettext/storage'
+require 'fast_gettext/translation'
 require File.join(File.dirname(__FILE__),'..','vendor','string')
 
 module FastGettext
@@ -13,37 +14,16 @@ module FastGettext
   LOCALE_REX =  /^[a-z]{2}$|^[a-z]{2}_[A-Z]{2}$/
   NAMESPACE_SEPERATOR = '|'
 
-  def _(translate)
-    current_mo[translate] || translate
-  end
-
-  #translate pluralized
-  def n_(singular,plural,count)
-    if translation = current_mo.plural(singular,plural,count)
-      translation
-    else
-      count > 1 ? plural : singular
+  # users should not include FastGettext, since this would conterminate their namespace
+  # rather use
+  # FastGettext.locale = ..
+  # FastGettext.text_domain = ..
+  # and
+  # include FastGettext::Translation
+  FastGettext::Translation.public_instance_methods.each do |method|
+    define_method method do |*args|
+      Translation.send(method,*args)
     end
-  end
-
-  #translate, but discard namespace if nothing was found
-  # Car|Tire -> Tire if no translation could be found
-  def s_(translate,seperator=nil)
-    if translation = current_mo[translate]
-      translation
-    else
-      translate.split(seperator||NAMESPACE_SEPERATOR).last
-    end
-  end
-
-  #tell gettext: this string need translation (will be found during parsing)
-  def N_(translate)
-    translate
-  end
-
-  #tell gettext: this string need translation (will be found during parsing)
-  def Nn_(singular,plural)
-    [singular,plural]
   end
 
   def add_text_domain(name,options)
@@ -59,13 +39,5 @@ module FastGettext
       domain[:mo_files][locale] = MoFile.new(mo_file)
     end
     domain
-  end
-  
-  private
-
-  #TODO geht nicht <-> {}.plural
-  def current_mo
-    mo = text_domains[text_domain][:mo_files][locale] rescue nil
-    mo || {}
   end
 end

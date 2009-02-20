@@ -11,6 +11,11 @@ task :benchmark do
   puts `ruby benchmark/original.rb`
 end
 
+task :namespaces do
+  puts `ruby benchmark/namespace/original.rb`
+  puts `ruby benchmark/namespace/fast_gettext.rb`
+end
+
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|

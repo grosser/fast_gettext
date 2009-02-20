@@ -18,6 +18,9 @@
 require 'iconv'
 require 'stringio'
 
+#Modifications:
+#  use Iconv or FastGettext::Icvon
+
 module FastGettext
   module GetText
     class MOFile < Hash
@@ -148,8 +151,9 @@ module FastGettext
           else
             if @output_charset
               begin
-                str = Iconv.conv(@output_charset, @charset, str) if @charset
-              rescue Iconv::Failure
+                iconv = Iconv || FastGettext::Iconv
+                str = iconv.conv(@output_charset, @charset, str) if @charset
+              rescue iconv::Failure
                 if $DEBUG
                   warn "@charset = ", @charset
                   warn"@output_charset = ", @output_charset

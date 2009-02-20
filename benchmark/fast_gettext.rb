@@ -2,7 +2,7 @@ require 'benchmark/base'
 
 $LOAD_PATH.unshift 'lib'
 require 'fast_gettext'
-include FastGettext
+include FastGettext::Translation
 
 FastGettext.available_locales  = ['de','en']
 FastGettext.locale = 'de'
