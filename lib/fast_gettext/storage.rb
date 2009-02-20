@@ -1,6 +1,6 @@
 module FastGettext
   module Storage
-    [:current_translations,:available_locales].each do |method|
+    [:available_locales,:text_domain].each do |method|
       define_method method do
         thread_store(method)
       end
@@ -9,14 +9,19 @@ module FastGettext
       end
     end
 
+    # speed hack, twice as fast as
+    # Thread.current['FastGettext.'<<'current_translations']
+    def current_translations
+      Thread.current[:fast_gettext_current_translations]
+    end
+    def current_translations=x
+      Thread.current[:fast_gettext_current_translations]=x
+    end
+
     #global, since re-parsing whole folders takes too much time...
     @@text_domains={}
     def text_domains
       @@text_domains
-    end
-
-    def text_domain
-      thread_store(:text_domain)
     end
 
     def text_domain=(new_text_domain)
@@ -28,6 +33,7 @@ module FastGettext
       thread_store(:locale) || (available_locales||[]).first || 'en'
     end
 
+    # reject any locale that is not available
     def locale=(new_locale)
       new_locale = new_locale.to_s
       if not available_locales or available_locales.include?(new_locale)

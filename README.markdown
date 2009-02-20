@@ -1,6 +1,6 @@
 FastGettext
 ===========
-GetText but 4 times faster, simple, clean namespace (7 vs 34) and threadsave!
+GetText but 8.21 times faster, simple, clean namespace (7 vs 34) and threadsave!
 
 Setup
 =====
@@ -27,32 +27,30 @@ Speed
 50_000 translations:
 Ideal: (primitive Hash lookup)
     small translation file:
-    1.100000   0.180000   1.280000 (  1.287230)
+    1.080000   0.190000   1.270000 (  1.274699)
     mapped: 5832K    writeable/private: 3016K    shared: 28K
 
     large translation file:
-    1.150000   0.150000   1.300000 (  1.296114)
+    1.110000   0.200000   1.310000 (  1.305616)
     mapped: 5832K    writeable/private: 3016K    shared: 28K
 
 FastGettext:
     small translation file:
-    3.980000   0.430000   4.410000 (  4.407260)
+    1.980000   0.310000   2.290000 (  2.285980)
     mapped: 5852K    writeable/private: 3036K    shared: 28K
 
     large translation file:
-    4.070000   0.450000   4.520000 (  4.515585)
-    mapped: 5972K    writeable/private: 3156K    shared: 28K
+    1.990000   0.320000   2.310000 (  2.318801)
+    mapped: 5852K    writeable/private: 3036K    shared: 28K
 
 GetText:
     small translation file:
-    16.280000   1.340000  17.620000 ( 17.630391)
-    mapped: 8976K    writeable/private: 5944K    shared: 28K
+    16.210000   1.290000  17.500000 ( 17.511050)
+    mapped: 8908K    writeable/private: 5876K    shared: 28K
 
     large translation file:
-    16.590000   1.430000  18.020000 ( 18.042926)
-    mapped: 9024K    writeable/private: 5992K    shared: 28K
-
-
+    16.340000   1.330000  17.670000 ( 17.679807)
+    mapped: 9028K    writeable/private: 5996K    shared: 28K
 
 Thread Safety and Rails
 =======================
