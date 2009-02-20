@@ -9,7 +9,9 @@
 =end
 
 # Extension for String class. This feature is included in Ruby 1.9 or later.
-if RUBY_VERSION < "1.9.0"
+begin
+  raise unless ("a %{x}" % {:x=>'b'}) == 'a b'
+rescue ArgumentError
   class String
     alias :_old_format_m :% # :nodoc:
 
