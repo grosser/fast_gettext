@@ -22,6 +22,10 @@ module FastGettext
       end
     end
 
+    def self.empty
+      MoFile.new(File.join(File.dirname(__FILE__),'..','..','vendor','empty.mo'))
+    end
+
     private
 
     #(if plural==singular, prefer singular)

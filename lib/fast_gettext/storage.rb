@@ -1,5 +1,7 @@
 module FastGettext
   module Storage
+    class NoTextDomainConfigured < Exception;end
+
     [:available_locales,:text_domain].each do |method|
       define_method method do
         thread_store(method)
@@ -11,6 +13,7 @@ module FastGettext
 
     # speed hack, twice as fast as
     # Thread.current['FastGettext.'<<'current_translations']
+    Thread.current[:fast_gettext_current_translations] = NoTextDomainConfigured
     def current_translations
       Thread.current[:fast_gettext_current_translations]
     end
@@ -45,7 +48,11 @@ module FastGettext
     private
 
     def update_current_translations
-      self.current_translations = text_domains[text_domain][:mo_files][locale] || {} if text_domains[text_domain]
+      if text_domains[text_domain]
+        self.current_translations = text_domains[text_domain][:mo_files][locale] || MoFile.empty
+      else
+        self.current_translations = NoTextDomainConfigured
+      end
     end
 
     def thread_store(key)

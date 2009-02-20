@@ -4,11 +4,30 @@ require File.join(current_folder,'..','spec_helper')
 FastGettext.add_text_domain('test',:path=>File.join(File.dirname(__FILE__),'..','locale'))
 FastGettext.text_domain = 'test'
 FastGettext.available_locales = ['en','de']
-FastGettext.locale = 'de'
 
 include FastGettext::Translation
 
 describe FastGettext::Translation do
+  before do
+    FastGettext.available_locales = ['en','de']
+    FastGettext.locale = 'de'
+  end
+
+  describe "unknown locale" do
+    before do
+      FastGettext.available_locales = nil
+      FastGettext.locale = 'xx'
+    end
+
+    it "does not translate" do
+      _('car').should == 'car'
+    end
+
+    it "does not translate plurals" do
+      n_('car','cars',2).should == 'cars'
+    end
+  end
+
   describe :_ do
     it "translates simple text" do
       _('car').should == 'Auto'
