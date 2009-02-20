@@ -36,13 +36,20 @@ module FastGettext
       thread_store(:locale) || (available_locales||[]).first || 'en'
     end
 
-    # reject any locale that is not available
     def locale=(new_locale)
       new_locale = new_locale.to_s
       if not available_locales or available_locales.include?(new_locale)
         write_thread_store(:locale,new_locale)
         update_current_translations
       end
+    end
+
+    # for chaining: puts set_locale('xx') == 'xx' ? 'applied' : 'rejected'
+    # returns the current locale, not the one that was supplied
+    # like locale=(), whoes behavior cannot be changed
+    def set_locale(new_locale)
+      self.locale = new_locale
+      locale
     end
 
     private

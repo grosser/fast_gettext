@@ -48,5 +48,10 @@ describe Storage do
       self.locale = 'en'
       locale.should == 'de'
     end
+    it "set_locale returns the old locale if the new could not be set" do
+      self.locale = 'de'
+      self.available_locales = ['de']
+      self.set_locale('en').should == 'de'
+    end
   end
 end
