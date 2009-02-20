@@ -4,7 +4,7 @@ module FastGettext
     PLURAL_SEPERATOR = "\000"
 
     def initialize(file)
-      @data = GetText::MOFile.open(file, "UTF-8")
+      @data = FastGettext::GetText::MOFile.open(file, "UTF-8")
       make_singular_and_plural_available
     end
 
