@@ -6,6 +6,7 @@ task :default do |t|
 end
 
 task :benchmark do
+  puts `ruby benchmark/baseline.rb`
   puts `ruby benchmark/ideal.rb`
   puts `ruby benchmark/fast_gettext.rb`
   puts `ruby benchmark/original.rb`

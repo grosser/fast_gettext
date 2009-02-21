@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'benchmark'
 
+RUNS = 50_0000
+
 def locale_folder(domain)
   path = case domain
   when 'test' then File.join(File.expand_path(File.dirname(__FILE__)),'..','spec','locale')
@@ -12,23 +14,19 @@ def locale_folder(domain)
   path
 end
 
-def results_test
-  puts "    small translation file:"
-  puts "  #{result {_('car') == 'Auto'}}"
-  puts "    #{memory}"
-  puts ""
+def results_test(&block)
+  print "#{(result(&block)).to_s.strip.split(' ').first}s / #{memory.to_s.strip.split(' ')[3]} <-> "
 end
 
 def results_large
-  puts "    large translation file:"
-  puts "  #{result {_('login') == 'anmelden'}}"
-  puts "    #{memory}"
+  print "#{(result {_('login') == 'anmelden'}).to_s.strip.split(' ').first}s / #{memory.to_s.strip.split(' ')[3]}"
+  puts ""
   puts ""
 end
 
 def result
   result =Benchmark.measure do
-    50_0000.times do
+    RUNS.times do
       raise "not translated" unless yield
     end
   end

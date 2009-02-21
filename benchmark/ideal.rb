@@ -15,7 +15,7 @@ end
 include FastestGettext
 set_domain(locale_folder('test'),'test','de')
 puts "Ideal: (primitive Hash lookup)"
-results_test
+results_test{_('car') == 'Auto'}
 
 #i cannot add the large file, since its an internal applications mo file
 set_domain(locale_folder('large'),'large','de')
