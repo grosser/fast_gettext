@@ -2,6 +2,8 @@ FastGettext
 ===========
 GetText but 8.21 times faster, simple, clean namespace (7 vs 34) and threadsave!
 
+[Example Rails application](https://github.com/grosser/gettext_i18n_rails_example)
+
 Setup
 =====
     sudo gem install grosser-fast_gettext -s http://gems.github.com/
