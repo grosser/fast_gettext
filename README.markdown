@@ -59,6 +59,9 @@ Thread Safety and Rails
 `text_domains` is not stored thread-save, so that they can be added inside the `environment.rb`,  
 and do not need to be readded for every thread (parsing takes time...).
 
+###Rails
+Try the [gettext_i18n_rails plugin](http://github.com/grosser/gettext_i18n_rails), it simplifies the setup.
+
 Setting `available_locales`,`text_domain` or `locale` will not work inside the `evironment.rb`, since it runs in a different thread
 then e.g. controllers, so set them inside your application_controller.
 
@@ -74,15 +77,13 @@ then e.g. controllers, so set them inside your application_controller.
       def set_locale
         FastGettext.available_locales = ['de','en',...]
         FastGettext.text_domain = 'frontend'
-        sessions[:locale] = I18n.locale = FastGettext.locale = params[:locale] || sessions[:locale] || 'en'
+        sessions[:locale] = I18n.locale = FastGettext.set_locale(params[:locale] || sessions[:locale] || 'en')
       end
 
     #application_helper.rb
     module ApplicationHelper
       include FastGettext::Translation
       ...
-
-Try the [gettext_i18n_rails plugin](http://github.com/grosser/gettext_i18n_rails), it simplifies the setup.
 
 Updating translations
 =====================
