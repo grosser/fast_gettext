@@ -40,6 +40,10 @@ small translation file <-> large translation file
     GetText:
     14.880000s / 5816K <-> 14.810000s / 6008K
 
+    Rails I18n Simple:
+    31.200000s / 10044K
+
+
 Thread Safety and Rails
 =======================
 `text_domains` is not stored thread-save, so that they can be added inside the `environment.rb`,  

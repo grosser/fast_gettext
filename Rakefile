@@ -6,10 +6,10 @@ task :default do |t|
 end
 
 task :benchmark do
-  puts `ruby benchmark/baseline.rb`
-  puts `ruby benchmark/ideal.rb`
-  puts `ruby benchmark/fast_gettext.rb`
-  puts `ruby benchmark/original.rb`
+  %w[baseline ideal fast_gettext original i18n_simple].each do |bench|
+    puts `ruby benchmark/#{bench}.rb`
+    puts ""
+  end
 end
 
 task :namespaces do

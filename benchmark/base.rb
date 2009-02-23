@@ -21,7 +21,6 @@ end
 def results_large
   print "#{(result {_('login') == 'anmelden'}).to_s.strip.split(' ').first}s / #{memory.to_s.strip.split(' ')[3]}"
   puts ""
-  puts ""
 end
 
 def result
