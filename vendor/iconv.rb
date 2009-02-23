@@ -21,11 +21,14 @@
 begin
   require 'iconv'
 rescue LoadError
-  # Pseudo Iconv class
-  # 
-  # Provides Iconv.iconv which uses Ruby/GLib(1) functions. This library also required from 'gettext'.
-  # If you require 'gettext/iconv', Iconv.iconv try to call Ruby/GLib function 
-  # when it doesn't find original Iconv class(iconv.so).
+  # Provides Iconv.iconv which normally is provided through Ruby/GLib(1) functions.
+  # This library is required for 'gettext'.
+  # If you require 'gettext/iconv', it tries to call Ruby/GLib function
+  # when it doesn't find original Iconv class(iconv.so) it adds a pseudo class.
+  #
+  # One-click Ruby Installer for Win32 hadn’t had iconv and there hadn’t been a way to install iconv.so itself for Win32.
+  # And JRuby hadn’t had Iconv.
+  # I’ve not checked them currently, but if they’ve supported iconv now, we don’t need this anymore...
   #
   # (1) Ruby/GLib is a module which is provided from Ruby-GNOME2 Project. 
   # You can get binaries for Win32(One-Click Ruby Installer).
