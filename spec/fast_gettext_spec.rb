@@ -16,4 +16,17 @@ describe FastGettext do
     N_('XXXXX').should == 'XXXXX'
     Nn_('X','Y').should == ['X','Y']
   end
+  it "is extended to a class and included into a class" do
+    class IncludeTest
+      include FastGettext::Translation
+      def self.ext
+        _('car')
+      end
+      def inc
+        _('car')
+      end
+    end
+    IncludeTest.ext.should == 'Auto'
+    IncludeTest.new.inc.should == 'Auto'
+  end
 end
