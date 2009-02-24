@@ -1,7 +1,16 @@
 module FastGettext
   module Translation
     extend self
-    
+
+    #make it usable in class definition, e.g.
+    # class Y
+    #   include FastGettext::Translation
+    #   @@x = _('y')
+    # end
+    def self.included(klas)  #:nodoc:
+      klas.extend self
+    end
+
     def _(translate)
       FastGettext.current_translations[translate] || translate
     end

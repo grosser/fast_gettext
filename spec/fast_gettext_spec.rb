@@ -5,6 +5,20 @@ FastGettext.text_domain = 'test'
 FastGettext.available_locales = ['en','de']
 FastGettext.locale = 'de'
 
+class IncludeTest
+  include FastGettext::Translation
+  @@xx = _('car')
+  def self.ext
+    _('car')
+  end
+  def inc
+    _('car')
+  end
+  def self.xx
+    @@xx
+  end
+end
+
 include FastGettext
 
 describe FastGettext do
@@ -17,16 +31,9 @@ describe FastGettext do
     Nn_('X','Y').should == ['X','Y']
   end
   it "is extended to a class and included into a class" do
-    class IncludeTest
-      include FastGettext::Translation
-      def self.ext
-        _('car')
-      end
-      def inc
-        _('car')
-      end
-    end
+    IncludeTest.ext.should == 'Auto'
     IncludeTest.ext.should == 'Auto'
     IncludeTest.new.inc.should == 'Auto'
+    IncludeTest.xx.should == 'Auto'
   end
 end
