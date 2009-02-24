@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fast_gettext}
-  s.version = "0.2.6"
+  s.version = "0.2.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2009-02-21}
+  s.date = %q{2009-02-24}
   s.email = %q{grosser.michael@gmail.com}
   s.files = ["README.markdown", "VERSION.yml", "lib/fast_gettext", "lib/fast_gettext.rb", "lib/fast_gettext/mo_file.rb", "lib/fast_gettext/storage.rb", "lib/fast_gettext/translation.rb", "spec/aa_unconfigued_spec.rb", "spec/fast_gettext", "spec/fast_gettext/mo_file_spec.rb", "spec/fast_gettext/storage_spec.rb", "spec/fast_gettext/translation_spec.rb", "spec/fast_gettext_spec.rb", "spec/locale", "spec/locale/de", "spec/locale/de/LC_MESSAGES", "spec/locale/de/LC_MESSAGES/test.mo", "spec/locale/en", "spec/locale/en/LC_MESSAGES", "spec/locale/en/LC_MESSAGES/test.mo", "spec/spec_helper.rb", "spec/vendor", "spec/vendor/fake_load_path", "spec/vendor/fake_load_path/iconv.rb", "spec/vendor/iconv_spec.rb", "spec/vendor/string_spec.rb", "vendor/README.rdoc", "vendor/empty.mo", "vendor/iconv.rb", "vendor/mofile.rb", "vendor/string.rb"]
   s.has_rdoc = true
