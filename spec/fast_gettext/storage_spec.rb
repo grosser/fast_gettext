@@ -54,4 +54,24 @@ describe Storage do
       self.set_locale('en').should == 'de'
     end
   end
+
+  describe :silence_errors do
+    before do
+      FastGettext.text_domain = 'xxx'
+    end
+    it "raises when a textdomain was empty" do
+      begin 
+        FastGettext._('x')
+        x=2
+      rescue
+        x=1
+      end
+      x.should == 1
+    end
+    
+    it "can silence erros" do
+      FastGettext.silence_errors
+      FastGettext._('x').should == 'x'
+    end
+  end
 end

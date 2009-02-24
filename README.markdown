@@ -24,6 +24,9 @@ Start translating
     s_('Namespace|no-found') == 'not-found'
     n_('Axis','Axis',3) == 'Achsen' #German plural of Axis
 
+Disable translation errors(like no text domain setup) while doing e.g. console session
+    FastGettext.silence_errors
+
 Speed
 =====
 50_000 translations

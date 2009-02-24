@@ -52,6 +52,13 @@ module FastGettext
       locale
     end
 
+    #turn off translation if none was defined to disable all resulting errors
+    def silence_errors
+      if not self.current_translations or self.current_translations == NoTextDomainConfigured
+        self.current_translations = MoFile.empty
+      end
+    end
+
     private
 
     def update_current_translations
