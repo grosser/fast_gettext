@@ -53,6 +53,27 @@ describe Storage do
       self.available_locales = ['de']
       self.set_locale('en').should == 'de'
     end
+    {
+      'Opera' => "de-DE,de;q=0.9,en;q=0.8",
+      'Firefox' => "de-de,de;q=0.8,en-us;q=0.5,en;q=0.3",
+    }.each do |browser,accept_language|
+      it "sets the locale from #{browser} headers" do
+        FastGettext.available_locales = ['de_DE','de','xx']
+        FastGettext.locale = 'xx'
+        FastGettext.locale = accept_language
+        FastGettext.locale.should == 'de_DE'
+      end
+    end
+    it "sets a unimportant locale if it is the only available" do
+      FastGettext.available_locales = ['en','xx']
+      FastGettext.locale = "de-de,de;q=0.8,en-us;q=0.5,en;q=0.3"
+      FastGettext.locale.should == 'en'
+    end
+    it "sets locale from comma seperated" do
+      FastGettext.available_locales = ['de_DE','en','xx']
+      FastGettext.locale = "de,de-de,en"
+      FastGettext.locale.should == 'de_DE'
+    end
   end
 
   describe :silence_errors do

@@ -70,7 +70,7 @@ then e.g. controllers, so set them inside your application_controller.
       def set_locale
         FastGettext.available_locales = ['de','en',...]
         FastGettext.text_domain = 'frontend'
-        sessions[:locale] = I18n.locale = FastGettext.set_locale(params[:locale] || sessions[:locale] || 'en')
+        sessions[:locale] = I18n.locale = FastGettext.set_locale(params[:locale] || sessions[:locale] || request.env['HTTP_ACCEPT_LANGUAGE'] || 'en')
       end
 
     #application_helper.rb
