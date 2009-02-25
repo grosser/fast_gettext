@@ -39,6 +39,10 @@ describe Storage do
       self.available_locales = nil
       locale.should == 'en'
     end
+    it "does not change the locale if locales was called with nil" do
+      self.locale = nil
+      locale.should == 'en'
+    end
     it "is the first available_locale if one was set" do
       self.available_locales = ['de']
       locale.should == 'de'

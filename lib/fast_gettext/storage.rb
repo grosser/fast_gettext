@@ -57,7 +57,7 @@ module FastGettext
     #IE6/7 de
     #nil if nothing matches
     def best_locale_in(locales)
-      locales.to_s.gsub(/\s/,'')
+      locales = locales.to_s.gsub(/\s/,'')
 
       #split the locale and seperate it into different languages
       #[['de-de','de','0.5'], ['en','0.8'], ...]
