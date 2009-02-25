@@ -8,6 +8,10 @@ Setup
 =====
     sudo gem install grosser-fast_gettext -s http://gems.github.com/
 
+Or from source:
+    git clone git://github.com/grosser/fast_gettext.git
+    cd fast_gettext && rake install
+
 Tell Gettext where your mo-files lie:
     #e.g. for locale/de/LC_MESSAGES/my_app.mo
     FastGettext.add_text_domain('my_app',:path=>'locale')
