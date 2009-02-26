@@ -12,11 +12,13 @@ Or from source:
     git clone git://github.com/grosser/fast_gettext.git
     cd fast_gettext && rake install
 
+Generate mo-files using GetText parser (example tasks at [gettext_i18n_rails](http://github.com/grosser/gettext_i18n_rails))
+
 Tell Gettext where your mo-files lie:
     #e.g. for locale/de/LC_MESSAGES/my_app.mo
     FastGettext.add_text_domain('my_app',:path=>'locale')
 
-Choose text domain, and locale for translation
+Choose text domain and locale for translation
     FastGettext.text_domain = 'my_app'
     FastGettext.available_locales = ['de','en','fr','en_US','en_UK'] # only allow these locales to be set (optional)
     FastGettext.locale = 'de'
@@ -28,12 +30,12 @@ Start translating
     s_('Namespace|no-found') == 'not-found'
     n_('Axis','Axis',3) == 'Achsen' #German plural of Axis
 
-Disable translation errors(like no text domain setup) while doing e.g. console session
+Disable translation errors(like no text domain setup) while doing e.g. console session / testing
     FastGettext.silence_errors
 
 Speed
 =====
-50_000 translations
+50_000 translations speed / memory
 small translation file <-> large translation file
     Baseline: (doing nothing in a loop)
     0.390000s / 2904K
@@ -53,7 +55,7 @@ small translation file <-> large translation file
 
 Thread Safety and Rails
 =======================
-`text_domains` is not stored thread-save, so that they can be added inside the `environment.rb`,  
+`text_domains` repository are not stored thread-save, so that they can be added inside the `environment.rb`,
 and do not need to be readded for every thread (parsing takes time...).
 
 ###Rails
