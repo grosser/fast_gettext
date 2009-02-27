@@ -1,4 +1,5 @@
 require 'fast_gettext/translation_repository/base'
+require 'fast_gettext/translation_repository/mo'
 module FastGettext
   module TranslationRepository
      # Responsibility:

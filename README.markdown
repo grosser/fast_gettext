@@ -16,7 +16,7 @@ Generate .po or .mo files using GetText parser (example tasks at [gettext_i18n_r
 
 Tell Gettext where your .mo or .po files lie:
     #e.g. for locale/de/my_app.po and locale/de/LC_MESSAGES/my_app.mo
-    #add :type=>:po and it will read directly from po files (great for development)
+    #add :type=>:po and it will read directly from po files (not recommended for production since po-parsing can crash!)
     FastGettext.add_text_domain('my_app',:path=>'locale')
 
 Choose text domain and locale for translation
