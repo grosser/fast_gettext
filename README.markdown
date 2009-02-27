@@ -89,9 +89,23 @@ Updating translations
 =====================
 ATM you have to use the [original GetText](http://github.com/mutoh/gettext) to create and manage your po/mo-files.
 
+Plugins
+=======
+Want a yml, xml, database version ?
+Write your own TranslationRepository!
+    #fast_gettext/translation_repository/xxx.rb
+    module FastGettext
+      module TranslationRepository
+        class Wtf
+          define initialize(name,options), available_locales, [key], plural(singular,plural,count)
+        end
+      end
+    end
+
+
 Author
 ======
-Mofile parsing from Masao Mutoh, see vendor/README
+Mo/Po-file parsing from Masao Mutoh, see vendor/README
 
 Michael Grosser  
 grosser.michael@gmail.com  
