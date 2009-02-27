@@ -15,16 +15,6 @@ module FastGettext
       end
     end
 
-    # speed hack, twice as fast as
-    # Thread.current['FastGettext.'<<'current_translations']
-    Thread.current[:fast_gettext_current_repository] = NoTextDomainConfigured
-    def current_repository
-      Thread.current[:fast_gettext_current_repository]
-    end
-    def current_repository=(x)
-      Thread.current[:fast_gettext_current_repository]=x
-    end
-
     #global, since re-parsing whole folders takes too much time...
     @@translation_repositories={}
     def translation_repositories
@@ -33,7 +23,10 @@ module FastGettext
 
     def text_domain=(new_text_domain)
       write_thread_store(:text_domain,new_text_domain)
-      update_current_repository
+    end
+
+    def current_repository
+      translation_repositories[text_domain] || NoTextDomainConfigured
     end
 
     def locale
@@ -44,7 +37,6 @@ module FastGettext
       new_locale = best_locale_in(new_locale)
       if new_locale
         write_thread_store(:locale,new_locale)
-        update_current_repository
       end
     end
 
@@ -84,19 +76,11 @@ module FastGettext
     def silence_errors
       if not self.current_repository or self.current_repository == NoTextDomainConfigured
         require 'fast_gettext/translation_repository/base'
-        self.current_repository = TranslationRepository::Base.new('x')
+        translation_repositories[text_domain] = TranslationRepository::Base.new('x')
       end
     end
 
     private
-
-    def update_current_repository
-      if translation_repositories[text_domain]
-        self.current_repository = translation_repositories[text_domain]
-      else
-        self.current_repository = NoTextDomainConfigured
-      end
-    end
 
     def thread_store(key)
       Thread.current["FastGettext.#{key}"]
