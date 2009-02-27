@@ -17,7 +17,8 @@ module FastGettext
     end
 
     def _(translate)
-      FastGettext.current_repository[translate] || translate
+      found = FastGettext.current_cache[translate] and return found
+      FastGettext.current_cache[translate] = FastGettext.current_repository[translate] || translate
     end
 
     #translate pluralized

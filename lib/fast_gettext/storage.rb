@@ -6,7 +6,7 @@ module FastGettext
   module Storage
     class NoTextDomainConfigured < Exception;end
 
-    [:available_locales,:text_domain,:_locale].each do |method|
+    [:available_locales,:text_domain,:_locale,:current_cache].each do |method|
       eval <<EOF
       def #{method}
         Thread.current[:fast_gettext_#{method}]
@@ -17,11 +17,25 @@ module FastGettext
 EOF
     end
     private :_locale, :_locale=
+    #so initial translations does not crash
+    Thread.current[:fast_gettext_current_cache]={}
+
+    def text_domain=(new_domain)
+      Thread.current[:fast_gettext_text_domain]=new_domain
+      update_current_cache
+    end
 
     #global, since re-parsing whole folders takes too much time...
     @@translation_repositories={}
     def translation_repositories
       @@translation_repositories
+    end
+
+    # used to speedup simple translations, does not work for pluralisation
+    # caches[text_domain][locale][key]=translation
+    @@caches={}
+    def caches
+      @@caches
     end
 
     def current_repository
@@ -36,6 +50,7 @@ EOF
       new_locale = best_locale_in(new_locale)
       if new_locale
         self._locale = new_locale
+        update_current_cache
       end
     end
 
@@ -77,6 +92,14 @@ EOF
         require 'fast_gettext/translation_repository/base'
         translation_repositories[text_domain] = TranslationRepository::Base.new('x')
       end
+    end
+
+    private
+
+    def update_current_cache
+      caches[text_domain]||={}
+      caches[text_domain][locale]||={}
+      self.current_cache = caches[text_domain][locale]
     end
   end
 end

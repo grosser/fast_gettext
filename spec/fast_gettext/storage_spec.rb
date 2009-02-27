@@ -99,4 +99,22 @@ describe 'Storage' do
       FastGettext._('x').should == 'x'
     end
   end
+
+  describe :current_cache do
+    before do
+      FastGettext.available_locales = ['de','en']
+      FastGettext.locale = 'de'
+      FastGettext._('abc')
+      FastGettext.locale = 'en'
+    end
+
+    it "stores a translation seperatly" do
+      FastGettext.current_cache['abc'].should == nil
+    end
+
+    it "stores a translation permanently" do
+      FastGettext.locale = 'de'
+      FastGettext.current_cache['abc'].should == 'abc'
+    end
+  end
 end
