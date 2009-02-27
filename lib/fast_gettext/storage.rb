@@ -6,14 +6,17 @@ module FastGettext
   module Storage
     class NoTextDomainConfigured < Exception;end
 
-    [:available_locales,:text_domain].each do |method|
-      define_method method do
-        thread_store(method)
+    [:available_locales,:text_domain,:_locale].each do |method|
+      eval <<EOF
+      def #{method}
+        Thread.current[:fast_gettext_#{method}]
       end
-      define_method "#{method}=" do |value|
-        write_thread_store(method,value)
+      def #{method}=(value)
+        Thread.current[:fast_gettext_#{method}]=value
       end
+EOF
     end
+    private :_locale, :_locale=
 
     #global, since re-parsing whole folders takes too much time...
     @@translation_repositories={}
@@ -21,22 +24,18 @@ module FastGettext
       @@translation_repositories
     end
 
-    def text_domain=(new_text_domain)
-      write_thread_store(:text_domain,new_text_domain)
-    end
-
     def current_repository
       translation_repositories[text_domain] || NoTextDomainConfigured
     end
 
     def locale
-      thread_store(:locale) || (available_locales||[]).first || 'en'
+      _locale || (available_locales||[]).first || 'en'
     end
 
     def locale=(new_locale)
       new_locale = best_locale_in(new_locale)
       if new_locale
-        write_thread_store(:locale,new_locale)
+        self._locale = new_locale
       end
     end
 
@@ -78,16 +77,6 @@ module FastGettext
         require 'fast_gettext/translation_repository/base'
         translation_repositories[text_domain] = TranslationRepository::Base.new('x')
       end
-    end
-
-    private
-
-    def thread_store(key)
-      Thread.current["FastGettext.#{key}"]
-    end
-
-    def write_thread_store(key,value)
-      Thread.current["FastGettext.#{key}"]=value
     end
   end
 end

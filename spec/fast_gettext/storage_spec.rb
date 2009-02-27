@@ -35,7 +35,7 @@ describe 'Storage' do
       locale.should == 'XXX'
     end
     it "is en if no locale and no available_locale were set" do
-      Thread.current['FastGettext.locale']=nil
+      FastGettext.send(:_locale=,nil)
       self.available_locales = nil
       locale.should == 'en'
     end
