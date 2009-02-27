@@ -12,10 +12,11 @@ Or from source:
     git clone git://github.com/grosser/fast_gettext.git
     cd fast_gettext && rake install
 
-Generate mo-files using GetText parser (example tasks at [gettext_i18n_rails](http://github.com/grosser/gettext_i18n_rails))
+Generate .po or .mo files using GetText parser (example tasks at [gettext_i18n_rails](http://github.com/grosser/gettext_i18n_rails))
 
-Tell Gettext where your mo-files lie:
-    #e.g. for locale/de/LC_MESSAGES/my_app.mo
+Tell Gettext where your .mo or .po files lie:
+    #e.g. for locale/de/my_app.po and locale/de/LC_MESSAGES/my_app.mo
+    #add :type=>:po and it will read directly from po files (great for development)
     FastGettext.add_text_domain('my_app',:path=>'locale')
 
 Choose text domain and locale for translation

@@ -5,8 +5,13 @@ module FastGettext
   class MoFile
     PLURAL_SEPERATOR = "\000"
 
+    # file => path or FastGettext::GetText::MOFile
     def initialize(file)
-      @data = FastGettext::GetText::MOFile.open(file, "UTF-8")
+      if file.is_a? FastGettext::GetText::MOFile
+        @data = file
+      else
+        @data = FastGettext::GetText::MOFile.open(file, "UTF-8")
+      end
       make_singular_and_plural_available
     end
 
