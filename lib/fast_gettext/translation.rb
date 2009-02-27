@@ -1,4 +1,9 @@
 module FastGettext
+  # this module should be included
+  # Responsibility:
+  #  - direct translation queries to the current repository
+  #  - handle untranslated values
+  #  - understand / enforce namespaces
   module Translation
     extend self
 
@@ -12,14 +17,15 @@ module FastGettext
     end
 
     def _(translate)
-      FastGettext.current_translations[translate] || translate
+      FastGettext.current_repository[translate] || translate
     end
 
     #translate pluralized
     def n_(singular,plural,count)
-      if translation = FastGettext.current_translations.plural(singular,plural,count)
+      if translation = FastGettext.current_repository.plural(singular,plural,count)
         translation
       else
+        #TODO remove this repeated logic, e.g. return :plural / :singular or raise an exception ?
         count == 1 ? singular : plural
       end
     end
@@ -27,7 +33,7 @@ module FastGettext
     #translate, but discard namespace if nothing was found
     # Car|Tire -> Tire if no translation could be found
     def s_(translate,seperator=nil)
-      if translation = FastGettext.current_translations[translate]
+      if translation = FastGettext.current_repository[translate]
         translation
       else
         translate.split(seperator||NAMESPACE_SEPERATOR).last

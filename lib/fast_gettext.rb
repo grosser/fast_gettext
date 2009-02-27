@@ -1,6 +1,7 @@
 require 'fast_gettext/mo_file'
 require 'fast_gettext/storage'
 require 'fast_gettext/translation'
+require 'fast_gettext/translation_repository'
 require File.join(File.dirname(__FILE__),'..','vendor','string')
 
 module FastGettext
@@ -23,17 +24,6 @@ module FastGettext
   end
 
   def add_text_domain(name,options)
-    self.text_domains ||= {}
-    domain = self.text_domains[name] = {:path=>options.delete(:path),:mo_files=>{}}
-    
-    # parse all .mo files with the right name, that sit in locale/LC_MESSAGES folders
-    Dir[File.join(domain[:path],'*')].each do |locale_folder|
-      next unless File.basename(locale_folder) =~ LOCALE_REX
-      mo_file = File.join(locale_folder,'LC_MESSAGES',"#{name}.mo")
-      next unless File.exist? mo_file
-      locale = File.basename(locale_folder)
-      domain[:mo_files][locale] = MoFile.new(mo_file)
-    end
-    domain
+    translation_repositories[name] = TranslationRepository.build(name,options)
   end
 end

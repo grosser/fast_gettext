@@ -3,7 +3,6 @@ require File.join(current_folder,'..','spec_helper')
 
 FastGettext.add_text_domain('test',:path=>File.join(File.dirname(__FILE__),'..','locale'))
 FastGettext.text_domain = 'test'
-FastGettext.available_locales = ['en','de']
 
 include FastGettext::Translation
 
@@ -41,7 +40,7 @@ describe FastGettext::Translation do
     it "translates pluralized" do
       n_('Axis','Axis',1).should == 'Achse'
       n_('Axis','Axis',2).should == 'Achsen'
-      n_('Axis','Axis',0).should == 'Achse'
+      n_('Axis','Axis',0).should == 'Achsen'
     end
     it "returns the appropriate msgid if no translation was found" do
       n_('NOTFOUND','NOTFOUNDs',1).should == 'NOTFOUND'

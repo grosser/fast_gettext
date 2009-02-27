@@ -13,6 +13,14 @@ module Test
   end
 end
 
+# ---- revert to defaults
+Spec::Runner.configure do |config|
+  config.before :all do
+    FastGettext.locale = 'de'
+    FastGettext.available_locales = nil
+  end
+end
+
 # ---- Helpers
 def pending_it(text,&block)
   it text do

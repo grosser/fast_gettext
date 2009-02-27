@@ -1,4 +1,8 @@
 module FastGettext
+  # Responsibility:
+  #  - store data threadsave
+  #  - provide error messages when repositories are unconfigured
+  #  - accept/reject locales that are set by the user
   module Storage
     class NoTextDomainConfigured < Exception;end
 
@@ -13,23 +17,23 @@ module FastGettext
 
     # speed hack, twice as fast as
     # Thread.current['FastGettext.'<<'current_translations']
-    Thread.current[:fast_gettext_current_translations] = NoTextDomainConfigured
-    def current_translations
-      Thread.current[:fast_gettext_current_translations]
+    Thread.current[:fast_gettext_current_repository] = NoTextDomainConfigured
+    def current_repository
+      Thread.current[:fast_gettext_current_repository]
     end
-    def current_translations=x
-      Thread.current[:fast_gettext_current_translations]=x
+    def current_repository=(x)
+      Thread.current[:fast_gettext_current_repository]=x
     end
 
     #global, since re-parsing whole folders takes too much time...
-    @@text_domains={}
-    def text_domains
-      @@text_domains
+    @@translation_repositories={}
+    def translation_repositories
+      @@translation_repositories
     end
 
     def text_domain=(new_text_domain)
       write_thread_store(:text_domain,new_text_domain)
-      update_current_translations
+      update_current_repository
     end
 
     def locale
@@ -40,7 +44,7 @@ module FastGettext
       new_locale = best_locale_in(new_locale)
       if new_locale
         write_thread_store(:locale,new_locale)
-        update_current_translations
+        update_current_repository
       end
     end
 
@@ -78,18 +82,19 @@ module FastGettext
 
     #turn off translation if none was defined to disable all resulting errors
     def silence_errors
-      if not self.current_translations or self.current_translations == NoTextDomainConfigured
-        self.current_translations = MoFile.empty
+      if not self.current_repository or self.current_repository == NoTextDomainConfigured
+        require 'fast_gettext/translation_repository/base'
+        self.current_repository = TranslationRepository::Base.new('x')
       end
     end
 
     private
 
-    def update_current_translations
-      if text_domains[text_domain]
-        self.current_translations = text_domains[text_domain][:mo_files][locale] || MoFile.empty
+    def update_current_repository
+      if translation_repositories[text_domain]
+        self.current_repository = translation_repositories[text_domain]
       else
-        self.current_translations = NoTextDomainConfigured
+        self.current_repository = NoTextDomainConfigured
       end
     end
 

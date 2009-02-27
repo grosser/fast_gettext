@@ -3,7 +3,7 @@ require File.join(current_folder,'..','spec_helper')
 
 include FastGettext::Storage
 
-describe Storage do
+describe 'Storage' do
   def thread_save(method)
     send("#{method}=",'de')
 
@@ -15,17 +15,17 @@ describe Storage do
     send(method) == 'de'
   end
 
-  [:locale, :available_locales, :text_domain, :current_translations].each do |method|
+  [:locale, :available_locales, :text_domain, :current_repository].each do |method|
     it "stores #{method} thread-save" do
       thread_save(method).should == true
     end
   end
 
-  it "stores text_domains non-thread-safe" do
-    self.text_domains[:x]=1
-    t = Thread.new{self.text_domains[:x]=2}
+  it "stores translation_repositories non-thread-safe" do
+    self.translation_repositories[:x]=1
+    t = Thread.new{self.translation_repositories[:x]=2}
     t.join
-    self.text_domains[:x].should == 2
+    self.translation_repositories[:x].should == 2
   end
 
   describe :locale do

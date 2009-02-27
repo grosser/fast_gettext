@@ -1,5 +1,7 @@
 require File.join(File.dirname(__FILE__),'..','..','vendor','mofile')
 module FastGettext
+  # Responsibility:
+  #  - abstract mo files for Mo Repository
   class MoFile
     PLURAL_SEPERATOR = "\000"
 
@@ -15,10 +17,10 @@ module FastGettext
     def plural(singular,plural,count)
       translations = plural_translations(singular,plural)
 
-      if count > 1
-        translations[1] || self[plural]
-      else
+      if count == 1
         translations[0] || self[singular]
+      else
+        translations[1] || self[plural]
       end
     end
 
