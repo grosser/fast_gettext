@@ -1,10 +1,6 @@
 require File.expand_path("spec_helper", File.dirname(__FILE__))
 
-FastGettext.add_text_domain('test',:path=>File.join(File.dirname(__FILE__),'locale'))
-FastGettext.text_domain = 'test'
-FastGettext.available_locales = ['en','de']
-FastGettext.locale = 'de'
-
+default_setup
 class IncludeTest
   include FastGettext::Translation
   @@xx = _('car')
@@ -22,6 +18,10 @@ end
 include FastGettext
 
 describe FastGettext do
+  before :all do
+    default_setup
+  end
+
   it "provides access to FastGettext::Translations methods" do
     FastGettext._('car').should == 'Auto'
     _('car').should == 'Auto'
@@ -30,6 +30,7 @@ describe FastGettext do
     N_('XXXXX').should == 'XXXXX'
     Nn_('X','Y').should == ['X','Y']
   end
+  
   it "is extended to a class and included into a class" do
     IncludeTest.ext.should == 'Auto'
     IncludeTest.ext.should == 'Auto'

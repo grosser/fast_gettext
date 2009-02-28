@@ -27,3 +27,10 @@ def pending_it(text,&block)
     pending(&block)
   end
 end
+
+def default_setup
+  FastGettext.add_text_domain('test',:path=>File.join(File.dirname(__FILE__),'locale'))
+  FastGettext.text_domain = 'test'
+  FastGettext.available_locales = ['en','de']
+  FastGettext.locale = 'de'
+end
