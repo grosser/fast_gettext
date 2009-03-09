@@ -93,7 +93,7 @@ Advanced features
 =================
 ###Abnormal pluralisation
 Pluralisation rules can be set directly via a lambda (see code/specs), or by using the Gettext
-plural definition (see spec/locale/en/test_plural.po)
+plural definition (see spec/locale/en/test_plural.po or [GNU Gettext documentation](http://www.gnu.org/software/libtool/manual/libc/Advanced-gettext-functions.html).
 
 ###Plugins
 Want a yml, xml, database version ?
