@@ -102,7 +102,7 @@ Write your own TranslationRepository!
     module FastGettext
       module TranslationRepository
         class Wtf
-          define initialize(name,options), available_locales, [key], plural(singular,plural,count)
+          define initialize(name,options), available_locales, [key], plural(*msgids)
         end
       end
     end
