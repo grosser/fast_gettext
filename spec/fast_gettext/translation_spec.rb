@@ -1,15 +1,11 @@
 current_folder = File.dirname(__FILE__)
 require File.join(current_folder,'..','spec_helper')
 
-FastGettext.add_text_domain('test',:path=>File.join(File.dirname(__FILE__),'..','locale'))
-FastGettext.text_domain = 'test'
-
 include FastGettext::Translation
 
 describe FastGettext::Translation do
   before do
-    FastGettext.available_locales = ['en','de']
-    FastGettext.locale = 'de'
+    default_setup
   end
 
   describe "unknown locale" do
@@ -85,6 +81,26 @@ describe FastGettext::Translation do
   describe :Nn_ do
     it "returns the msgids as array" do
       Nn_('X','Y').should == ['X','Y']
+    end
+  end
+
+  describe :caching do
+    it "caches different locales seperatly" do
+      FastGettext.locale = 'en'
+      _('car').should == 'car'
+      FastGettext.locale = 'de'
+      _('car').should == 'Auto'
+    end
+
+    it "caches different textdomains seperatly" do
+      _('car').should == 'Auto'
+
+      FastGettext.translation_repositories['fake'] = {}
+      FastGettext.text_domain = 'fake'
+      _('car').should == 'car'
+
+      FastGettext.text_domain = 'test'
+      _('car').should == 'Auto'
     end
   end
 end

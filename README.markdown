@@ -56,7 +56,7 @@ small translation file <-> large translation file
 
 Thread Safety and Rails
 =======================
-`text_domains` repository are not stored thread-save, so that they can be added inside the `environment.rb`,
+Parsed `text_domains` are not stored thread-save, so that they can be added inside the `environment.rb`,
 and do not need to be readded for every thread (parsing takes time...).
 
 ###Rails
