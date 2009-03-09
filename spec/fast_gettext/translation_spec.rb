@@ -42,9 +42,25 @@ describe FastGettext::Translation do
       n_('Axis','Axis',2).should == 'Achsen'
       n_('Axis','Axis',0).should == 'Achsen'
     end
+
+    it "supports abstract pluralisation rules" do
+      begin
+        FastGettext.current_repository.pluralisation_rule = lambda{|n|2}
+        n_('a','b','c','d',4).should == 'c'
+      ensure
+        #restore default
+        FastGettext.current_repository.pluralisation_rule = lambda{|n|n==1?0:1}
+      end
+    end
+
     it "returns the appropriate msgid if no translation was found" do
       n_('NOTFOUND','NOTFOUNDs',1).should == 'NOTFOUND'
       n_('NOTFOUND','NOTFOUNDs',2).should == 'NOTFOUNDs'
+    end
+
+    it "returns the last msgid when no translation was found and msgids where to short" do
+      FastGettext.current_repository.pluralisation_rule = lambda{|x|4}
+      n_('Apple','Apples',2).should == 'Apples'
     end
   end
 

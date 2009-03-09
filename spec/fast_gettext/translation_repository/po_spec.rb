@@ -16,6 +16,12 @@ describe 'FastGettext::TranslationRepository::Po' do
   end
   it "can pluralize" do
     FastGettext.locale = 'de'
-    @rep.plural('Axis','Axis',2).should == 'Achsen'
+    @rep.plural('Axis','Axis').should == ['Achse','Achsen']
+  end
+  it "has access to the mo repositories pluralisation rule" do
+    FastGettext.locale = 'en'
+    rep = FastGettext::TranslationRepository.build('plural_test',:path=>File.join(current_folder,'..','..','locale'),:type=>:po)
+    rep['car'].should == 'Test'#just check it is loaded correctly
+    rep.pluralisation_rule.call(2).should == 3
   end
 end

@@ -19,14 +19,20 @@ module FastGettext
       @data[key]
     end
 
-    def plural(singular,plural,count)
-      translations = plural_translations(singular,plural)
+    #returns the plural forms or all singlgular translations that where found
+    def plural(*msgids)
+      translations = plural_translations(msgids)
+      return translations unless translations.empty?
+      msgids.map{|msgid| self[msgid] || msgid} #try to translate each id
+    end
 
-      if count == 1
-        translations[0] || self[singular]
-      else
-        translations[1] || self[plural]
+    def pluralisation_rule
+      #gettext uses 0 as default rule, which would turn off all pluralisation, very clever...
+      #additionally parsing fails when directly accessing po files, so this line was taken from gettext/mofile
+      (@data['']||'').split("\n").each do |line|
+        return lambda{|n|eval($2)} if /^Plural-Forms:\s*nplurals\s*\=\s*(\d*);\s*plural\s*\=\s*([^;]*)\n?/ =~ line
       end
+      nil
     end
 
     def self.empty
@@ -47,12 +53,12 @@ module FastGettext
     end
 
     def split_plurals(singular_plural)
-      singular_plural.split(PLURAL_SEPERATOR,2)
+      singular_plural.split(PLURAL_SEPERATOR)
     end
 
     # Car, Cars => [Auto,Autos] or []
-    def plural_translations(singular,plural)
-      plurals = self[singular+PLURAL_SEPERATOR+plural]
+    def plural_translations(msgids)
+      plurals = self[msgids*PLURAL_SEPERATOR]
       if plurals then split_plurals(plurals) else [] end
     end
   end

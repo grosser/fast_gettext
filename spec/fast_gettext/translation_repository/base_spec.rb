@@ -15,6 +15,6 @@ describe 'FastGettext::TranslationRepository::Base' do
   end
   it "cannot pluralize" do
     @rep.locale = 'de'
-    @rep.plural('Axis','Axis',2).should == nil
+    @rep.plural('Axis','Axis').should == ['Axis','Axis']
   end
 end

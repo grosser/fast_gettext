@@ -89,8 +89,13 @@ Updating translations
 =====================
 ATM you have to use the [original GetText](http://github.com/mutoh/gettext) to create and manage your po/mo-files.
 
-Plugins
-=======
+Advanced features
+=================
+###Abnormal pluralisation
+Pluralisation rules can be set directly via a lambda (see code/specs), or by using the Gettext
+plural definition (see spec/locale/en/test_plural.po)
+
+###Plugins
 Want a yml, xml, database version ?
 Write your own TranslationRepository!
     #fast_gettext/translation_repository/xxx.rb

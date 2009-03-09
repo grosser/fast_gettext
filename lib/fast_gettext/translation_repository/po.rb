@@ -6,7 +6,8 @@ module FastGettext
     #  - find and store po files
     #  - provide access to translations in po files
     class Po < Mo
-      def initialize(name,options={})
+      protected
+      def find_and_store_files(name,options)
         require File.join(File.dirname(__FILE__),'..','..','..','vendor','poparser')
         require 'fast_gettext/mo_file'
         find_files_in_locale_folders("#{name}.po",options[:path]) do |locale,file|

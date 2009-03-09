@@ -5,9 +5,15 @@ module FastGettext
     #  - fallback as empty repository, that cannot translate anything but does not crash
     class Base
       attr_accessor :locale
+      attr_writer :pluralisation_rule
+
       def initialize(name,options={})
         @name = name
         @options = options
+      end
+
+      def pluralisation_rule
+        @pluralisation_rule || lambda{|n| n==1 ? 0 : 1}
       end
 
       def available_locales
@@ -18,8 +24,8 @@ module FastGettext
         current_translations[key]
       end
 
-      def plural(singular,plural,count)
-        current_translations.plural(singular,plural,count)
+      def plural(*msgids)
+        current_translations.plural(*msgids)
       end
 
       protected

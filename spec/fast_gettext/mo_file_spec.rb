@@ -16,8 +16,13 @@ describe MoFile do
     de['Car|Model'].should == nil
   end
   it "finds pluralized values" do
-    de.plural('Axis','Axis',1).should == 'Achse' #singular
-    de.plural('Axis','Axis',2).should == 'Achsen' #plurals
+    de.plural('Axis','Axis').should == ['Achse','Achsen']
+  end
+  it "returns singular translations when pluralisation could not be found" do
+    de.plural('Axis','Axis','Axis').should == ['Achse','Achse','Achse']
+  end
+  it "returns ids when not plural and singular translations could not be found" do
+    de.plural('Axis','Axis','NOTFOUND').should == ['Achse','Achse','NOTFOUND']
   end
   it "can access plurals through []" do
     de['Axis'].should == 'Achse' #singular
