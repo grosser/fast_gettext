@@ -34,8 +34,8 @@ Start translating
 Disable translation errors(like no text domain setup) while doing e.g. console session / testing
     FastGettext.silence_errors
 
-Speed
-=====
+Performance
+===========
 50_000 translations speed / memory
 small translation file <-> large translation file
     Baseline: (doing nothing in a loop)
@@ -93,7 +93,7 @@ Advanced features
 =================
 ###Abnormal pluralisation
 Pluralisation rules can be set directly via a lambda (see code/specs), or by using the Gettext
-plural definition (see spec/locale/en/test_plural.po or [GNU Gettext documentation](http://www.gnu.org/software/libtool/manual/libc/Advanced-gettext-functions.html).
+plural definition (see spec/locale/en/test_plural.po or [Plural expressions for all languages](http://translate.sourceforge.net/wiki/l10n/pluralforms).
 
 ###Plugins
 Want a yml, xml, database version ?

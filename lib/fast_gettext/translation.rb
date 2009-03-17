@@ -31,6 +31,7 @@ module FastGettext
       
       translations = FastGettext.current_repository.plural(*msgids)
       selected = FastGettext.current_repository.pluralisation_rule.call(count)
+      selected = selected ? 1 : 0 unless selected.is_a? Numeric #convert booleans to numbers
       translations[selected] || msgids[selected] || msgids.last
     end
 

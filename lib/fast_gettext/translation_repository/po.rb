@@ -8,12 +8,9 @@ module FastGettext
     class Po < Mo
       protected
       def find_and_store_files(name,options)
-        require File.join(File.dirname(__FILE__),'..','..','..','vendor','poparser')
-        require 'fast_gettext/mo_file'
+        require 'fast_gettext/po_file'
         find_files_in_locale_folders("#{name}.po",options[:path]) do |locale,file|
-          mo_file = FastGettext::GetText::MOFile.new
-          FastGettext::GetText::PoParser.new.parse(File.read(file),mo_file)
-          @files[locale] = MoFile.new(mo_file)
+          @files[locale] = PoFile.to_mo_file(file)
         end
       end
     end
