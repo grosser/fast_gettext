@@ -13,7 +13,7 @@ begin
   raise unless ("a %{x}" % {:x=>'b'}) == 'a b'
 rescue ArgumentError
   class String
-    alias :_old_format_m :% # :nodoc:
+    alias :_fast_gettext_old_format_m :% # :nodoc:
 
     # call-seq:
     #  %(hash)
@@ -30,7 +30,7 @@ rescue ArgumentError
         ret
       else
         ret = gsub(/%\{/, '%%{')
-        ret._old_format_m(args)
+        ret._fast_gettext_old_format_m(args)
       end
     end
   end
