@@ -61,7 +61,7 @@ module FastGettext
     end
 
     def locale
-      _locale || (available_locales||[]).first || 'en'
+      _locale || ( default_locale || (available_locales||[]).first || 'en' )
     end
 
     def locale=(new_locale)
@@ -78,6 +78,17 @@ module FastGettext
     def set_locale(new_locale)
       self.locale = new_locale
       locale
+    end
+    
+    @@default_locale = nil
+    def default_locale=(new_locale)
+      new_locale = best_locale_in(new_locale)
+      @@default_locale = new_locale
+      update_current_cache
+    end
+
+    def default_locale
+      @@default_locale
     end
 
     #Opera: de-DE,de;q=0.9,en;q=0.8

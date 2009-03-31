@@ -5,7 +5,14 @@ include FastGettext::Storage
 
 describe 'Storage' do
   before do
+    #reset everything to nil
     self.default_text_domain = nil
+    self.default_locale = nil
+    self.available_locales = nil
+    send(:_locale=,nil)#nil is not allowed to be set...
+    default_locale.should be_nil
+    available_locales.should be_nil
+    locale.should == 'en'
   end
 
   def thread_save(method)
@@ -32,12 +39,38 @@ describe 'Storage' do
     self.translation_repositories[:x].should == 2
   end
 
+  describe :default_locale do
+    it "stores default_locale non-thread-safe" do
+      thread_save(:default_locale).should == false
+    end
+
+    it "does not overwrite locale" do
+      self.locale = 'de'
+      self.default_locale = 'yy'
+      self.locale.should == 'de'
+    end
+
+    it "falls back to default if locale is missing" do
+      self.default_locale = 'yy'
+      self.locale.should == 'yy'
+    end
+
+    it "does not set non-available-locales as default" do
+      self.available_locales = ['xx']
+      self.default_locale = 'yy'
+      self.default_locale.should == nil
+    end
+
+    it "can set default_locale to nil" do
+      self.default_locale = 'xx'
+      self.default_locale = nil
+      default_locale.should be_nil
+    end
+  end
+
   describe :default_text_domain do
     it "stores default_text_domain non-thread-safe" do
-      self.default_text_domain=1
-      t = Thread.new{self.default_text_domain=2}
-      t.join
-      self.default_text_domain.should == 2
+      thread_save(:default_text_domain).should == false
     end
 
     it "uses default_text_domain when text_domain is not set" do
@@ -155,6 +188,13 @@ describe 'Storage' do
       FastGettext.locale = 'de'
       FastGettext.text_domain = nil
       FastGettext.default_text_domain = 'xxx'
+      FastGettext.current_cache['abc'].should == 'abc'
+    end
+
+    it "cache is restored through setting of default_locale" do
+      FastGettext.send(:_locale=,nil)#reset locale to nil
+      FastGettext.default_locale = 'de'
+      FastGettext.locale.should == 'de'
       FastGettext.current_cache['abc'].should == 'abc'
     end
 

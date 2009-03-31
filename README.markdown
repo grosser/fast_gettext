@@ -100,6 +100,9 @@ plural definition (see spec/locale/en/test_plural.po or [Plural expressions for 
 If you only use one text domain, setting `FastGettext.default_text_domain = 'app'`
 is sufficient and no more `text_domain=` is needed
 
+###default_locale
+If the simple rule of "first `availble_locale` or 'en'" is not suficcient for you, simply set `FastGettext.default_locale = 'de'`.
+
 ###Plugins
 Want a yml, xml, database version ?
 Write your own TranslationRepository!
