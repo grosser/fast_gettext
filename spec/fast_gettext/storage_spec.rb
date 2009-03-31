@@ -87,11 +87,9 @@ describe 'Storage' do
     it "raises when a textdomain was empty" do
       begin 
         FastGettext._('x')
-        x=2
-      rescue
-        x=1
+        "".should == "success!?"
+      rescue FastGettext::Storage::NoTextDomainConfigured
       end
-      x.should == 1
     end
     
     it "can silence erros" do
@@ -115,6 +113,22 @@ describe 'Storage' do
     it "stores a translation permanently" do
       FastGettext.locale = 'de'
       FastGettext.current_cache['abc'].should == 'abc'
+    end
+  end
+
+  describe NoTextDomainConfigured do
+    it "shows what to do" do
+      NoTextDomainConfigured.new.to_s.should =~ /FastGettext\.add_text_domain/
+    end
+
+    it "warns when text_domain is nil" do
+      FastGettext.text_domain = nil
+      NoTextDomainConfigured.new.to_s.should =~ /\(nil\)/
+    end
+
+    it "shows current text_domain" do
+      FastGettext.text_domain = 'xxx'
+      NoTextDomainConfigured.new('xxx').to_s.should =~ /xxx/
     end
   end
 end

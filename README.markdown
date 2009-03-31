@@ -108,10 +108,17 @@ Write your own TranslationRepository!
       end
     end
 
+TODO
+====
+ - default_locale=(x)  #atm the default is available_locales.first || 'en'
+ - default_text_domain=(x) #atm default is nil...
 
 Author
 ======
 Mo/Po-file parsing from Masao Mutoh, see vendor/README
+
+###Contributors
+ - [geekq](http://www.innoq.com/blog/vd)
 
 [Michael Grosser](http://pragmatig.wordpress.com)  
 grosser.michael@gmail.com  
