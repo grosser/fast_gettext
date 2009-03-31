@@ -38,7 +38,12 @@ module FastGettext
     end
 
     def current_repository
-      translation_repositories[text_domain] || NoTextDomainConfigured
+      # Exceptions should be raised - not returned, should not they?
+      # otherwise we get 'method [] is not defined for NoTextDomainConfigured class'
+      # But can not change it now because of (strange)
+      # self.current_repository == NoTextDomainConfigured 
+      # design.
+      translation_repositories[text_domain] || (raise NoTextDomainConfigured)
     end
 
     def locale
