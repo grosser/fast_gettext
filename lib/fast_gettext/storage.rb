@@ -6,15 +6,14 @@ module FastGettext
   module Storage
     class NoTextDomainConfigured < Exception;end
 
-    [:available_locales,:text_domain,:_locale,:current_cache].each do |method|
-      eval <<EOF
-      def #{method}
-        Thread.current[:fast_gettext_#{method}]
+    [:available_locales,:text_domain,:_locale,:current_cache].each do |method_name|
+      key = "fast_gettext_#{method_name}".to_sym
+      define_method method_name do
+        Thread.current[key]
       end
-      def #{method}=(value)
-        Thread.current[:fast_gettext_#{method}]=value
+      define_method "#{method_name}=".to_sym do |value|
+        Thread.current[key]=value
       end
-EOF
     end
     private :_locale, :_locale=
     #so initial translations does not crash
