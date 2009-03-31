@@ -11,7 +11,7 @@ module FastGettext
       define_method method_name do
         Thread.current[key]
       end
-      define_method "#{method_name}=".to_sym do |value|
+      define_method "#{method_name}=" do |value|
         Thread.current[key]=value
       end
     end
