@@ -1,1 +1,3 @@
+0.3.5 -- FastGettext.default_text_domain=
+0.3.4 -- Exceptions are thrown, not returned when translating without text domain
 0.3 -- pluralisation methods accept/return n plural forms, contrary to singular/plural before

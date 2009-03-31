@@ -64,7 +64,7 @@ and do not need to be readded for every thread (parsing takes time...).
 Try the [gettext_i18n_rails plugin](http://github.com/grosser/gettext_i18n_rails), it simplifies the setup.
 
 Setting `available_locales`,`text_domain` or `locale` will not work inside the `evironment.rb`, since it runs in a different thread
-then e.g. controllers, so set them inside your application_controller.
+then e.g. controllers, so set them inside your application_controller.  
 
     #environment.rb after initializers
     FastGettext.add_text_domain('accounting',:path=>'locale')
@@ -95,6 +95,10 @@ Advanced features
 ###Abnormal pluralisation
 Pluralisation rules can be set directly via a lambda (see code/specs), or by using the Gettext
 plural definition (see spec/locale/en/test_plural.po or [Plural expressions for all languages](http://translate.sourceforge.net/wiki/l10n/pluralforms).
+
+###default_text_domain
+If you only use one text domain, setting `FastGettext.default_text_domain = 'app'`
+is sufficient and no more `text_domain=` is needed
 
 ###Plugins
 Want a yml, xml, database version ?

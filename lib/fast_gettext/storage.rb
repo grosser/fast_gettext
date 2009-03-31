@@ -10,7 +10,7 @@ module FastGettext
       end
     end
 
-    [:available_locales,:text_domain,:_locale,:current_cache].each do |method_name|
+    [:available_locales,:_locale,:current_cache].each do |method_name|
       key = "fast_gettext_#{method_name}".to_sym
       define_method method_name do
         Thread.current[key]
@@ -23,9 +23,24 @@ module FastGettext
     #so initial translations does not crash
     Thread.current[:fast_gettext_current_cache]={}
 
+    def text_domain
+      Thread.current[:fast_gettext_text_domain] || default_text_domain
+    end
+
     def text_domain=(new_domain)
       Thread.current[:fast_gettext_text_domain]=new_domain
       update_current_cache
+    end
+
+    #-> cattr_accessor :default_text_domain
+    @@default_text_domain = nil
+    def default_text_domain=(domain)
+      @@default_text_domain = domain
+      update_current_cache
+    end
+
+    def default_text_domain
+      @@default_text_domain
     end
 
     #global, since re-parsing whole folders takes too much time...
