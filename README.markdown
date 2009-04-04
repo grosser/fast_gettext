@@ -88,7 +88,8 @@ then e.g. controllers, so set them inside your application_controller.
 
 Updating translations
 =====================
-ATM you have to use the [original GetText](http://github.com/mutoh/gettext) to create and manage your po/mo-files.
+ATM you have to use the [original GetText](http://github.com/mutoh/gettext) to create and manage your po/mo-files.  
+I already started work on a po/mo parser & reader that is easier to use, contributions welcome @ [pomo](http://github.com/grosser/pomo)
 
 Advanced features
 =================
@@ -115,10 +116,14 @@ Write your own TranslationRepository!
       end
     end
 
+FAQ
+===
+ - [Problems with ActiveRecord messages?](http://wiki.github.com/grosser/fast_gettext/activerecord)
+
 TODO
 ====
- - default_locale=(x)  #atm the default is available_locales.first || 'en'
- - default_text_domain=(x) #atm default is nil...
+ - use `default_locale=(x)` internally, atm the default is available_locales.first || 'en'
+ - use `default_text_domain=(x)` internally, atm default is nil...
 
 Author
 ======
