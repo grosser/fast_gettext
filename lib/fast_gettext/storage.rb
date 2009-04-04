@@ -10,26 +10,29 @@ module FastGettext
       end
     end
 
-    [:available_locales,:_locale,:current_cache].each do |method_name|
+    [:available_locales, :_locale, :text_domain].each do |method_name|
       key = "fast_gettext_#{method_name}".to_sym
       define_method method_name do
         Thread.current[key]
       end
+
       define_method "#{method_name}=" do |value|
         Thread.current[key]=value
+        update_current_cache
       end
     end
     private :_locale, :_locale=
-    #so initial translations does not crash
-    Thread.current[:fast_gettext_current_cache]={}
 
     def text_domain
       Thread.current[:fast_gettext_text_domain] || default_text_domain
     end
 
-    def text_domain=(new_domain)
-      Thread.current[:fast_gettext_text_domain]=new_domain
-      update_current_cache
+    def current_cache
+      Thread.current[:fast_gettext_current_cache] || {}
+    end
+
+    def current_cache=(cache)
+      Thread.current[:fast_gettext_current_cache] = cache
     end
 
     #-> cattr_accessor :default_text_domain
@@ -66,10 +69,7 @@ module FastGettext
 
     def locale=(new_locale)
       new_locale = best_locale_in(new_locale)
-      if new_locale
-        self._locale = new_locale
-        update_current_cache
-      end
+      self._locale = new_locale if new_locale
     end
 
     # for chaining: puts set_locale('xx') == 'xx' ? 'applied' : 'rejected'
@@ -124,8 +124,8 @@ module FastGettext
     private
 
     def update_current_cache
-      caches[text_domain]||={}
-      caches[text_domain][locale]||={}
+      caches[text_domain] ||= {}
+      caches[text_domain][locale] ||= {}
       self.current_cache = caches[text_domain][locale]
     end
   end
