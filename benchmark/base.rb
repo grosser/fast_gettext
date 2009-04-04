@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'benchmark'
 
+DEFAULT_MEMORY = 2904
 RUNS = 50_0000
 
 def locale_folder(domain)
@@ -15,11 +16,11 @@ def locale_folder(domain)
 end
 
 def results_test(&block)
-  print "#{(result(&block)).to_s.strip.split(' ').first}s / #{memory.to_s.strip.split(' ')[3]} <-> "
+  print "#{(result(&block)).to_s.strip.split(' ').first}s / #{memory}K <-> "
 end
 
 def results_large
-  print "#{(result {_('login') == 'anmelden'}).to_s.strip.split(' ').first}s / #{memory.to_s.strip.split(' ')[3]}"
+  print "#{(result {_('login') == 'anmelden'}).to_s.strip.split(' ').first}s / #{memory}K"
   puts ""
 end
 
@@ -35,5 +36,5 @@ end
 def memory
   pid = Process.pid
   map = `pmap -d #{pid}`
-  map.split("\n").last
+  map.split("\n").last.strip.squeeze(' ').split(' ')[3].to_i - DEFAULT_MEMORY
 end
