@@ -107,7 +107,7 @@ module FastGettext
         locales += [] if part.length == 2 #if it could be split we are now in a new locale
       end
 
-      locales.sort!(&:last) #sort them by weight which is the last entry
+      locales = locales.sort_by{|l|l.last} #sort them by weight which is the last entry
       locales.flatten.each do |candidate|
         candidate = candidate.sub(/^([a-zA-Z]{2})[-_]([a-zA-Z]{2})$/){$1.downcase+'_'+$2.upcase}#de-de -> de_DE
         return candidate if not available_locales or available_locales.include?(candidate)
