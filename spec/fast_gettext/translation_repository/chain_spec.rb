@@ -2,7 +2,7 @@ current_folder = File.dirname(__FILE__)
 require File.join(current_folder,'..','..','spec_helper')
 
 class MockRepo
-  def [](key)
+  def [](key)#should_receive :[] does not work so well...
     singular key
   end
 end
@@ -61,6 +61,14 @@ describe 'FastGettext::TranslationRepository::Chain' do
         @one.should_receive(:plural).with('a','b').and_return [nil,nil]
         @two.should_receive(:plural).with('a','b').and_return ['A','B']
         @rep.plural('a','b').should == ['A','B']
+      end
+    end
+
+    describe :available_locales do
+      it "should be the sum of all added repositories" do
+        @one.should_receive(:available_locales).and_return ['de']
+        @two.should_receive(:available_locales).and_return ['de','en']
+        @rep.available_locales.should == ['de','en']
       end
     end
   end

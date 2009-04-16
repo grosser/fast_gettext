@@ -13,7 +13,7 @@ module FastGettext
       end
 
       def available_locales
-        []
+        chain.map{|c|c.available_locales}.flatten.uniq
       end
 
       def [](key)
