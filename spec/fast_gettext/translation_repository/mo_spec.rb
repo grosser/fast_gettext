@@ -5,8 +5,9 @@ require File.join(current_folder,'..','..','spec_helper')
 describe 'FastGettext::TranslationRepository::Mo' do
   before do
     @rep = FastGettext::TranslationRepository.build('test',:path=>File.join(current_folder,'..','..','locale'))
-    @rep.is_a? FastGettext::TranslationRepository::Mo
+    @rep.is_a?(FastGettext::TranslationRepository::Mo).should be_true
   end
+
   it "can be built" do
     @rep.available_locales.should == ['de','en']
   end
