@@ -24,6 +24,10 @@ describe 'FastGettext::TranslationRepository::Chain' do
     it "cannot pluralize" do
       @rep.plural('Axis','Axis').should == []
     end
+
+    it "has no pluralisation rule" do
+      @rep.pluralisation_rule.should == nil
+    end
   end
 
   describe "filled chain" do
@@ -64,6 +68,14 @@ describe 'FastGettext::TranslationRepository::Chain' do
         @one.should_receive(:available_locales).and_return ['de']
         @two.should_receive(:available_locales).and_return ['de','en']
         @rep.available_locales.should == ['de','en']
+      end
+    end
+
+    describe :pluralisation_rule do
+      it "chooses the first that exists" do
+        @one.should_receive(:pluralisation_rule).and_return nil
+        @two.should_receive(:pluralisation_rule).and_return 'x'
+        @rep.pluralisation_rule.should == 'x'
       end
     end
   end
