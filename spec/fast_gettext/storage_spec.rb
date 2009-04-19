@@ -6,29 +6,29 @@ include FastGettext::Storage
 describe 'Storage' do
   before do
     #reset everything to nil
+    self.available_locales = nil
     self.default_text_domain = nil
     self.default_locale = nil
-    self.available_locales = nil
     send(:_locale=,nil)#nil is not allowed to be set...
     default_locale.should be_nil
     available_locales.should be_nil
     locale.should == 'en'
   end
 
-  def thread_save(method)
-    send("#{method}=",'de')
+  def thread_save(method, value)
+    send("#{method}=",value)
 
     # mess around with other threads
     100.times do
       Thread.new {FastGettext.send("#{method}=",'en')}
     end
     
-    send(method) == 'de'
+    send(method) == value
   end
 
-  [:locale, :available_locales, :text_domain].each do |method|
+  {:locale=>'de', :available_locales=>['de'], :text_domain=>'xx'}.each do |method, value|
     it "stores #{method} thread-save" do
-      thread_save(method).should == true
+      thread_save(method, value).should == true
     end
   end
 
@@ -41,7 +41,7 @@ describe 'Storage' do
 
   describe :default_locale do
     it "stores default_locale non-thread-safe" do
-      thread_save(:default_locale).should == false
+      thread_save(:default_locale, 'de').should == false
     end
 
     it "does not overwrite locale" do
@@ -70,7 +70,7 @@ describe 'Storage' do
 
   describe :default_text_domain do
     it "stores default_text_domain non-thread-safe" do
-      thread_save(:default_text_domain).should == false
+      thread_save(:default_text_domain, 'xx').should == false
     end
 
     it "uses default_text_domain when text_domain is not set" do
