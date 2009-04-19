@@ -107,15 +107,15 @@ If the simple rule of "first `availble_locale` or 'en'" is not suficcient for yo
 
 ###Chains
 You can use any number of repositories to find a translation. Simply add them to a chain and when
-the first cannot translate a given key, the next is asked and so forth.
+the first cannot translate a given msgid, the next is asked and so forth.
     repos = [
-      FastGettext::TranslationRepository.build('old', :path=>'....'),
-      FastGettext::TranslationRepository.build('new', :path=>'....')
+      FastGettext::TranslationRepository.build('new', :path=>'....'),
+      FastGettext::TranslationRepository.build('old', :path=>'....')
     ]
     FastGettext.add_text_domain 'combined', :type=>:chain, :chain=>repos
 
-#Logger
-When you want to know which keys could not be translated, or where used, add a Logger to a Chain:
+###Logger
+When you want to know which keys could not be translated or where used, add a Logger to a Chain:
     repos = [
       FastGettext::TranslationRepository.build('app', :path=>'....')
       FastGettext::TranslationRepository.build('logger', :type=>:logger, :callback=>lamda{|msgid_or_array_of_ids| ... }),
@@ -123,7 +123,7 @@ When you want to know which keys could not be translated, or where used, add a L
     FastGettext.add_text_domain 'combined', :type=>:chain, :chain=>repos
 If the Logger is in position #1 it will see all translations, if it is in position #2 it will only see the unfound.
 Unfound may not always mean missing, if you chose not to translate a word because the msgid is a good translation, it will appear nevertheless.
-A lambda or anything that responds to `call` will do as callback.
+A lambda or anything that responds to `call` will do as callback. A good starting point may be `exaples/missing_translations_logger.rb`.
 
 ###Plugins
 Want a yml, xml, database version ?
@@ -133,7 +133,7 @@ Write your own TranslationRepository!
       module TranslationRepository
         class Wtf
           define initialize(name,options), [key], plural(*msgids) and
-          either inherit from Base or define available_locales and pluralisation rule
+          either inherit from TranslationRepository::Base or define available_locales and pluralisation_rule
         end
       end
     end
