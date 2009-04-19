@@ -95,7 +95,7 @@ I already started work on a po/mo parser & reader that is easier to use, contrib
 Advanced features
 =================
 ###Abnormal pluralisation
-Pluralisation rules can be set directly via a lambda (see code/specs), or by using the Gettext
+Pluralisation rules can be set directly via a lambda (see specs/), or by using the Gettext
 plural definition (see spec/locale/en/test_plural.po or [Plural expressions for all languages](http://translate.sourceforge.net/wiki/l10n/pluralforms).
 
 ###default_text_domain
@@ -115,7 +115,7 @@ the first cannot translate a given msgid, the next is asked and so forth.
     FastGettext.add_text_domain 'combined', :type=>:chain, :chain=>repos
 
 ###Logger
-When you want to know which keys could not be translated or where used, add a Logger to a Chain:
+When you want to know which keys could not be translated or were used, add a Logger to a Chain:
     repos = [
       FastGettext::TranslationRepository.build('app', :path=>'....')
       FastGettext::TranslationRepository.build('logger', :type=>:logger, :callback=>lamda{|msgid_or_array_of_ids| ... }),
@@ -123,7 +123,7 @@ When you want to know which keys could not be translated or where used, add a Lo
     FastGettext.add_text_domain 'combined', :type=>:chain, :chain=>repos
 If the Logger is in position #1 it will see all translations, if it is in position #2 it will only see the unfound.
 Unfound may not always mean missing, if you chose not to translate a word because the msgid is a good translation, it will appear nevertheless.
-A lambda or anything that responds to `call` will do as callback. A good starting point may be `exaples/missing_translations_logger.rb`.
+A lambda or anything that responds to `call` will do as callback. A good starting point may be `examples/missing_translations_logger.rb`.
 
 ###Plugins
 Want a yml, xml, database version ?
