@@ -5,7 +5,6 @@ module FastGettext
     #  - fallback as empty repository, that cannot translate anything but does not crash
     class Base
       attr_accessor :locale
-      attr_writer :pluralisation_rule
 
       def initialize(name,options={})
         @name = name
@@ -13,7 +12,7 @@ module FastGettext
       end
 
       def pluralisation_rule
-        @pluralisation_rule || lambda{|n| n==1 ? 0 : 1}
+        nil
       end
 
       def available_locales

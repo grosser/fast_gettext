@@ -13,7 +13,7 @@ describe 'FastGettext::TranslationRepository::Chain' do
       @rep = FastGettext::TranslationRepository.build('chain', :chain=>[], :type=>:chain)
     end
 
-    it "can be built" do
+    it "has no locales" do
       @rep.available_locales.should == []
     end
 
@@ -23,11 +23,6 @@ describe 'FastGettext::TranslationRepository::Chain' do
 
     it "cannot pluralize" do
       @rep.plural('Axis','Axis').should == []
-    end
-
-    it "stores pluralisation rule" do
-      @rep.pluralisation_rule = lambda{|n|n+1}
-      @rep.pluralisation_rule.call(3).should == 4
     end
   end
 

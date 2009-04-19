@@ -10,7 +10,7 @@ module FastGettext
       end
     end
 
-    [:available_locales, :_locale, :text_domain].each do |method_name|
+    [:available_locales, :_locale, :text_domain, :pluralisation_rule].each do |method_name|
       key = "fast_gettext_#{method_name}".to_sym
       define_method method_name do
         Thread.current[key]
@@ -25,6 +25,10 @@ module FastGettext
 
     def text_domain
       Thread.current[:fast_gettext_text_domain] || default_text_domain
+    end
+
+    def pluralisation_rule
+      Thread.current[:fast_gettext_pluralisation_rule] ||  current_repository.pluralisation_rule || lambda{|i| i!=1}
     end
 
     def current_cache

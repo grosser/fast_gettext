@@ -10,18 +10,17 @@ describe 'FastGettext::TranslationRepository::Mo' do
   it "can be built" do
     @rep.available_locales.should == ['de','en']
   end
+
   it "can translate" do
     FastGettext.locale = 'de'
     @rep['car'].should == 'Auto'
   end
+
   it "can pluralize" do
     FastGettext.locale = 'de'
     @rep.plural('Axis','Axis').should == ['Achse','Achsen']
   end
-  it "stores pluralisation rule" do
-    @rep.pluralisation_rule = lambda{|n|n+1}
-    @rep.pluralisation_rule.call(3).should == 4
-  end
+
   it "has access to the mo repositories pluralisation rule" do
     FastGettext.locale = 'en'
     rep = FastGettext::TranslationRepository.build('plural_test',:path=>File.join(current_folder,'..','..','locale'))

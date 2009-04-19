@@ -15,7 +15,7 @@ module FastGettext
       end
 
       def pluralisation_rule
-        current_translations.pluralisation_rule || super
+        current_translations.pluralisation_rule
       end
 
       protected

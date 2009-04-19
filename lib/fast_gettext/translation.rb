@@ -28,9 +28,10 @@ module FastGettext
     # n_('apple','apples',3)
     def n_(*msgids)
       count = msgids.pop
-      
-      translations = FastGettext.current_repository.plural(*msgids)
-      selected = FastGettext.current_repository.pluralisation_rule.call(count)
+      repo = FastGettext.current_repository
+
+      translations = repo.plural(*msgids)
+      selected = FastGettext.pluralisation_rule.call(count)
       selected = selected ? 1 : 0 unless selected.is_a? Numeric #convert booleans to numbers
       translations[selected] || msgids[selected] || msgids.last
     end

@@ -26,7 +26,7 @@ describe 'Storage' do
     send(method) == value
   end
 
-  {:locale=>'de', :available_locales=>['de'], :text_domain=>'xx'}.each do |method, value|
+  {:locale=>'de', :available_locales=>['de'], :text_domain=>'xx', :pluralisation_rule=>lambda{|x|x==4}}.each do |method, value|
     it "stores #{method} thread-save" do
       thread_save(method, value).should == true
     end
@@ -37,6 +37,16 @@ describe 'Storage' do
     t = Thread.new{self.translation_repositories[:x]=2}
     t.join
     self.translation_repositories[:x].should == 2
+  end
+
+  describe :pluralisation_rule do
+    it "defaults to singular-if-1 when it is not set" do
+      stub!(:current_repository).and_return mock('',:pluralisation_rule=>nil)
+      self.pluralisation_rule = nil
+      pluralisation_rule.call(1).should == false
+      pluralisation_rule.call(0).should == true
+      pluralisation_rule.call(2).should == true
+    end
   end
 
   describe :default_locale do

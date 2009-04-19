@@ -34,7 +34,7 @@ describe FastGettext::Translation do
 
   describe :n_ do
     before do
-      FastGettext.current_repository.pluralisation_rule = lambda{|n|n==1?0:1}
+      FastGettext.pluralisation_rule = nil
     end
 
     it "translates pluralized" do
@@ -45,17 +45,17 @@ describe FastGettext::Translation do
 
     describe "pluralisations rules" do
       it "supports abstract pluralisation rules" do
-        FastGettext.current_repository.pluralisation_rule = lambda{|n|2}
+        FastGettext.pluralisation_rule = lambda{|n|2}
         n_('a','b','c','d',4).should == 'c'
       end
 
       it "supports false as singular" do
-        FastGettext.current_repository.pluralisation_rule = lambda{|n|n!=2}
+        FastGettext.pluralisation_rule = lambda{|n|n!=2}
         n_('singular','plural','c','d',2).should == 'singular'
       end
 
       it "supports true as plural" do
-        FastGettext.current_repository.pluralisation_rule = lambda{|n|n==2}
+        FastGettext.pluralisation_rule = lambda{|n|n==2}
         n_('singular','plural','c','d',2).should == 'plural'
       end
     end
@@ -66,7 +66,7 @@ describe FastGettext::Translation do
     end
 
     it "returns the last msgid when no translation was found and msgids where to short" do
-      FastGettext.current_repository.pluralisation_rule = lambda{|x|4}
+      FastGettext.pluralisation_rule = lambda{|x|4}
       n_('Apple','Apples',2).should == 'Apples'
     end
   end
