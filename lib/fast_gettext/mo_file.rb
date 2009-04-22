@@ -43,13 +43,15 @@ module FastGettext
 
     #(if plural==singular, prefer singular)
     def make_singular_and_plural_available
+      data = {}
       @data.each do |key,translation|
         next unless key.include? PLURAL_SEPERATOR
         singular, plural = split_plurals(key)
         translation = split_plurals(translation)
-        @data[singular] ||= translation[0]
-        @data[plural] ||= translation[1]
+        data[singular] ||= translation[0]
+        data[plural] ||= translation[1]
       end
+      @data.merge!(data){|key,old,new| old}
     end
 
     def split_plurals(singular_plural)
