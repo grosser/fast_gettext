@@ -19,17 +19,28 @@ rescue ArgumentError
     #  %(hash)
     #
     #  Default: "%s, %s" % ["Masao", "Mutoh"]
-    #  Extended: "%{firstname}, %{lastname}" % {:firstname=>"Masao",:lastname=>"Mutoh"}
-    #
+    #  Extended:
+    #     "%{firstname}, %{lastname}" % {:firstname=>"Masao",:lastname=>"Mutoh"} == "Masao Mutoh"
+    #     with field type such as d(decimal), f(float), ...
+    #     "%<age>d, %<weight>.1f" % {:age => 10, :weight => 43.4} == "10 43.4"
     # This is the recommanded way for Ruby-GetText
     # because the translators can understand the meanings of the msgids easily.
     def %(args)
-      if args.kind_of?(Hash)
+      if args.kind_of? Hash
         ret = dup
+        # %{something} type
         args.each {|key, value| ret.gsub!(/\%\{#{key}\}/, value.to_s)}
+
+        # %<..>d type
+        args.each {|key, value|
+          ret.gsub!(/\%<#{key}>([ #\+-0\*]?\d*\.?\d*[bBdiouxXeEfgGcps])/){
+            sprintf("%#{$1}", value)
+          }
+        }
+        ret.gsub(/%%/, "%")
         ret
       else
-        ret = gsub(/%\{/, '%%{')
+        ret = gsub(/%([{<])/, '%%\1')
         ret._fast_gettext_old_format_m(args)
       end
     end
