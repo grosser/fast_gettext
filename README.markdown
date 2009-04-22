@@ -1,6 +1,6 @@
 FastGettext
 ===========
-GetText but 8 x faster, 72 x less memory, simple, clean namespace (7 vs 34) and threadsave!
+GetText but 3.5 x faster, 20 x less memory, simple, clean namespace (7 vs 34) and threadsave!
 
 [Example Rails application](https://github.com/grosser/gettext_i18n_rails_example)
 
@@ -39,19 +39,20 @@ Performance
 50_000 translations speed / memory
 small translation file <-> large translation file
     Baseline: (doing nothing in a loop)
-    0.420000s / 0K <->
+    0.240000s / 1196K <->
 
     Ideal: (primitive Hash lookup)
-    1.170000s / 112K <-> 1.170000s / 112K
+    0.790000s / 1200K <-> 0.760000s / 1200K
 
     FastGettext:
-    1.960000s / 136K <-> 1.950000s / 268K
+    1.360000s / 1200K <-> 1.340000s / 1200K
 
-    GetText 2.0:
-    15.490000s / 8872K <-> 15.510000s / 9336K
+    GetText 2.0.1:
+    4.810000s / 6.176K <-> 4.770000s / 6.176K
 
     ActiveSupport I18n::Backend::Simple :
-    32.470000s / 9484K <->
+    21.800000s / 11296K <->
+
 
 
 

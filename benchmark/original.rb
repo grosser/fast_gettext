@@ -6,7 +6,7 @@ include GetText
 
 self.locale = 'de'
 
-puts "GetText 2.0:"
+puts "GetText #{GetText::VERSION}:"
 bindtextdomain('test',:path=>locale_folder('test'))
 results_test{_('car') == 'Auto'}
 
