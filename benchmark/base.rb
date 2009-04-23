@@ -1,8 +1,8 @@
 require 'rubygems'
 require 'benchmark'
 
-DEFAULT_MEMORY = 2904
 RUNS = 50_0000
+DEFAULTS = {:memory=>0}
 
 def locale_folder(domain)
   path = case domain
@@ -36,5 +36,7 @@ end
 def memory
   pid = Process.pid
   map = `pmap -d #{pid}`
-  map.split("\n").last.strip.squeeze(' ').split(' ')[3].to_i - DEFAULT_MEMORY
+  map.split("\n").last.strip.squeeze(' ').split(' ')[3].to_i - DEFAULTS[:memory]
 end
+
+DEFAULTS[:memory] = memory + 4 #4 => 0 for base calls
