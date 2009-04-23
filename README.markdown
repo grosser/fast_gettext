@@ -36,8 +36,8 @@ Disable translation errors(like no text domain setup) while doing e.g. console s
 
 Performance
 ===========
-50_000 translations speed / memory
-small translation file <-> large translation file
+50_000 translations speed / memory  
+small translation file <-> large translation file  
 (ruby enterprise 1.8.6, your results may vary, try `rake benchmark`)
     Baseline: (doing nothing in a loop)
     0.250000s / 0K <->
