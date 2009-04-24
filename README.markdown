@@ -1,6 +1,8 @@
 FastGettext
 ===========
-GetText but 3.5 x faster, 560 x less memory, simple, clean namespace (7 vs 34) and threadsave!
+GetText but 3.5 x faster, 560 x less memory, simple, clean namespace (7 vs 34) and threadsave!  
+
+It supports multiple backends (atm: .mo files, .po files, ActiveRecord, Chain) and can easily be extended.
 
 [Example Rails application](https://github.com/grosser/gettext_i18n_rails_example)
 
@@ -11,13 +13,6 @@ Setup
 Or from source:
     git clone git://github.com/grosser/fast_gettext.git
     cd fast_gettext && rake install
-
-Generate .po or .mo files using GetText parser (example tasks at [gettext_i18n_rails](http://github.com/grosser/gettext_i18n_rails))
-
-Tell Gettext where your .mo or .po files lie:
-    #e.g. for locale/de/my_app.po and locale/de/LC_MESSAGES/my_app.mo
-    #add :type=>:po and it will read directly from po files (not recommended for production since po-parsing can crash!)
-    FastGettext.add_text_domain('my_app',:path=>'locale')
 
 Choose text domain and locale for translation
     FastGettext.text_domain = 'my_app'
@@ -33,6 +28,31 @@ Start translating
 
 Disable translation errors(like no text domain setup) while doing e.g. console session / testing
     FastGettext.silence_errors
+
+Translations
+============
+### Default: .mo-files
+Generate .po or .mo files using GetText parser (example tasks at [gettext_i18n_rails](http://github.com/grosser/gettext_i18n_rails))
+
+Tell Gettext where your .mo or .po files lie:
+    #e.g. for locale/de/my_app.po and locale/de/LC_MESSAGES/my_app.mo
+    #add :type=>:po and it will read directly from po files (not recommended for production since po-parsing can crash!)
+    FastGettext.add_text_domain('my_app',:path=>'locale')
+
+ATM you have to use the [original GetText](http://github.com/mutoh/gettext) to create and manage your po/mo-files.
+I already started work on a po/mo parser & reader that is easier to use, contributions welcome @ [pomo](http://github.com/grosser/pomo)
+
+###Database
+!!!This is very new/alpha-ish atm and surely will change!!!  
+Eesy to maintain especially with many translations and multiple locales.  
+ATM the default implementation is a bit clumsy, it is build so that the model can be substituted by your own. 
+    FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
+    #the model should be the model that represents the keys, you can use FastGettext::TranslationRepository::DB::TranslationKey
+    #the model must have string:key and translations
+    #a Translation must have string:text and string:locale
+
+To get started have a look at the tests in `spec/fast_gettext/translation_repository/db_spec.rb`(includes migrations) or the models
+in `lib/fast_gettext/translation_repository/db/translation_key`.
 
 Performance
 ===========
@@ -53,10 +73,6 @@ small translation file <-> large translation file
 
     ActiveSupport I18n::Backend::Simple :
     21.770000s / 10100K <->
-
-
-
-
 
 Thread Safety and Rails
 =======================
@@ -88,11 +104,6 @@ then e.g. controllers, so set them inside your application_controller.
     module ApplicationHelper
       include FastGettext::Translation
       ...
-
-Updating translations
-=====================
-ATM you have to use the [original GetText](http://github.com/mutoh/gettext) to create and manage your po/mo-files.  
-I already started work on a po/mo parser & reader that is easier to use, contributions welcome @ [pomo](http://github.com/grosser/pomo)
 
 Advanced features
 =================
@@ -128,7 +139,7 @@ Unfound may not always mean missing, if you chose not to translate a word becaus
 A lambda or anything that responds to `call` will do as callback. A good starting point may be `examples/missing_translations_logger.rb`.
 
 ###Plugins
-Want a yml, xml, database version ?
+Want a yml, xml version ?
 Write your own TranslationRepository!
     #fast_gettext/translation_repository/xxx.rb
     module FastGettext
@@ -146,6 +157,8 @@ FAQ
 
 TODO
 ====
+ - some cleanup required, repositories should not have locale
+ - DB::TranslationKey responds_to? :available_locales should be false when it is not defined, maybe testing bug
  - use `default_locale=(x)` internally, atm the default is available_locales.first || 'en'
  - use `default_text_domain=(x)` internally, atm default is nil...
 

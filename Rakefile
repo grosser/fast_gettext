@@ -6,7 +6,7 @@ task :default do |t|
 end
 
 task :benchmark do
-  puts "Running on #{VERSION}"
+  puts "Running on #{RUBY}"
   %w[baseline ideal fast_gettext original i18n_simple].each do |bench|
     puts `ruby benchmark/#{bench}.rb`
     puts ""
