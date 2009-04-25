@@ -45,11 +45,11 @@ I already started work on a po/mo parser & reader that is easier to use, contrib
 ###Database
 !!!This is very new/alpha-ish atm and surely will change!!!  
 Easy to maintain especially with many translations and multiple locales.
+An example migration for ActiveRecord can be found in `exaples/db/migration`.
+This is usable with any model DataMapper/Sequel or any other(non-database) backend, the only thing you need to do is respond to the self.translation(key, locale) call.
     include FastGettext::TranslationRepository::DB.require_models
     FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
     #the model should be the model that represents the keys, you can use FastGettext::TranslationRepository::DBModel::TranslationKey
-    #the model must have string:key and translations
-    #a Translation must have text:text and string:locale
 
 To get started have a look at the tests in `spec/fast_gettext/translation_repository/db_spec.rb`(includes migrations) or the models
 in `lib/fast_gettext/translation_repository/db/translation_key`.

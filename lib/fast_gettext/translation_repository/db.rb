@@ -36,11 +36,11 @@ module FastGettext
       end
 
       def [](key)
-        translation(key)
+        @model.translation(key, FastGettext.locale)
       end
 
       def plural(*args)
-        if translation = translation(args*self.class.seperator)
+        if translation = @model.translation(args*self.class.seperator, FastGettext.locale)
           translation.to_s.split(self.class.seperator)
         else
           []
@@ -51,14 +51,6 @@ module FastGettext
         require 'fast_gettext/translation_repository/db_models/translation_key'
         require 'fast_gettext/translation_repository/db_models/translation_text'
         FastGettext::TranslationRepository::DBModels
-      end
-
-      protected
-
-      def translation(key)
-        return unless key = @model.find_by_key(key)
-        return unless translation = key.translations.find_by_locale(FastGettext.locale)
-        translation.text
       end
     end
   end
