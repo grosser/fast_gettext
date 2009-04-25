@@ -21,7 +21,7 @@ module FastGettext
 
       def available_locales
         if @model.respond_to? :available_locales
-          @model.available_locales
+          @model.available_locales || []
         else
           []
         end
@@ -36,23 +36,29 @@ module FastGettext
       end
 
       def [](key)
-        translation = translation(key) and translation.text
+        translation(key)
       end
 
       def plural(*args)
-        translation = translation(args*self.class.seperator)
-        if translation
-          translation.text.to_s.split(self.class.seperator)
+        if translation = translation(args*self.class.seperator)
+          translation.to_s.split(self.class.seperator)
         else
           []
         end
+      end
+
+      def self.require_models
+        require 'fast_gettext/translation_repository/db_models/translation_key'
+        require 'fast_gettext/translation_repository/db_models/translation_text'
+        FastGettext::TranslationRepository::DBModels
       end
 
       protected
 
       def translation(key)
         return unless key = @model.find_by_key(key)
-        key.translations.find_by_locale(FastGettext.locale)
+        return unless translation = key.translations.find_by_locale(FastGettext.locale)
+        translation.text
       end
     end
   end

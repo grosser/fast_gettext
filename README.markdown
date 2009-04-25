@@ -44,12 +44,12 @@ I already started work on a po/mo parser & reader that is easier to use, contrib
 
 ###Database
 !!!This is very new/alpha-ish atm and surely will change!!!  
-Eesy to maintain especially with many translations and multiple locales.  
-ATM the default implementation is a bit clumsy, it is build so that the model can be substituted by your own. 
+Easy to maintain especially with many translations and multiple locales.
+    include FastGettext::TranslationRepository::DB.require_models
     FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
-    #the model should be the model that represents the keys, you can use FastGettext::TranslationRepository::DB::TranslationKey
+    #the model should be the model that represents the keys, you can use FastGettext::TranslationRepository::DBModel::TranslationKey
     #the model must have string:key and translations
-    #a Translation must have string:text and string:locale
+    #a Translation must have text:text and string:locale
 
 To get started have a look at the tests in `spec/fast_gettext/translation_repository/db_spec.rb`(includes migrations) or the models
 in `lib/fast_gettext/translation_repository/db/translation_key`.

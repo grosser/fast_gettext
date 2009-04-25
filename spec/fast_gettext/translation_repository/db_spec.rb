@@ -3,10 +3,7 @@ require File.join(current_folder,'..','..','spec_helper')
 
 require 'activerecord'
 require 'fast_gettext/translation_repository/db'
-require 'fast_gettext/translation_repository/db/translation_key'
-require 'fast_gettext/translation_repository/db/translation_text'
-
-include FastGettext::TranslationRepository
+include FastGettext::TranslationRepository::DB.require_models
 
 describe FastGettext::TranslationRepository::DB do
   before :all do
@@ -31,15 +28,15 @@ describe FastGettext::TranslationRepository::DB do
   end
 
   before do
-    DB::TranslationKey.delete_all
-    DB::TranslationText.delete_all
+    TranslationKey.delete_all
+    TranslationText.delete_all
     FastGettext.locale = 'de'
-    @rep = FastGettext::TranslationRepository::DB.new('x', :model=>DB::TranslationKey)
+    @rep = FastGettext::TranslationRepository::DB.new('x', :model=>TranslationKey)
   end
 
   def create_translation(key, text)
-    translation_key = DB::TranslationKey.create!(:key=>key)
-    DB::TranslationText.create!(:translation_key_id=>translation_key.id, :text=>text, :locale=>'de')
+    translation_key = TranslationKey.create!(:key=>key)
+    TranslationText.create!(:translation_key_id=>translation_key.id, :text=>text, :locale=>'de')
   end
   
   it "can be built" do
