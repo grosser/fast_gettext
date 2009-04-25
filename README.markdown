@@ -48,7 +48,7 @@ Easy to maintain especially with many translations and multiple locales.
 An example migration for ActiveRecord can be found in `exaples/db/migration`.
 This is usable with any model DataMapper/Sequel or any other(non-database) backend, the only thing you need to do is respond to the self.translation(key, locale) call.
 The default plural seperator is `||||` but you may overwrite it (or suggest a better one..).
-    include FastGettext::TranslationRepository::DB.require_models
+    include FastGettext::TranslationRepository::DB.require_models #load and include default models
     FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
     #the model should be the model that represents the keys, you can use FastGettext::TranslationRepository::DBModel::TranslationKey
 
