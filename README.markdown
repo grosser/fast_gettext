@@ -47,12 +47,12 @@ I already started work on a po/mo parser & reader that is easier to use, contrib
 Easy to maintain especially with many translations and multiple locales.
 An example migration for ActiveRecord can be found in `exaples/db/migration`.
 This is usable with any model DataMapper/Sequel or any other(non-database) backend, the only thing you need to do is respond to the self.translation(key, locale) call.
+The default plural seperator is `||||` but you may overwrite it (or suggest a better one..).
     include FastGettext::TranslationRepository::DB.require_models
     FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
     #the model should be the model that represents the keys, you can use FastGettext::TranslationRepository::DBModel::TranslationKey
 
-To get started have a look at the tests in `spec/fast_gettext/translation_repository/db_spec.rb`(includes migrations) or the models
-in `lib/fast_gettext/translation_repository/db/translation_key`.
+To get started have a look at the default models in `lib/fast_gettext/translation_repository/db/translation_key`.
 
 Performance
 ===========
