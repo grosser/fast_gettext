@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fast_gettext}
-  s.version = "0.4.3"
+  s.version = "0.4.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2009-04-24}
+  s.date = %q{2009-04-25}
   s.email = %q{grosser.michael@gmail.com}
   s.extra_rdoc_files = [
     "README.markdown"
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION.yml",
     "VERSION.yml",
+    "examples/db/migration.rb",
     "examples/missing_translation_logger.rb",
     "lib/fast_gettext.rb",
     "lib/fast_gettext.rb",
@@ -36,10 +37,10 @@ Gem::Specification.new do |s|
     "lib/fast_gettext/translation_repository/chain.rb",
     "lib/fast_gettext/translation_repository/db.rb",
     "lib/fast_gettext/translation_repository/db.rb",
-    "lib/fast_gettext/translation_repository/db/translation_key.rb",
-    "lib/fast_gettext/translation_repository/db/translation_key.rb",
-    "lib/fast_gettext/translation_repository/db/translation_text.rb",
-    "lib/fast_gettext/translation_repository/db/translation_text.rb",
+    "lib/fast_gettext/translation_repository/db_models/translation_key.rb",
+    "lib/fast_gettext/translation_repository/db_models/translation_key.rb",
+    "lib/fast_gettext/translation_repository/db_models/translation_text.rb",
+    "lib/fast_gettext/translation_repository/db_models/translation_text.rb",
     "lib/fast_gettext/translation_repository/logger.rb",
     "lib/fast_gettext/translation_repository/logger.rb",
     "lib/fast_gettext/translation_repository/mo.rb",
@@ -117,6 +118,7 @@ Gem::Specification.new do |s|
     "spec/vendor/iconv_spec.rb",
     "spec/vendor/fake_load_path/iconv.rb",
     "spec/vendor/string_spec.rb",
+    "examples/db/migration.rb",
     "examples/missing_translation_logger.rb"
   ]
 
