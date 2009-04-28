@@ -39,9 +39,12 @@ describe FastGettext::TranslationRepository::Db do
     TranslationText.create!(:translation_key_id=>translation_key.id, :text=>text, :locale=>'de')
   end
   
-  it "can be built" do
-#    pending #this is weird, it responds to :available_locales, but it is not defined...
-    @rep.available_locales.should == []
+  it "reads locales from the db" do
+    locales = ['de','en','es']
+    locales.reverse.each do |locale|
+      TranslationText.create!(:translation_key_id=>1, :text=>'asdasd', :locale=>locale)
+    end
+    @rep.available_locales.should == locales
   end
 
   it "has no pluralisation_rule by default" do

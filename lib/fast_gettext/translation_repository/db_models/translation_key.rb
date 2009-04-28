@@ -10,6 +10,10 @@ module FastGettext::TranslationRepository
         return unless translation_text = translation_key.translations.find_by_locale(locale)
         translation_text.text
       end
+
+      def self.available_locales
+        @@available_locales ||= TranslationText.count(:group=>:locale).keys.sort
+      end
     end
   end
 end
