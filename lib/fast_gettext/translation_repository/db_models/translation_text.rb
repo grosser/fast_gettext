@@ -1,5 +1,5 @@
 module FastGettext::TranslationRepository
-  module DBModels
+  module DbModels
     class TranslationText < ActiveRecord::Base
       belongs_to :key, :class_name=>'TranslationKey'
       validates_presence_of :locale, :text

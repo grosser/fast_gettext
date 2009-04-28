@@ -3,9 +3,9 @@ require File.join(current_folder,'..','..','spec_helper')
 
 require 'activerecord'
 require 'fast_gettext/translation_repository/db'
-include FastGettext::TranslationRepository::DB.require_models
+include FastGettext::TranslationRepository::Db.require_models
 
-describe FastGettext::TranslationRepository::DB do
+describe FastGettext::TranslationRepository::Db do
   before :all do
     ActiveRecord::Base.establish_connection({
       :adapter => "sqlite3",
@@ -31,7 +31,7 @@ describe FastGettext::TranslationRepository::DB do
     TranslationKey.delete_all
     TranslationText.delete_all
     FastGettext.locale = 'de'
-    @rep = FastGettext::TranslationRepository::DB.new('x', :model=>TranslationKey)
+    @rep = FastGettext::TranslationRepository::Db.new('x', :model=>TranslationKey)
   end
 
   def create_translation(key, text)

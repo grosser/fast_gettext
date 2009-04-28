@@ -10,7 +10,7 @@ module FastGettext
     #   only constraints:
     #     key: find_by_key, translations
     #     translation: text, locale
-    class DB
+    class Db
       def initialize(name,options={})
         @model = options[:model]
       end
@@ -50,7 +50,7 @@ module FastGettext
       def self.require_models
         require 'fast_gettext/translation_repository/db_models/translation_key'
         require 'fast_gettext/translation_repository/db_models/translation_text'
-        FastGettext::TranslationRepository::DBModels
+        FastGettext::TranslationRepository::DbModels
       end
     end
   end
