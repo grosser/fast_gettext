@@ -43,16 +43,15 @@ ATM you have to use the [original GetText](http://github.com/mutoh/gettext) to c
 I already started work on a po/mo parser & reader that is easier to use, contributions welcome @ [pomo](http://github.com/grosser/pomo)
 
 ###Database
-!!!This is very new/alpha-ish atm and surely will change!!!  
-Easy to maintain especially with many translations and multiple locales.
-An example migration for ActiveRecord can be found in `exaples/db/migration`.
+!!!new/only short time in production, please report back any ideas/suggestions you have!!!  
+Easy to maintain especially with many translations and multiple locales.  
+[Example migration for ActiveRecord](http://github.com/grosser/fast_gettext/blob/master/examples/db/migration.rb)  
 This is usable with any model DataMapper/Sequel or any other(non-database) backend, the only thing you need to do is respond to the self.translation(key, locale) call.
 The default plural seperator is `||||` but you may overwrite it (or suggest a better one..).
     include FastGettext::TranslationRepository::Db.require_models #load and include default models
     FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
-    #the model should be the model that represents the keys, you can use FastGettext::TranslationRepository::DbModel::TranslationKey
 
-To get started have a look at the default models in `lib/fast_gettext/translation_repository/db/translation_key`.
+If you want to use your own models, have a look at the [default models](http://github.com/grosser/fast_gettext/tree/master/lib/fast_gettext/translation_repository/db_models) to see what you want/need to implement.
 
 Performance
 ===========
