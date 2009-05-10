@@ -17,13 +17,13 @@ Or from source:
 
 ### 2. Add a translation repository
 
-#### From mo files (traditional/default)
+From mo files (traditional/default)
     FastGettext.add_text_domain('my_app',:path=>'locale')
 
-#### po files (less maintenacnce than mo)
+Or po files (less maintenacnce than mo)
     FastGettext.add_text_domain('my_app',:path=>'locale', :type=>:po)
 
-#### Database (odern/scaleable)
+Or database (scaleable, great for many locales/translators)
     include FastGettext::TranslationRepository::Db.require_models #load and include default models
     FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
 
@@ -45,8 +45,7 @@ Managing translations
 ### mo/po-files
 Generate .po or .mo files using GetText parser (example tasks at [gettext_i18n_rails](http://github.com/grosser/gettext_i18n_rails))
 
-Tell Gettext where your .mo or .po files lie:
-    #e.g. for locale/de/my_app.po and locale/de/LC_MESSAGES/my_app.mo
+Tell Gettext where your .mo or .po files lie, e.g. for locale/de/my_app.po and locale/de/LC_MESSAGES/my_app.mo
     FastGettext.add_text_domain('my_app',:path=>'locale')
 
 Use the [original GetText](http://github.com/mutoh/gettext) to create and manage po/mo-files.
