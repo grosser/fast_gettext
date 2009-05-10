@@ -28,6 +28,8 @@ rescue ArgumentError
     def %(args)
       if args.kind_of? Hash
         ret = dup
+        ret.gsub!(/\%\%/, '<_percent__>')
+
         # %{something} type
         args.each {|key, value| ret.gsub!(/\%\{#{key}\}/, value.to_s)}
 
@@ -37,8 +39,7 @@ rescue ArgumentError
             sprintf("%#{$1}", value)
           }
         }
-        ret.gsub(/%%/, "%")
-        ret
+        ret.gsub('<_percent__>', "%")
       else
         ret = gsub(/%([{<])/, '%%\1')
         ret._fast_gettext_old_format_m(args)

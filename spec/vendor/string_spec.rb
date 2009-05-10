@@ -3,8 +3,14 @@ require File.join(current_folder,'..','spec_helper')
 
 #just to make sure we did not mess up while copying...
 describe String do
-  it "substitudes using % + Hash" do
-    "x%{name}y" %{:name=>'a'}.should == 'xay'
+  describe "old % style replacement" do
+    it "substitudes using % + Hash" do
+      "x%{name}y" %{:name=>'a'}.should == 'xay'
+    end
+
+    it "does not substitute after %%" do
+      ("%%{num} oops" % {:num => 1}).should == '%{num} oops'
+    end
   end
 
   describe 'old sprintf style' do
@@ -22,6 +28,10 @@ describe String do
   end
 
   describe 'ruby 1.9 style %< replacement' do
+    it "does not substitute after %%" do
+      ("%%<num> oops" % {:num => 1}).should == '%<num> oops'
+    end
+
     it "subsitutes %<something>d" do
       ("x%<hello>dy" % {:hello=>1}).should == 'x1y'
     end
@@ -29,7 +39,5 @@ describe String do
     it "substitutes #b" do
       ("%<num>#b" % {:num => 1}).should == "0b1"
     end
-
-
   end
 end
