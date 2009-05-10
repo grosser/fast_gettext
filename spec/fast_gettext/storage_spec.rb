@@ -214,6 +214,31 @@ describe 'Storage' do
     end
   end
 
+  describe :key_exist? do
+    it "does not find default keys" do
+      _('abcde')
+      key_exist?('abcde').should be_false
+    end
+
+    it "finds using the current repository" do
+      should_receive(:current_repository).and_return 'xxx'=>'1'
+      key_exist?('xxx').should == true
+    end
+
+    it "sets the current cache with a found result" do
+      should_receive(:current_repository).and_return 'xxx'=>'1'
+      key_exist?('xxx')
+      current_cache['xxx'].should == '1'
+    end
+
+    it "does not overwrite an existing cache value" do
+      current_cache['xxx']='xxx'
+      should_receive(:current_repository).and_return 'xxx'=>'1'
+      key_exist?('xxx')
+      current_cache['xxx'].should == 'xxx'
+    end
+  end
+
   describe NoTextDomainConfigured do
     it "shows what to do" do
       NoTextDomainConfigured.new.to_s.should =~ /FastGettext\.add_text_domain/

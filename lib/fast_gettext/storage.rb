@@ -67,6 +67,13 @@ module FastGettext
       translation_repositories[text_domain] || raise(NoTextDomainConfigured)
     end
 
+    def key_exist?(key)
+      false
+      translation = current_repository[key]
+      current_cache[key] ||= translation
+      !!translation
+    end
+
     def locale
       _locale || ( default_locale || (available_locales||[]).first || 'en' )
     end
