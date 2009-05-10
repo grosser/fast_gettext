@@ -2,56 +2,65 @@ FastGettext
 ===========
 GetText but 3.5 x faster, 560 x less memory, simple, clean namespace (7 vs 34) and threadsave!  
 
-It supports multiple backends (atm: .mo files, .po files, ActiveRecord, Chain) and can easily be extended.
+It supports multiple backends (atm: .mo files, .po files, Database(ActiveRecor + any other), Chain, Loggers) and can easily be extended.
 
 [Example Rails application](https://github.com/grosser/gettext_i18n_rails_example)
 
 Setup
 =====
+### 1. Install
     sudo gem install grosser-fast_gettext -s http://gems.github.com/
 
 Or from source:
     git clone git://github.com/grosser/fast_gettext.git
     cd fast_gettext && rake install
 
-Choose text domain and locale for translation
+### 2. Add a translation repository
+
+#### From mo files (traditional/default)
+    FastGettext.add_text_domain('my_app',:path=>'locale')
+
+#### po files (less maintenacnce than mo)
+    FastGettext.add_text_domain('my_app',:path=>'locale', :type=>:po)
+
+#### Database (odern/scaleable)
+    include FastGettext::TranslationRepository::Db.require_models #load and include default models
+    FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
+
+### 3. Choose text domain and locale for translation
+Do this once in every Thread. (e.g. Rails -> ApplicationController)
     FastGettext.text_domain = 'my_app'
     FastGettext.available_locales = ['de','en','fr','en_US','en_UK'] # only allow these locales to be set (optional)
     FastGettext.locale = 'de'
 
-Start translating
+### 4. Start translating
     include FastGettext::Translation
     _('Car') == 'Auto'
     _('not-found') == 'not-found'
     s_('Namespace|no-found') == 'not-found'
     n_('Axis','Axis',3) == 'Achsen' #German plural of Axis
 
-Disable translation errors(like no text domain setup) while doing e.g. console session / testing
-    FastGettext.silence_errors
-
-Translations
+Managing translations
 ============
-### Default: .mo-files
+### mo/po-files
 Generate .po or .mo files using GetText parser (example tasks at [gettext_i18n_rails](http://github.com/grosser/gettext_i18n_rails))
 
 Tell Gettext where your .mo or .po files lie:
     #e.g. for locale/de/my_app.po and locale/de/LC_MESSAGES/my_app.mo
-    #add :type=>:po and it will read directly from po files (not recommended for production since po-parsing can crash!)
     FastGettext.add_text_domain('my_app',:path=>'locale')
 
-ATM you have to use the [original GetText](http://github.com/mutoh/gettext) to create and manage your po/mo-files.
-I already started work on a po/mo parser & reader that is easier to use, contributions welcome @ [pomo](http://github.com/grosser/pomo)
+Use the [original GetText](http://github.com/mutoh/gettext) to create and manage po/mo-files.
+(Work on a po/mo parser & reader that is easier to use has started, contributions welcome @ [pomo](http://github.com/grosser/pomo) )
 
 ###Database
 !!!new/only short time in production, please report back any ideas/suggestions you have!!!  
-Easy to maintain especially with many translations and multiple locales.  
 [Example migration for ActiveRecord](http://github.com/grosser/fast_gettext/blob/master/examples/db/migration.rb)  
-This is usable with any model DataMapper/Sequel or any other(non-database) backend, the only thing you need to do is respond to the self.translation(key, locale) call.
 The default plural seperator is `||||` but you may overwrite it (or suggest a better one..).
-    include FastGettext::TranslationRepository::Db.require_models #load and include default models
-    FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
 
+This is usable with any model DataMapper/Sequel or any other(non-database) backend, the only thing you need to do is respond to the self.translation(key, locale) call.
 If you want to use your own models, have a look at the [default models](http://github.com/grosser/fast_gettext/tree/master/lib/fast_gettext/translation_repository/db_models) to see what you want/need to implement.
+
+To manage translations via a Web GUI, use a [Rails application and the translation_db_engine](http://github.com/grosser/translation_db_engine)
 
 Performance
 ===========
@@ -73,18 +82,16 @@ small translation file <-> large translation file
     ActiveSupport I18n::Backend::Simple :
     21.770000s / 10100K <->
 
-Thread Safety and Rails
+Rails
 =======================
-Parsed `text_domains` are not stored thread-save, so that they can be added inside the `environment.rb`,
-and do not need to be readded for every thread (parsing takes time...).
+Try the [gettext_i18n_rails plugin](http://github.com/grosser/gettext_i18n_rails), it simplifies the setup.  
+Try the [translation_db_engine](http://github.com/grosser/translation_db_engine), to manage your translations in a db.
 
-###Rails
-Try the [gettext_i18n_rails plugin](http://github.com/grosser/gettext_i18n_rails), it simplifies the setup.
-
-Setting `available_locales`,`text_domain` or `locale` will not work inside the `evironment.rb`, since it runs in a different thread
-then e.g. controllers, so set them inside your application_controller.  
+Setting `available_locales`,`text_domain` or `locale` will not work inside the `evironment.rb`,
+since it runs in a different thread then e.g. controllers, so set them inside your application_controller.
 
     #environment.rb after initializers
+    Object.send(:include,FastGettext::Translation)
     FastGettext.add_text_domain('accounting',:path=>'locale')
     FastGettext.add_text_domain('frontend',:path=>'locale')
     ...
@@ -98,11 +105,6 @@ then e.g. controllers, so set them inside your application_controller.
         FastGettext.text_domain = 'frontend'
         session[:locale] = I18n.locale = FastGettext.set_locale(params[:locale] || session[:locale] || request.env['HTTP_ACCEPT_LANGUAGE'] || 'en')
       end
-
-    #application_helper.rb
-    module ApplicationHelper
-      include FastGettext::Translation
-      ...
 
 Advanced features
 =================
@@ -156,9 +158,9 @@ FAQ
 
 TODO
 ====
+ - add caching to untranslateable calls
  - break with gettext naming-tradition, convert msgid => key, msgstr => translation
  - some cleanup required, repositories should not have locale
- - DbModel::TranslationKey responds_to? :available_locales should be false when it is not defined, maybe testing bug
  - use `default_locale=(x)` internally, atm the default is available_locales.first || 'en'
  - use `default_text_domain=(x)` internally, atm default is nil...
 
