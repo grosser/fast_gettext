@@ -6,7 +6,7 @@ module FastGettext
   module Storage
     class NoTextDomainConfigured < RuntimeError
       def to_s
-        "Current textdomain (#{FastGettext.text_domain.inspect}) was not added, use FastGettext.add_text_domain!"
+        "Current textdomain (#{FastGettext.text_domain.inspect}) was not added, use FastGettext.add_text_domain !"
       end
     end
 

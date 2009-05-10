@@ -96,6 +96,21 @@ describe FastGettext::Translation do
   end
 
   describe :caching do
+    describe :cache_hit do
+      before do
+        FastGettext.translation_repositories.replace({})
+        current_cache['xxx'] = '1'
+      end
+
+      it "uses the cache when translating with _" do
+        _('xxx').should == '1'
+      end
+
+      it "uses the cache when translating with s_" do
+        s_('xxx').should == '1'
+      end
+    end
+
     it "caches different locales seperatly" do
       FastGettext.locale = 'en'
       _('car').should == 'car'

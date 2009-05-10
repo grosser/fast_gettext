@@ -38,11 +38,11 @@ module FastGettext
 
     #translate, but discard namespace if nothing was found
     # Car|Tire -> Tire if no translation could be found
-    def s_(translate,seperator=nil)
-      if translation = FastGettext.current_repository[translate]
+    def s_(key,seperator=nil)
+      if translation = current_cache[key] || FastGettext.current_repository[key]
         translation
       else
-        translate.split(seperator||NAMESPACE_SEPERATOR).last
+        key.split(seperator||NAMESPACE_SEPERATOR).last
       end
     end
 

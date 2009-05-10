@@ -156,6 +156,7 @@ FAQ
 
 TODO
 ====
+ - break with gettext naming-tradition, convert msgid => key, msgstr => translation
  - some cleanup required, repositories should not have locale
  - DbModel::TranslationKey responds_to? :available_locales should be false when it is not defined, maybe testing bug
  - use `default_locale=(x)` internally, atm the default is available_locales.first || 'en'
