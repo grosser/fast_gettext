@@ -3,6 +3,10 @@ require File.join(current_folder,'..','spec_helper')
 
 #just to make sure we did not mess up while copying...
 describe String do
+  it "does not translate twice" do
+    ("%{a} %{b}" % {:a=>'%{b}',:b=>'c'}).should == '%{b} c'
+  end
+
   describe "old % style replacement" do
     it "substitudes using % + Hash" do
       "x%{name}y" %{:name=>'a'}.should == 'xay'

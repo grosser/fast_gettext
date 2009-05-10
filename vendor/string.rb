@@ -28,18 +28,23 @@ rescue ArgumentError
     def %(args)
       if args.kind_of? Hash
         ret = dup
-        ret.gsub!(/\%\%/, '<_percent__>')
-
-        # %{something} type
-        args.each {|key, value| ret.gsub!(/\%\{#{key}\}/, value.to_s)}
-
-        # %<..>d type
-        args.each {|key, value|
-          ret.gsub!(/\%<#{key}>([ #\+-0\*]?\d*\.?\d*[bBdiouxXeEfgGcps])/){
-            sprintf("%#{$1}", value)
-          }
-        }
-        ret.gsub('<_percent__>', "%")
+        re1 = /%%/
+        re2 = /%\{(\w+)\}/
+        re3 = /%<(\w+)>((.*?)\d*\.?\d*[bBdiouxXeEfgGcps])/
+        re = Regexp.union(re1, re2, re3)
+        ret.gsub!(re) do |match|
+          matches = [match, $1, $2, $3, $4]
+          case match
+          when '%%'
+            '%'
+          when re2
+            key = matches[1].to_sym
+            args.has_key?(key) ? args[key] : matches[0]
+          when re3
+            key = matches[2].to_sym
+            args.has_key?(key) ? sprintf("%#{matches[3]}", args[key]) : matches[0]
+          end
+        end
       else
         ret = gsub(/%([{<])/, '%%\1')
         ret._fast_gettext_old_format_m(args)
