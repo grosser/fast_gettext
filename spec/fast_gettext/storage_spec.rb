@@ -180,7 +180,10 @@ describe 'Storage' do
       FastGettext.text_domain = 'xxx'
       FastGettext.available_locales = ['de','en']
       FastGettext.locale = 'de'
+      FastGettext.current_repository.stub!(:"[]").with('abc').and_return 'old'
+      FastGettext.current_repository.stub!(:"[]").with('unfound').and_return nil
       FastGettext._('abc')
+      FastGettext._('unfound')
       FastGettext.locale = 'en'
     end
 
@@ -198,19 +201,24 @@ describe 'Storage' do
       FastGettext.locale = 'de'
       FastGettext.text_domain = nil
       FastGettext.default_text_domain = 'xxx'
-      FastGettext.current_cache['abc'].should == 'abc'
+      FastGettext.current_cache['abc'].should == 'old'
     end
 
     it "cache is restored through setting of default_locale" do
       FastGettext.send(:_locale=,nil)#reset locale to nil
       FastGettext.default_locale = 'de'
       FastGettext.locale.should == 'de'
-      FastGettext.current_cache['abc'].should == 'abc'
+      FastGettext.current_cache['abc'].should == 'old'
     end
 
     it "stores a translation permanently" do
       FastGettext.locale = 'de'
-      FastGettext.current_cache['abc'].should == 'abc'
+      FastGettext.current_cache['abc'].should == 'old'
+    end
+
+    it "stores a unfound translation permanently" do
+      FastGettext.locale = 'de'
+      FastGettext.current_cache['unfound'].should == false
     end
   end
 

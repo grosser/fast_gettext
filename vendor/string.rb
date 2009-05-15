@@ -30,7 +30,7 @@ rescue ArgumentError
     #     with field type such as d(decimal), f(float), ...
     #     "%<age>d, %<weight>.1f" % {:age => 10, :weight => 43.4} == "10 43.4"
     # This is the recommanded way for Ruby-GetText
-    # because the translators can understand the meanings of the msgids easily.
+    # because the translators can understand the meanings of the keys easily.
     def %(args)
       if args.kind_of? Hash
         ret = dup

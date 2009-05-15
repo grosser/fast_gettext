@@ -31,9 +31,9 @@ module FastGettext
         nil
       end
 
-      def plural(*msgids)
+      def plural(*keys)
         chain.each do |c|
-          result = c.plural(*msgids)
+          result = c.plural(*keys)
           return result unless result.compact.empty?
         end
         []

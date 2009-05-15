@@ -17,33 +17,27 @@ module FastGettext
       klas.extend self
     end
 
-    def _(translate)
-      found = FastGettext.current_cache[translate] and return found
-      FastGettext.current_cache[translate] = FastGettext.current_repository[translate] || translate
+    def _(key)
+      cached_find(key) or key
     end
 
     #translate pluralized
     # some languages have up to 4 plural forms...
     # n_(singular, plural, plural form 2, ..., count)
     # n_('apple','apples',3)
-    def n_(*msgids)
-      count = msgids.pop
-      repo = FastGettext.current_repository
-
-      translations = repo.plural(*msgids)
+    def n_(*keys)
+      count = keys.pop
+      translations = cached_plural_find *keys
       selected = FastGettext.pluralisation_rule.call(count)
       selected = selected ? 1 : 0 unless selected.is_a? Numeric #convert booleans to numbers
-      translations[selected] || msgids[selected] || msgids.last
+      translations[selected] || keys[selected] || keys.last
     end
 
     #translate, but discard namespace if nothing was found
     # Car|Tire -> Tire if no translation could be found
     def s_(key,seperator=nil)
-      if translation = FastGettext.current_cache[key] || FastGettext.current_repository[key]
-        translation
-      else
-        key.split(seperator||NAMESPACE_SEPERATOR).last
-      end
+      translation = cached_find(key) and return translation
+      key.split(seperator||NAMESPACE_SEPERATOR).last
     end
 
     #tell gettext: this string need translation (will be found during parsing)
@@ -52,8 +46,23 @@ module FastGettext
     end
 
     #tell gettext: this string need translation (will be found during parsing)
-    def Nn_(*msgids)
-      msgids
+    def Nn_(*keys)
+      keys
+    end
+
+    private
+
+    def cached_find(key)
+      translation = FastGettext.current_cache[key]
+      return translation if translation or translation == false #found or was not found before
+      FastGettext.current_cache[key] = FastGettext.current_repository[key] || false
+    end
+
+    def cached_plural_find(*keys)
+      key = '||||' + keys * '||||'
+      translation = FastGettext.current_cache[key]
+      return translation if translation or translation == false #found or was not found before
+      FastGettext.current_cache[key] = FastGettext.current_repository.plural(*keys) || false
     end
   end
 end

@@ -21,8 +21,8 @@ module FastGettext
         current_translations[key]
       end
 
-      def plural(*msgids)
-        current_translations.plural(*msgids)
+      def plural(*keys)
+        current_translations.plural(*keys)
       end
 
       protected

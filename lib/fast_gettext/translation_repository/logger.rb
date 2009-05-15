@@ -18,8 +18,8 @@ module FastGettext
         nil
       end
 
-      def plural(*msgids)
-        callback.call(msgids)
+      def plural(*keys)
+        callback.call(keys)
         []
       end
     end

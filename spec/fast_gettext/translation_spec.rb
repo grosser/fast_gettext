@@ -27,7 +27,7 @@ describe FastGettext::Translation do
     it "translates simple text" do
       _('car').should == 'Auto'
     end
-    it "returns msgid if not translation was found" do
+    it "returns key if not translation was found" do
       _('NOT|FOUND').should == 'NOT|FOUND'
     end
   end
@@ -60,12 +60,12 @@ describe FastGettext::Translation do
       end
     end
     
-    it "returns the appropriate msgid if no translation was found" do
+    it "returns the appropriate key if no translation was found" do
       n_('NOTFOUND','NOTFOUNDs',1).should == 'NOTFOUND'
       n_('NOTFOUND','NOTFOUNDs',2).should == 'NOTFOUNDs'
     end
 
-    it "returns the last msgid when no translation was found and msgids where to short" do
+    it "returns the last key when no translation was found and keys where to short" do
       FastGettext.pluralisation_rule = lambda{|x|4}
       n_('Apple','Apples',2).should == 'Apples'
     end
@@ -75,7 +75,7 @@ describe FastGettext::Translation do
     it "translates simple text" do
       _('car').should == 'Auto'
     end
-    it "returns cleaned msgid if a translation was not found" do
+    it "returns cleaned key if a translation was not found" do
       s_("XXX|not found").should == "not found"
     end
     it "can use a custom seperator" do
@@ -84,13 +84,13 @@ describe FastGettext::Translation do
   end
 
   describe :N_ do
-    it "returns the msgid" do
+    it "returns the key" do
       N_('XXXXX').should == 'XXXXX'
     end
   end
 
   describe :Nn_ do
-    it "returns the msgids as array" do
+    it "returns the keys as array" do
       Nn_('X','Y').should == ['X','Y']
     end
   end
@@ -99,7 +99,12 @@ describe FastGettext::Translation do
     describe :cache_hit do
       before do
         FastGettext.translation_repositories.replace({})
+        #singular cache keys
         current_cache['xxx'] = '1'
+
+        #plural cache keys
+        current_cache['||||xxx'] = ['1','2']
+        current_cache['||||xxx||||yyy'] = ['1','2']
       end
 
       it "uses the cache when translating with _" do
@@ -108,6 +113,14 @@ describe FastGettext::Translation do
 
       it "uses the cache when translating with s_" do
         s_('xxx').should == '1'
+      end
+
+      it "uses the cache when translating with n_" do
+        n_('xxx','yyy',1).should == '1'
+      end
+
+      it "uses the cache when translating with n_ and single argument" do
+        n_('xxx',1).should == '1'
       end
     end
 

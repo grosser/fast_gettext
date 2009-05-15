@@ -126,7 +126,7 @@ If the simple rule of "first `availble_locale` or 'en'" is not suficcient for yo
 
 ###Chains
 You can use any number of repositories to find a translation. Simply add them to a chain and when
-the first cannot translate a given msgid, the next is asked and so forth.
+the first cannot translate a given key, the next is asked and so forth.
     repos = [
       FastGettext::TranslationRepository.build('new', :path=>'....'),
       FastGettext::TranslationRepository.build('old', :path=>'....')
@@ -137,11 +137,11 @@ the first cannot translate a given msgid, the next is asked and so forth.
 When you want to know which keys could not be translated or were used, add a Logger to a Chain:
     repos = [
       FastGettext::TranslationRepository.build('app', :path=>'....')
-      FastGettext::TranslationRepository.build('logger', :type=>:logger, :callback=>lamda{|msgid_or_array_of_ids| ... }),
+      FastGettext::TranslationRepository.build('logger', :type=>:logger, :callback=>lamda{|key_or_array_of_ids| ... }),
     }
     FastGettext.add_text_domain 'combined', :type=>:chain, :chain=>repos
 If the Logger is in position #1 it will see all translations, if it is in position #2 it will only see the unfound.
-Unfound may not always mean missing, if you chose not to translate a word because the msgid is a good translation, it will appear nevertheless.
+Unfound may not always mean missing, if you chose not to translate a word because the key is a good translation, it will appear nevertheless.
 A lambda or anything that responds to `call` will do as callback. A good starting point may be `examples/missing_translations_logger.rb`.
 
 ###Plugins
@@ -151,7 +151,7 @@ Write your own TranslationRepository!
     module FastGettext
       module TranslationRepository
         class Wtf
-          define initialize(name,options), [key], plural(*msgids) and
+          define initialize(name,options), [key], plural(*keys) and
           either inherit from TranslationRepository::Base or define available_locales and pluralisation_rule
         end
       end
@@ -165,9 +165,8 @@ FAQ
 
 TODO
 ====
- - add caching to untranslateable calls
- - break with gettext naming-tradition, convert msgid => key, msgstr => translation
-
+ - YML backend that reads ActiveSupport::I18n files
+ - any ideas ? :D
 
 Author
 ======
