@@ -6,6 +6,7 @@ It supports multiple backends (atm: .mo files, .po files, Database(ActiveRecor +
 
 [Example Rails application](https://github.com/grosser/gettext_i18n_rails_example)
 
+
 Setup
 =====
 ### 1. Install
@@ -41,6 +42,7 @@ Do this once in every Thread. (e.g. Rails -> ApplicationController)
     s_('Namespace|no-found') == 'not-found'
     n_('Axis','Axis',3) == 'Achsen' #German plural of Axis
 
+
 Managing translations
 ============
 ### mo/po-files
@@ -62,6 +64,7 @@ If you want to use your own models, have a look at the [default models](http://g
 
 To manage translations via a Web GUI, use a [Rails application and the translation_db_engine](http://github.com/grosser/translation_db_engine)
 
+
 Performance
 ===========
 50_000 translations speed / memory  
@@ -81,6 +84,7 @@ small translation file <-> large translation file
 
     ActiveSupport I18n::Backend::Simple :
     21.770000s / 10100K <->
+
 
 Rails
 =======================
@@ -105,6 +109,7 @@ since it runs in a different thread then e.g. controllers, so set them inside yo
         FastGettext.text_domain = 'frontend'
         session[:locale] = I18n.locale = FastGettext.set_locale(params[:locale] || session[:locale] || request.env['HTTP_ACCEPT_LANGUAGE'] || 'en')
       end
+
 
 Advanced features
 =================
@@ -152,17 +157,19 @@ Write your own TranslationRepository!
       end
     end
 
+
 FAQ
 ===
  - [Problems with ActiveRecord messages?](http://wiki.github.com/grosser/fast_gettext/activerecord)
+
 
 TODO
 ====
  - add caching to untranslateable calls
  - break with gettext naming-tradition, convert msgid => key, msgstr => translation
- - some cleanup required, repositories should not have locale
  - use `default_locale=(x)` internally, atm the default is available_locales.first || 'en'
  - use `default_text_domain=(x)` internally, atm default is nil...
+
 
 Author
 ======

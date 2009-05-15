@@ -6,15 +6,16 @@ describe 'FastGettext::TranslationRepository::Base' do
   before do
     @rep = FastGettext::TranslationRepository::Base.new('x')
   end
+
   it "can be built" do
     @rep.available_locales.should == []
   end
+
   it "cannot translate" do
-    @rep.locale = 'de'
     @rep['car'].should == nil
   end
+
   it "cannot pluralize" do
-    @rep.locale = 'de'
     @rep.plural('Axis','Axis').should == ['Axis','Axis']
   end
 end
