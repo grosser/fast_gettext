@@ -167,8 +167,6 @@ TODO
 ====
  - add caching to untranslateable calls
  - break with gettext naming-tradition, convert msgid => key, msgstr => translation
- - use `default_locale=(x)` internally, atm the default is available_locales.first || 'en'
- - use `default_text_domain=(x)` internally, atm default is nil...
 
 
 Author
