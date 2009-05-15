@@ -24,6 +24,7 @@ Or po files (less maintenacnce than mo)
     FastGettext.add_text_domain('my_app',:path=>'locale', :type=>:po)
 
 Or database (scaleable, great for many locales/translators)
+    require "fast_gettext/translation_repository/db"
     include FastGettext::TranslationRepository::Db.require_models #load and include default models
     FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
 
