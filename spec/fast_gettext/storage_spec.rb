@@ -229,8 +229,8 @@ describe 'Storage' do
     end
 
     it "finds using the current repository" do
-      should_receive(:current_repository).and_return 'xxx'=>'1'
-      key_exist?('xxx').should == true
+      should_receive(:current_repository).and_return '1234'=>'1'
+      key_exist?('1234').should == true
     end
 
     it "sets the current cache with a found result" do
@@ -241,7 +241,7 @@ describe 'Storage' do
 
     it "does not overwrite an existing cache value" do
       current_cache['xxx']='xxx'
-      should_receive(:current_repository).and_return 'xxx'=>'1'
+      stub!(:current_repository).and_return 'xxx'=>'1'
       key_exist?('xxx')
       current_cache['xxx'].should == 'xxx'
     end

@@ -68,10 +68,20 @@ module FastGettext
     end
 
     def key_exist?(key)
-      false
-      translation = current_repository[key]
-      current_cache[key] ||= translation
-      !!translation
+      !!(cached_find key)
+    end
+
+    def cached_find(key)
+      translation = current_cache[key]
+      return translation if translation or translation == false #found or was not found before
+      current_cache[key] = current_repository[key] || false
+    end
+
+    def cached_plural_find(*keys)
+      key = '||||' + keys * '||||'
+      translation = current_cache[key]
+      return translation if translation or translation == false #found or was not found before
+      current_cache[key] = current_repository.plural(*keys) || false
     end
 
     def locale
