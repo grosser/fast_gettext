@@ -15,6 +15,10 @@ describe String do
     it "does not substitute after %%" do
       ("%%{num} oops" % {:num => 1}).should == '%{num} oops'
     end
+
+    it "does not substitute when nothing could be found" do
+      ("abc" % {:x=>1}).should == 'abc'
+    end
   end
 
   describe 'old sprintf style' do

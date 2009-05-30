@@ -45,6 +45,7 @@ rescue ArgumentError
             args.has_key?(key) ? sprintf("%#{$3}", args[key]) : match
           end
         end
+        ret
       else
         ret = gsub(/%([{<])/, '%%\1')
         ret._fast_gettext_old_format_m(args)
