@@ -134,22 +134,22 @@ module FastGettext
 
     # de-de,DE-CH;q=0.9 -> ['de_DE','de_CH']
     def formatted_sorted_locales(locales)
-      found = locales_to_languages(locales).reject{|x|x.empty?}.sort_by{|l|l.last}.reverse #sort them by weight which is the last entry
+      found = weighted_locales(locales).reject{|x|x.empty?}.sort_by{|l|l.last}.reverse #sort them by weight which is the last entry
       found.flatten.map{|l| format_locale(l)}
     end
 
     #split the locale and seperate it into different languages
     #de-de,de;q=0.9,en;q=0.8 => [['de-de','de','0.5'], ['en','0.8']]
-    def locales_to_languages(locales)
+    def weighted_locales(locales)
       locales = locales.to_s.gsub(/\s/,'')
       found = [[]]
       locales.split(',').each do |part|
-        current = found.last
         if part =~ /;q=/ #contains language and weight ?
-          current += part.split(/;q=/)
+          found.last << part.split(/;q=/)
+          found.last.flatten!
           found << []
         else
-          current << part
+          found.last << part
         end
       end
       found

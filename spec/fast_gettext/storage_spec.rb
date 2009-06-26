@@ -155,6 +155,12 @@ describe 'Storage' do
       FastGettext.locale.should == 'en'
     end
 
+    it "sets the locale from languages" do
+      FastGettext.available_locales = ['de']
+      FastGettext.locale = "xx-us;q=0.5,de-de;q=0.8,en-uk;q=0.9"
+      FastGettext.locale.should == 'de'
+    end
+
     it "sets locale from comma seperated" do
       FastGettext.available_locales = ['de_DE','en','xx']
       FastGettext.locale = "de,de-de,en"
