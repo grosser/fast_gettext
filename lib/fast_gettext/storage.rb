@@ -103,8 +103,7 @@ module FastGettext
     
     @@default_locale = nil
     def default_locale=(new_locale)
-      new_locale = best_locale_in(new_locale)
-      @@default_locale = new_locale
+      @@default_locale = best_locale_in(new_locale)
       update_current_cache
     end
 
@@ -117,21 +116,10 @@ module FastGettext
     #IE6/7 de
     #nil if nothing matches
     def best_locale_in(locales)
-      locales = locales.to_s.gsub(/\s/,'')
-
-      #split the locale and seperate it into different languages
-      #[['de-de','de','0.5'], ['en','0.8'], ...]
-      parts = locales.split(',')
-      locales = [[]]
-      parts.each do |part|
-        locales.last << part.split(/;q=/)#add another language or language and weight
-        locales += [] if part.length == 2 #if it could be split we are now in a new locale
-      end
-
-      locales = locales.sort_by{|l|l.last} #sort them by weight which is the last entry
-      locales.flatten.each do |candidate|
-        candidate = candidate.sub(/^([a-zA-Z]{2})[-_]([a-zA-Z]{2})$/){$1.downcase+'_'+$2.upcase}#de-de -> de_DE
-        return candidate if not available_locales or available_locales.include?(candidate)
+      formatted_sorted_locales(locales).each do |candidate|
+        return candidate if not available_locales
+        return candidate if available_locales.include?(candidate)
+        return candidate[0..1] if available_locales.include?(candidate[0..1])#available locales include a langauge
       end
       return nil#nothing found im sorry :P
     end
@@ -143,6 +131,34 @@ module FastGettext
     end
 
     private
+
+    # de-de,DE-CH;q=0.9 -> ['de_DE','de_CH']
+    def formatted_sorted_locales(locales)
+      found = locales_to_languages(locales).reject{|x|x.empty?}.sort_by{|l|l.last}.reverse #sort them by weight which is the last entry
+      found.flatten.map{|l| format_locale(l)}
+    end
+
+    #split the locale and seperate it into different languages
+    #de-de,de;q=0.9,en;q=0.8 => [['de-de','de','0.5'], ['en','0.8']]
+    def locales_to_languages(locales)
+      locales = locales.to_s.gsub(/\s/,'')
+      found = [[]]
+      locales.split(',').each do |part|
+        current = found.last
+        if part =~ /;q=/ #contains language and weight ?
+          current += part.split(/;q=/)
+          found << []
+        else
+          current << part
+        end
+      end
+      found
+    end
+
+    #de-de -> de_DE
+    def format_locale(locale)
+      locale.sub(/^([a-zA-Z]{2})[-_]([a-zA-Z]{2})$/){$1.downcase+'_'+$2.upcase}
+    end
 
     def update_current_cache
       caches[text_domain] ||= {}

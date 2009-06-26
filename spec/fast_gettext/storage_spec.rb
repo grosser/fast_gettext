@@ -149,6 +149,12 @@ describe 'Storage' do
       FastGettext.locale.should == 'en'
     end
 
+    it "sets the locale with the highest wheight" do
+      FastGettext.available_locales = ['en','de']
+      FastGettext.locale = "xx-us;q=0.5,de-de,de;q=0.8,en;q=0.9"
+      FastGettext.locale.should == 'en'
+    end
+
     it "sets locale from comma seperated" do
       FastGettext.available_locales = ['de_DE','en','xx']
       FastGettext.locale = "de,de-de,en"
