@@ -19,6 +19,10 @@ describe String do
     it "does not substitute when nothing could be found" do
       ("abc" % {:x=>1}).should == 'abc'
     end
+
+    it "sustitutes strings" do
+      ("a%{b}c" % {'b'=>1}).should == 'a1c'
+    end
   end
 
   describe 'old sprintf style' do

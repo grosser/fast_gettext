@@ -33,16 +33,19 @@ rescue ArgumentError
     # because the translators can understand the meanings of the keys easily.
     def %(args)
       if args.kind_of? Hash
+        #stringify keys
+        replace = {}
+        args.each{|k,v|replace[k.to_s]=v}
+
+        #replace occurances
         ret = dup
         ret.gsub!(PERCENT_MATCH_RE) do |match|
           if match == '%%'
             '%'
           elsif $1
-            key = $1.to_sym
-            args.has_key?(key) ? args[key] : match
+            replace.has_key?($1) ? replace[$1] : match
           elsif $2
-            key = $2.to_sym
-            args.has_key?(key) ? sprintf("%#{$3}", args[key]) : match
+            replace.has_key?($2) ? sprintf("%#{$3}", replace[$2]) : match
           end
         end
         ret
