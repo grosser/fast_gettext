@@ -23,6 +23,18 @@ describe String do
     it "sustitutes strings" do
       ("a%{b}c" % {'b'=>1}).should == 'a1c'
     end
+
+    it "sustitutes strings with -" do
+      ("a%{b-a}c" % {'b-a'=>1}).should == 'a1c'
+    end
+
+    it "sustitutes string with ." do
+      ("a%{b.a}c" % {'b.a'=>1}).should == 'a1c'
+    end
+
+    it "sustitutes string with number" do
+      ("a%{1}c" % {'1'=>1}).should == 'a1c'
+    end
   end
 
   describe 'old sprintf style' do

@@ -17,8 +17,8 @@ rescue ArgumentError
 
     PERCENT_MATCH_RE = Regexp.union(
       /%%/,
-      /%\{(\w+)\}/,
-      /%<(\w+)>(.*?\d*\.?\d*[bBdiouxXeEfgGcps])/
+      /%\{([-\.\w]+)\}/,
+      /%<([-\.\w]+)>(.*?\d*\.?\d*[bBdiouxXeEfgGcps])/
     )
 
     # call-seq:
