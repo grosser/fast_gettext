@@ -27,6 +27,7 @@ describe FastGettext::Translation do
     it "translates simple text" do
       _('car').should == 'Auto'
     end
+
     it "returns key if not translation was found" do
       _('NOT|FOUND').should == 'NOT|FOUND'
     end
@@ -75,9 +76,11 @@ describe FastGettext::Translation do
     it "translates simple text" do
       _('car').should == 'Auto'
     end
+
     it "returns cleaned key if a translation was not found" do
       s_("XXX|not found").should == "not found"
     end
+
     it "can use a custom seperator" do
       s_("XXX/not found",'/').should == "not found"
     end
