@@ -31,6 +31,10 @@ describe FastGettext::Translation do
     it "returns key if not translation was found" do
       _('NOT|FOUND').should == 'NOT|FOUND'
     end
+
+    it "does not return the gettext meta information" do
+      _('').should == ''
+    end
   end
 
   describe :n_ do
@@ -74,7 +78,7 @@ describe FastGettext::Translation do
 
   describe :s_ do
     it "translates simple text" do
-      _('car').should == 'Auto'
+      s_('car').should == 'Auto'
     end
 
     it "returns cleaned key if a translation was not found" do

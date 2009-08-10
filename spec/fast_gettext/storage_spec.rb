@@ -257,6 +257,16 @@ describe 'Storage' do
       key_exist?('xxx')
       current_cache['xxx'].should == 'xxx'
     end
+
+    it "is false for gettext meta key" do
+      key_exist?("").should == false
+    end
+  end
+
+  describe :cached_find do
+    it "is nil for gettext meta key" do
+      cached_find("").should == false
+    end
   end
 
   describe NoTextDomainConfigured do

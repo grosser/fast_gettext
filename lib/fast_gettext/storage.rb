@@ -163,6 +163,7 @@ module FastGettext
     def update_current_cache
       caches[text_domain] ||= {}
       caches[text_domain][locale] ||= {}
+      caches[text_domain][locale][""] = false #ignore gettext meta key when translating
       self.current_cache = caches[text_domain][locale]
     end
   end
