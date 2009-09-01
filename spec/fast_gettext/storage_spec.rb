@@ -96,6 +96,28 @@ describe 'Storage' do
     end
   end
 
+  describe :default_available_locales do
+    after do
+      self.default_available_locales = nil
+    end
+
+    it "stores default_available_locales non-thread-safe" do
+      thread_save(:default_available_locales, 'xx').should == false
+    end
+
+    it "uses default_available_locales when available_locales is not set" do
+      self.available_locales = nil
+      self.default_available_locales = 'x'
+      available_locales.should == 'x'
+    end
+
+    it "does not use default when available_locales is set" do
+      self.available_locales = 'x'
+      self.default_available_locales = 'y'
+      available_locales.should == 'x'
+    end
+  end
+
   describe :locale do
     it "stores everything as long as available_locales is not set" do
       self.available_locales = nil

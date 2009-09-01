@@ -117,12 +117,16 @@ Advanced features
 Pluralisation rules can be set directly via a lambda (see specs/), or by using the Gettext
 plural definition (see spec/locale/en/test_plural.po or [Plural expressions for all languages](http://translate.sourceforge.net/wiki/l10n/pluralforms).
 
+
 ###default_text_domain
 If you only use one text domain, setting `FastGettext.default_text_domain = 'app'`
 is sufficient and no more `text_domain=` is needed
 
 ###default_locale
-If the simple rule of "first `availble_locale` or 'en'" is not suficcient for you, simply set `FastGettext.default_locale = 'de'`.
+If the simple rule of "first `availble_locale` or 'en'" is not suficcient for you, set `FastGettext.default_locale = 'de'`.
+
+###default_available_locales
+Fallback when no available_locales are set
 
 ###Chains
 You can use any number of repositories to find a translation. Simply add them to a chain and when
@@ -174,6 +178,7 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
 
 ###Contributors
  - [geekq](http://www.innoq.com/blog/vd)
+ - Rudolf Gavlas
 
 [Michael Grosser](http://pragmatig.wordpress.com)  
 grosser.michael@gmail.com  

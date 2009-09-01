@@ -23,9 +23,38 @@ module FastGettext
     end
     private :_locale, :_locale=
 
+
+    def available_locales
+      Thread.current[:fast_gettext_available_locales] || default_available_locales
+    end
+
+    # == cattr_accessor :default_available_locales
+    @@default_available_locales = nil
+    def default_available_locales=(avail_locales)
+      @@default_available_locales = avail_locales
+      update_current_cache
+    end
+
+    def default_available_locales
+      @@default_available_locales
+    end
+
+
     def text_domain
       Thread.current[:fast_gettext_text_domain] || default_text_domain
     end
+
+    # == cattr_accessor :default_text_domain
+    @@default_text_domain = nil
+    def default_text_domain=(domain)
+      @@default_text_domain = domain
+      update_current_cache
+    end
+
+    def default_text_domain
+      @@default_text_domain
+    end
+
 
     def pluralisation_rule
       Thread.current[:fast_gettext_pluralisation_rule] ||  current_repository.pluralisation_rule || lambda{|i| i!=1}
@@ -37,17 +66,6 @@ module FastGettext
 
     def current_cache=(cache)
       Thread.current[:fast_gettext_current_cache] = cache
-    end
-
-    #-> cattr_accessor :default_text_domain
-    @@default_text_domain = nil
-    def default_text_domain=(domain)
-      @@default_text_domain = domain
-      update_current_cache
-    end
-
-    def default_text_domain
-      @@default_text_domain
     end
 
     #global, since re-parsing whole folders takes too much time...
