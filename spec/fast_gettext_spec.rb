@@ -37,4 +37,8 @@ describe FastGettext do
     IncludeTest.new.inc.should == 'Auto'
     IncludeTest.xx.should == 'Auto'
   end
+
+  it "has a VERSION" do
+    FastGettext::VERSION.should == File.read('VERSION')
+  end
 end
