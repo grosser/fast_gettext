@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fast_gettext}
-  s.version = "0.4.16"
+  s.version = "0.4.17"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
@@ -48,6 +48,7 @@ Gem::Specification.new do |s|
      "lib/fast_gettext/translation_repository/logger.rb",
      "lib/fast_gettext/translation_repository/mo.rb",
      "lib/fast_gettext/translation_repository/po.rb",
+     "rdoc/README.rdoc",
      "spec/aa_unconfigued_spec.rb",
      "spec/fast_gettext/mo_file_spec.rb",
      "spec/fast_gettext/storage_spec.rb",
