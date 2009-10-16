@@ -10,11 +10,7 @@ It supports multiple backends (atm: .mo files, .po files, Database(ActiveRecor +
 Setup
 =====
 ### 1. Install
-    sudo gem install grosser-fast_gettext -s http://gems.github.com/
-
-Or from source:
-    git clone git://github.com/grosser/fast_gettext.git
-    cd fast_gettext && rake install
+    sudo gem install fast_gettext
 
 ### 2. Add a translation repository
 

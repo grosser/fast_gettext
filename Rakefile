@@ -20,14 +20,23 @@ end
 
 begin
   require 'jeweler'
+  project_name = 'fast_gettext'
   Jeweler::Tasks.new do |gem|
-    gem.name = "fast_gettext"
+    gem.name = project_name
     gem.summary = "A simple, fast and threadsafe implementation of GetText"
     gem.email = "grosser.michael@gmail.com"
-    gem.homepage = "http://github.com/grosser/fast_gettext"
+    gem.homepage = "http://github.com/grosser/#{project_name}"
     gem.authors = ["Michael Grosser"]
-    gem.files += (FileList["{vendor,lib,spec}/**/*"] + FileList["VERSION.yml"] + FileList["README.markdown"]).to_a.sort
+    gem.rubyforge_project = project_name.sub('_','-')
   end
+
+  # fake task so that rubyforge:release works
+  task :rdoc do
+    `mkdir rdoc`
+    `echo documentation is at http://github.com/grosser/#{project_name} > rdoc/README.rdoc`
+  end
+
+  Jeweler::RubyforgeTasks.new
 rescue LoadError
   puts "Jeweler, or one of its dependencies, is not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
