@@ -39,6 +39,6 @@ describe FastGettext do
   end
 
   it "has a VERSION" do
-    FastGettext::VERSION.should == File.read('VERSION')
+    FastGettext::VERSION.should =~ /^\d+\.\d+\.\d+$/
   end
 end
