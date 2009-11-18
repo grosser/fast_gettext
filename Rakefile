@@ -1,9 +1,6 @@
-desc "Run all specs in spec directory"
-task :default do |t|
-  options = "--colour --format progress --loadby --reverse"
-  files = FileList['spec/**/*_spec.rb']
-  system("spec #{options} #{files}")
-end
+task :default => :spec
+require 'spec/rake/spectask'
+Spec::Rake::SpecTask.new {|t| t.spec_opts = ['--color']}
 
 task :benchmark do
   puts "Running on #{RUBY}"
