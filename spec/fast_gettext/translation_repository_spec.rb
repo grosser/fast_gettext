@@ -6,7 +6,10 @@ include FastGettext::Translation
 module FastGettext
   module TranslationRepository
     class Dummy
+      attr_accessor :name, :options
       def initialize(name, options)
+        @name = name
+        @options = options
       end
     end
   end
@@ -19,8 +22,15 @@ describe FastGettext::TranslationRepository do
     end
 
     it "can have auto-require disabled" do
-      FastGettext::TranslationRepository.build('xx', { :type => 'dummy', :external => true })
+      FastGettext::TranslationRepository.build('xx', { :type => 'dummy' })
     end
 
+    it "makes a new repository" do
+      options = { :type => 'dummy', :external => true }
+      repo = FastGettext::TranslationRepository.build('xx', options)
+      repo.class.should == FastGettext::TranslationRepository::Dummy
+      repo.name.should == 'xx'
+      repo.options.should == options
+    end
   end
 end

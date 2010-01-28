@@ -7,9 +7,11 @@ module FastGettext
     # only single-word types supported atm (mytype works, MyType will not)
     def build(name, options)
       type = options[:type] || :mo
-      require "fast_gettext/translation_repository/#{type}" unless options[:external]
-      klas = eval(type.to_s.capitalize)
-      klas.new(name,options)
+      class_name = type.to_s.capitalize
+      unless FastGettext::TranslationRepository.constants.map{|c|c.to_s}.include?(class_name)
+        require "fast_gettext/translation_repository/#{type}" 
+      end
+      eval(class_name).new(name,options)
     end
   end
 end
