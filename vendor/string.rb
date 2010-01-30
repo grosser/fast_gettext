@@ -56,3 +56,19 @@ rescue ArgumentError
     end
   end
 end
+
+# 1.9.1 if you misspell a %{key} your whole page would blow up, no thanks...
+begin
+  ("%{b}" % {:a=>'b'})
+rescue KeyError
+  class String
+    alias :_fast_gettext_old_format_m :%
+    def %(*args)
+      begin
+        _fast_gettext_old_format_m(*args)
+      rescue KeyError
+        self
+      end
+    end
+  end
+end

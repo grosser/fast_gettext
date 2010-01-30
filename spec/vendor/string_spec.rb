@@ -9,7 +9,7 @@ describe String do
 
   describe "old % style replacement" do
     it "substitudes using % + Hash" do
-      "x%{name}y" %{:name=>'a'}.should == 'xay'
+      ("x%{name}y" %{:name=>'a'}).should == 'xay'
     end
 
     it "does not substitute after %%" do
@@ -20,20 +20,22 @@ describe String do
       ("abc" % {:x=>1}).should == 'abc'
     end
 
-    it "sustitutes strings" do
-      ("a%{b}c" % {'b'=>1}).should == 'a1c'
-    end
+    if RUBY_VERSION < '1.9' # this does not longer work in 1.9, use :"my weird string"
+      it "sustitutes strings" do
+        ("a%{b}c" % {'b'=>1}).should == 'a1c'
+      end
 
-    it "sustitutes strings with -" do
-      ("a%{b-a}c" % {'b-a'=>1}).should == 'a1c'
-    end
+      it "sustitutes strings with -" do
+        ("a%{b-a}c" % {'b-a'=>1}).should == 'a1c'
+      end
 
-    it "sustitutes string with ." do
-      ("a%{b.a}c" % {'b.a'=>1}).should == 'a1c'
-    end
+      it "sustitutes string with ." do
+        ("a%{b.a}c" % {'b.a'=>1}).should == 'a1c'
+      end
 
-    it "sustitutes string with number" do
-      ("a%{1}c" % {'1'=>1}).should == 'a1c'
+      it "sustitutes string with number" do
+        ("a%{1}c" % {'1'=>1}).should == 'a1c'
+      end
     end
   end
 
@@ -42,12 +44,14 @@ describe String do
       ("x%sy%s" % ['a','b']).should == 'xayb'
     end
 
-    it "does not remove %{} style replacements" do
-      ("%{name} x%sy%s" % ['a','b']).should == '%{name} xayb'
-    end
+    if RUBY_VERSION < '1.9' # this does not longer work in 1.9, ArgumentError is raised
+      it "does not remove %{} style replacements" do
+        ("%{name} x%sy%s" % ['a','b']).should == '%{name} xayb'
+      end
 
-    it "does not remove %<> style replacement" do
-       ("%{name} %<num>f %s" % ['x']).should == "%{name} %<num>f x"
+      it "does not remove %<> style replacement" do
+         ("%{name} %<num>f %s" % ['x']).should == "%{name} %<num>f x"
+      end
     end
   end
 
@@ -62,6 +66,12 @@ describe String do
 
     it "substitutes #b" do
       ("%<num>#b" % {:num => 1}).should == "0b1"
+    end
+  end
+
+  if RUBY_VERSION >= '1.9'
+    it "does not raise when key was not found" do
+      ("%{typo} xxx" % {:something=>1}).should == "%{typo} xxx"
     end
   end
 end
