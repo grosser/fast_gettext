@@ -51,4 +51,11 @@ describe 'FastGettext::TranslationRepository::Yaml' do
       FastGettext.n_('cars.silly',1).should == i.to_s
     end
   end
+
+  it "can use custom pluraliztion rules" do
+    FastGettext.locale = 'en'
+    {0 => 0, 1 => 1, 2 => 2, 3 => 0}.each do |input, expected|
+      @rep.pluralisation_rule.call(input).should == expected
+    end
+  end
 end

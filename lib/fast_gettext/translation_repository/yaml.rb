@@ -21,6 +21,10 @@ module FastGettext
         end
       end
 
+      def pluralisation_rule
+        self['pluralisation_rule'] ? lambda{|n| eval(self['pluralisation_rule']) } : nil
+      end
+
       protected
 
       MAX_FIND_DEPTH = 10

@@ -1,4 +1,5 @@
 en:
+  pluralisation_rule: n<3?n:0
   simple: easy
   date:
     relative: "%{relative_time} ago"
