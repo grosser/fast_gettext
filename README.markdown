@@ -2,10 +2,43 @@ FastGettext
 ===========
 GetText but 3.5 x faster, 560 x less memory, simple, clean namespace (7 vs 34) and threadsave!  
 
-It supports multiple backends (atm: .mo files, .po files, Database(ActiveRecor + any other), Chain, Loggers) and can easily be extended.
+It supports multiple backends (.mo, .po, .yml files, Database(ActiveRecor + any other), Chain, Loggers) and can easily be extended.
 
 [Example Rails application](https://github.com/grosser/gettext_i18n_rails_example)
 
+Comparison
+==========
+<table>
+  <tr>
+    <td></td>
+    <td width="100">Hash</td>
+    <td width="150">FastGettext</td>
+    <td width="100">GetText</td>
+    <td width="100">ActiveSupport I18n::Simple</td>
+  </tr>
+  <tr>
+    <td>Speed*</td>
+    <td>0.82s</td>
+    <td>1.36s</td>
+    <td>4.88s</td>
+    <td>21.77s</td>
+  </tr>
+  <tr>
+    <td>RAM*</td>
+    <td>4K</td>
+    <td>8K</td>
+    <td>4480K</td>
+    <td>10100K</td>
+  </tr>
+  <tr>
+    <td>Included backends</td>
+    <td></td>
+    <td>db, yml, mo, po, logger, chain</td>
+    <td>mo</td>
+    <td>yml</td>
+  </tr>
+</table>
+<small>*50.000 translations with ruby enterprise 1.8.6 through `rake benchmark`</small>
 
 Setup
 =====
@@ -17,10 +50,14 @@ Setup
 From mo files (traditional/default)
     FastGettext.add_text_domain('my_app',:path=>'locale')
 
-Or po files (less maintenacnce than mo)
+Or po files (less maintenance than mo)
     FastGettext.add_text_domain('my_app',:path=>'locale', :type=>:po)
 
-Or database (scaleable, great for many locales/translators)
+Or yaml files (use I18n syntax/indentation)
+    FastGettext.add_text_domain('my_app',:path=>'config/locales', :type=>:yaml)
+
+Or database (scaleable, good for many locales/translators)
+    # db access is cached <-> only first lookup hits the db 
     require "fast_gettext/translation_repository/db"
     include FastGettext::TranslationRepository::Db.require_models #load and include default models
     FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
@@ -51,7 +88,6 @@ Use the [original GetText](http://github.com/mutoh/gettext) to create and manage
 (Work on a po/mo parser & reader that is easier to use has started, contributions welcome @ [pomo](http://github.com/grosser/pomo) )
 
 ###Database
-!!!new/only short time in production, please report back any ideas/suggestions you have!!!  
 [Example migration for ActiveRecord](http://github.com/grosser/fast_gettext/blob/master/examples/db/migration.rb)  
 The default plural seperator is `||||` but you may overwrite it (or suggest a better one..).
 
@@ -59,28 +95,6 @@ This is usable with any model DataMapper/Sequel or any other(non-database) backe
 If you want to use your own models, have a look at the [default models](http://github.com/grosser/fast_gettext/tree/master/lib/fast_gettext/translation_repository/db_models) to see what you want/need to implement.
 
 To manage translations via a Web GUI, use a [Rails application and the translation_db_engine](http://github.com/grosser/translation_db_engine)
-
-
-Performance
-===========
-50_000 translations speed / memory  
-small translation file <-> large translation file  
-(ruby enterprise 1.8.6, your results may vary, try `rake benchmark`)
-    Baseline: (doing nothing in a loop)
-    0.250000s / 0K <->
-
-    Ideal: (primitive Hash lookup)
-    0.820000s / 4K <-> 0.760000s / 4K
-
-    FastGettext:
-    1.360000s / 8K <-> 1.320000s / 8K
-
-    GetText 2.0.1:
-    4.880000s / 4480K <-> 4.810000s / 4480K
-
-    ActiveSupport I18n::Backend::Simple :
-    21.770000s / 10100K <->
-
 
 Rails
 =======================
@@ -145,7 +159,7 @@ Unfound may not always mean missing, if you chose not to translate a word becaus
 A lambda or anything that responds to `call` will do as callback. A good starting point may be `examples/missing_translations_logger.rb`.
 
 ###Plugins
-Want a yml, xml version ?
+Want a xml version ?
 Write your own TranslationRepository!
     #fast_gettext/translation_repository/xxx.rb
     module FastGettext
@@ -174,6 +188,7 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
 
 ###Contributors
  - [geekq](http://www.innoq.com/blog/vd)
+ - [Matt Sanford](http://blog.mzsanford.com)
  - Rudolf Gavlas
 
 [Michael Grosser](http://pragmatig.wordpress.com)  
