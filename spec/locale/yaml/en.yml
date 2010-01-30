@@ -1,11 +1,12 @@
-
 en:
   simple: easy
   date:
     relative: "%{relative_time} ago"
 
   cars:
-    axis: "Axis"
+    axis:
+      one: "Axis"
+      other: "Axis"
     model: "Model"
     wheel_count: "Wheels count"
     created: "Created"

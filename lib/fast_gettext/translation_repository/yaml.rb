@@ -15,6 +15,12 @@ module FastGettext
         @files.keys
       end
 
+      def plural(*keys)
+        ['one', 'other', 'plural2', 'plural3'].map do |name|
+          self[yaml_dot_notation(keys.first, name)]
+        end
+      end
+
       protected
 
       MAX_FIND_DEPTH = 10

@@ -1,4 +1,3 @@
-
 de:
   simple: einfach
   date:
@@ -8,6 +7,11 @@ de:
     axis:
       one: "Achse"
       other: "Achsen"
+    silly:
+      one: '0'
+      other: '1'
+      plural2: '2'
+      plural3: '3'
     model: "Modell"
     wheel_count: "Räderzahl"
     created: "Erstellt"

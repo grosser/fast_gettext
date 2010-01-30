@@ -19,7 +19,7 @@ module FastGettext
       @data[key]
     end
 
-    #returns the plural forms or all singlgular translations that where found
+    #returns the plural forms or all singular translations that where found
     def plural(*msgids)
       translations = plural_translations(msgids)
       return translations unless translations.empty?

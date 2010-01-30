@@ -5,6 +5,7 @@ describe 'FastGettext::TranslationRepository::Yaml' do
   before do
     @rep = FastGettext::TranslationRepository.build('test', :path => File.join(current_folder,'..', '..', 'locale', 'yaml'), :type => :yaml)
     @rep.is_a?(FastGettext::TranslationRepository::Yaml).should be_true
+    FastGettext.locale = 'de'
   end
 
   it "can be built" do
@@ -17,22 +18,37 @@ describe 'FastGettext::TranslationRepository::Yaml' do
   end
 
   it "does not translated categories" do
-    FastGettext.locale = 'en'
     @rep['cars'].should == nil
   end
 
   it "can translate simple" do
-    FastGettext.locale = 'de'
     @rep['simple'].should == 'einfach'
   end
 
   it "can translate nested" do
-    FastGettext.locale = 'de'
     @rep['cars.car'].should == 'Auto'
   end
 
   it "can pluralize" do
-    FastGettext.locale = 'de'
-    @rep.plural('cars.axis','cars.axis').should == ['Achse','Achsen']
+    @rep.plural('cars.axis').should == ['Achse', 'Achsen', nil, nil]
+  end
+
+  it "handles unfound plurals with nil" do
+    @rep.plural('cars.xxx').should == [nil, nil, nil, nil]
+  end
+
+  it "can be used to translate plural forms" do
+    FastGettext.stub!(:current_repository).and_return @rep
+    FastGettext.n_('cars.axis','cars.axis',2).should == 'Achsen'
+    FastGettext.n_('cars.axis',2).should == 'Achsen'
+    FastGettext.n_('cars.axis',1).should == 'Achse'
+  end
+
+  it "can be used to do wanky pluralisation rules" do
+    FastGettext.stub!(:current_repository).and_return @rep
+    4.times do |i|
+      @rep.stub!(:pluralisation_rule).and_return lambda{i}
+      FastGettext.n_('cars.silly',1).should == i.to_s
+    end
   end
 end
