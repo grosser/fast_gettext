@@ -9,7 +9,7 @@ describe 'FastGettext::TranslationRepository::Yaml' do
   end
 
   it "can be built" do
-    @rep.available_locales.should == ['de', 'en']
+    @rep.available_locales.sort.should == ['de', 'en']
   end
 
   it "translates nothing when locale is unsupported" do
