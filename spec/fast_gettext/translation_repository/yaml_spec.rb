@@ -1,7 +1,6 @@
 current_folder = File.dirname(__FILE__)
 require File.join(current_folder,'..','..','spec_helper')
 
-
 describe 'FastGettext::TranslationRepository::Yaml' do
   before do
     @rep = FastGettext::TranslationRepository.build('test', :path => File.join(current_folder,'..', '..', 'locale', 'yaml'), :type => :yaml)
@@ -10,6 +9,16 @@ describe 'FastGettext::TranslationRepository::Yaml' do
 
   it "can be built" do
     @rep.available_locales.should == ['de', 'en']
+  end
+
+  it "translates nothing when locale is unsupported" do
+    FastGettext.locale = 'xx'
+    @rep['simple'].should == nil
+  end
+
+  it "does not translated categories" do
+    FastGettext.locale = 'en'
+    @rep['cars'].should == nil
   end
 
   it "can translate simple" do
@@ -26,5 +35,4 @@ describe 'FastGettext::TranslationRepository::Yaml' do
     FastGettext.locale = 'de'
     @rep.plural('cars.axis','cars.axis').should == ['Achse','Achsen']
   end
-
 end
