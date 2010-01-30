@@ -1,5 +1,6 @@
 require 'fast_gettext/translation_repository/base'
-require 'find'
+require 'yaml'
+
 module FastGettext
   module TranslationRepository
     # Responsibility:
