@@ -1,5 +1,6 @@
 
 de:
+  simple: einfach
   date:
     relative: "vor %{relative_time}"
 

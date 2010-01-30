@@ -4,7 +4,7 @@ require File.join(current_folder,'..','..','spec_helper')
 
 describe 'FastGettext::TranslationRepository::Yaml' do
   before do
-    @rep = FastGettext::TranslationRepository.build('test',:path=> File.join(current_folder,'..','..','locale'), :type => :yaml)
+    @rep = FastGettext::TranslationRepository.build('test', :path => File.join(current_folder,'..', '..', 'locale', 'yaml'), :type => :yaml)
     @rep.is_a?(FastGettext::TranslationRepository::Yaml).should be_true
   end
 
@@ -12,7 +12,12 @@ describe 'FastGettext::TranslationRepository::Yaml' do
     @rep.available_locales.should == ['de', 'en']
   end
 
-  it "can translate" do
+  it "can translate simple" do
+    FastGettext.locale = 'de'
+    @rep['simple'].should == 'einfach'
+  end
+
+  it "can translate nested" do
     FastGettext.locale = 'de'
     @rep['cars.car'].should == 'Auto'
   end

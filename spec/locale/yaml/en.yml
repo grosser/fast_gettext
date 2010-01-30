@@ -1,5 +1,6 @@
 
 en:
+  simple: easy
   date:
     relative: "%{relative_time} ago"
 
