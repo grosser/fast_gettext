@@ -49,7 +49,6 @@ Gem::Specification.new do |s|
      "lib/fast_gettext/translation_repository/mo.rb",
      "lib/fast_gettext/translation_repository/po.rb",
      "lib/fast_gettext/translation_repository/yaml.rb",
-     "rdoc/README.rdoc",
      "spec/aa_unconfigued_spec.rb",
      "spec/fast_gettext/mo_file_spec.rb",
      "spec/fast_gettext/storage_spec.rb",
@@ -86,7 +85,6 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/grosser/fast_gettext}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{fast-gettext}
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{A simple, fast and threadsafe implementation of GetText}
   s.test_files = [
