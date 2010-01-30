@@ -15,9 +15,8 @@ class IncludeTest
   end
 end
 
-include FastGettext
-
 describe FastGettext do
+  include FastGettext
   before :all do
     default_setup
   end

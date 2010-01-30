@@ -1,9 +1,9 @@
 current_folder = File.dirname(__FILE__)
 require File.join(current_folder,'..','spec_helper')
 
-include FastGettext::Storage
-
 describe 'Storage' do
+  include FastGettext::Storage
+
   before do
     #reset everything to nil
     self.available_locales = nil
@@ -258,7 +258,7 @@ describe 'Storage' do
 
   describe :key_exist? do
     it "does not find default keys" do
-      _('abcde')
+      FastGettext._('abcde')
       key_exist?('abcde').should be_false
     end
 
@@ -291,19 +291,19 @@ describe 'Storage' do
     end
   end
 
-  describe NoTextDomainConfigured do
+  describe FastGettext::Storage::NoTextDomainConfigured do
     it "shows what to do" do
-      NoTextDomainConfigured.new.to_s.should =~ /FastGettext\.add_text_domain/
+      FastGettext::Storage::NoTextDomainConfigured.new.to_s.should =~ /FastGettext\.add_text_domain/
     end
 
     it "warns when text_domain is nil" do
       FastGettext.text_domain = nil
-      NoTextDomainConfigured.new.to_s.should =~ /\(nil\)/
+      FastGettext::Storage::NoTextDomainConfigured.new.to_s.should =~ /\(nil\)/
     end
 
     it "shows current text_domain" do
       FastGettext.text_domain = 'xxx'
-      NoTextDomainConfigured.new('xxx').to_s.should =~ /xxx/
+      FastGettext::Storage::NoTextDomainConfigured.new('xxx').to_s.should =~ /xxx/
     end
   end
 end

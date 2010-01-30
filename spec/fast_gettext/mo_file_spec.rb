@@ -1,11 +1,10 @@
 current_folder = File.dirname(__FILE__)
 require File.join(current_folder,'..','spec_helper')
 
-include FastGettext
 de_file = File.join(current_folder,'..','locale','de','LC_MESSAGES','test.mo')
-de = MoFile.new(de_file)
+de = FastGettext::MoFile.new(de_file)
 
-describe MoFile do
+describe FastGettext::MoFile do
   before :all do
     File.exist?(de_file).should == true
   end

@@ -1,8 +1,6 @@
 current_folder = File.dirname(__FILE__)
 require File.join(current_folder,'..','spec_helper')
 
-include FastGettext::Translation
-
 module FastGettext
   module TranslationRepository
     class Dummy

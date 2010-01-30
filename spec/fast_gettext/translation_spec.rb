@@ -1,9 +1,9 @@
 current_folder = File.dirname(__FILE__)
 require File.join(current_folder,'..','spec_helper')
 
-include FastGettext::Translation
-
 describe FastGettext::Translation do
+  include FastGettext::Translation
+
   before do
     default_setup
   end
@@ -107,11 +107,11 @@ describe FastGettext::Translation do
       before do
         FastGettext.translation_repositories.replace({})
         #singular cache keys
-        current_cache['xxx'] = '1'
+        FastGettext.current_cache['xxx'] = '1'
 
         #plural cache keys
-        current_cache['||||xxx'] = ['1','2']
-        current_cache['||||xxx||||yyy'] = ['1','2']
+        FastGettext.current_cache['||||xxx'] = ['1','2']
+        FastGettext.current_cache['||||xxx||||yyy'] = ['1','2']
       end
 
       it "uses the cache when translating with _" do
