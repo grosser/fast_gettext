@@ -1,7 +1,7 @@
 current_folder = File.dirname(__FILE__)
 require File.join(current_folder,'..','..','spec_helper')
 
-require 'activerecord'
+require 'active_record'
 require 'fast_gettext/translation_repository/db'
 include FastGettext::TranslationRepository::Db.require_models
 
