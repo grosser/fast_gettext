@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__),'..','..','vendor','mofile')
+require 'fast_gettext/vendor/mofile'
 module FastGettext
   # Responsibility:
   #  - abstract mo files for Mo Repository
@@ -36,7 +36,7 @@ module FastGettext
     end
 
     def self.empty
-      MoFile.new(File.join(File.dirname(__FILE__),'..','..','vendor','empty.mo'))
+      MoFile.new(File.join(File.dirname(__FILE__),'vendor','empty.mo'))
     end
 
     private

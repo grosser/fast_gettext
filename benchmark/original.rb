@@ -1,6 +1,10 @@
 require 'benchmark/base'
 
+begin
 gem 'gettext', '>=2.0.0'
+rescue LoadError
+  $LOAD_PATH.unshift 'lib'
+end
 require 'gettext'
 include GetText
 
