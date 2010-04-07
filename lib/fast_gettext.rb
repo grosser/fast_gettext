@@ -2,13 +2,13 @@ require 'fast_gettext/mo_file'
 require 'fast_gettext/storage'
 require 'fast_gettext/translation'
 require 'fast_gettext/translation_repository'
-require File.join(File.dirname(__FILE__),'..','vendor','string')
+require 'fast_gettext/vendor/string'
 
 module FastGettext
   include FastGettext::Storage
   extend self
 
-  VERSION = File.read( File.join(File.dirname(__FILE__),'..','VERSION') ).strip
+  VERSION = File.read( File.join(File.dirname(__FILE__), 'fast_gettext', 'VERSION') ).strip
   LOCALE_REX =  /^[a-z]{2}$|^[a-z]{2}_[A-Z]{2}$/
   NAMESPACE_SEPERATOR = '|'
 
