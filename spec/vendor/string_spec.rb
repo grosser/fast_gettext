@@ -1,5 +1,4 @@
-current_folder = File.dirname(__FILE__)
-require File.join(current_folder,'..','spec_helper')
+require 'spec/spec_helper'
 
 #just to make sure we did not mess up while copying...
 describe String do

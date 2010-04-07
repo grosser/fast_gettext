@@ -1,5 +1,4 @@
-current_folder = File.dirname(__FILE__)
-require File.join(current_folder,'..','..','spec_helper')
+require 'spec/spec_helper'
 
 class MockRepo
   def [](key)#should_receive :[] does not work so well...

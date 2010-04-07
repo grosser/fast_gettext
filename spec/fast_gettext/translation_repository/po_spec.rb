@@ -1,10 +1,8 @@
-current_folder = File.dirname(__FILE__)
-require File.join(current_folder,'..','..','spec_helper')
-
+require 'spec/spec_helper'
 
 describe 'FastGettext::TranslationRepository::Po' do
   before do
-    @rep = FastGettext::TranslationRepository.build('test',:path=>File.join(current_folder,'..','..','locale'),:type=>:po)
+    @rep = FastGettext::TranslationRepository.build('test',:path=>File.join('spec','locale'),:type=>:po)
     @rep.is_a?(FastGettext::TranslationRepository::Po).should be_true
   end
 
@@ -24,7 +22,7 @@ describe 'FastGettext::TranslationRepository::Po' do
 
   it "has access to the mo repositories pluralisation rule" do
     FastGettext.locale = 'en'
-    rep = FastGettext::TranslationRepository.build('plural_test',:path=>File.join(current_folder,'..','..','locale'),:type=>:po)
+    rep = FastGettext::TranslationRepository.build('plural_test',:path=>File.join('spec','locale'),:type=>:po)
     rep['car'].should == 'Test'#just check it is loaded correctly
     rep.pluralisation_rule.call(2).should == 3
   end

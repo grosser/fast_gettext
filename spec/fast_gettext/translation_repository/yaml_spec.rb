@@ -1,9 +1,8 @@
-current_folder = File.dirname(__FILE__)
-require File.join(current_folder,'..','..','spec_helper')
+require 'spec/spec_helper'
 
 describe 'FastGettext::TranslationRepository::Yaml' do
   before do
-    @rep = FastGettext::TranslationRepository.build('test', :path => File.join(current_folder,'..', '..', 'locale', 'yaml'), :type => :yaml)
+    @rep = FastGettext::TranslationRepository.build('test', :path => File.join('spec', 'locale', 'yaml'), :type => :yaml)
     @rep.is_a?(FastGettext::TranslationRepository::Yaml).should be_true
     FastGettext.locale = 'de'
   end

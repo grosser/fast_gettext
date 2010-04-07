@@ -1,7 +1,6 @@
-current_folder = File.dirname(__FILE__)
-require File.join(current_folder,'..','spec_helper')
+require 'spec/spec_helper'
 
-de_file = File.join(current_folder,'..','locale','de','LC_MESSAGES','test.mo')
+de_file = File.join('spec','locale','de','LC_MESSAGES','test.mo')
 de = FastGettext::MoFile.new(de_file)
 
 describe FastGettext::MoFile do

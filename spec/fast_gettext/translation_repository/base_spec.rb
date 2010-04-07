@@ -1,5 +1,4 @@
-current_folder = File.dirname(__FILE__)
-require File.join(current_folder,'..','..','spec_helper')
+require 'spec/spec_helper'
 require 'fast_gettext/translation_repository/base'
 
 describe 'FastGettext::TranslationRepository::Base' do

@@ -1,5 +1,4 @@
-current_folder = File.dirname(__FILE__)
-require File.join(current_folder,'..','spec_helper')
+require 'spec/spec_helper'
 
 module FastGettext
   module TranslationRepository

@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__),'spec_helper')
+require 'spec/spec_helper'
 
 describe 'unconfigured' do
   it "gives a useful error message when trying to just translate" do

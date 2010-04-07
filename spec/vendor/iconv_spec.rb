@@ -1,10 +1,16 @@
-current_folder = File.dirname(__FILE__)
-$LOAD_PATH.unshift File.expand_path("../../lib", current_folder)
 
 describe 'Iconv' do
+  before do
+    @fake_load_path = File.join('spec','vendor','fake_load_path')
+  end
+
+  after do
+    $LOAD_PATH.delete @fake_load_path
+  end
+
   it "also works when Iconv was not found locally" do
     #prepare load path
-    $LOAD_PATH.unshift File.join(current_folder,'fake_load_path')
+    $LOAD_PATH.unshift @fake_load_path
     test = 1
     begin
       require 'iconv'
@@ -16,7 +22,7 @@ describe 'Iconv' do
     #load fast_gettext
     require 'fast_gettext'
 
-    FastGettext.add_text_domain('test',:path=>File.join(File.dirname(__FILE__),'..','locale'))
+    FastGettext.add_text_domain('test',:path=>File.join('spec','locale'))
     FastGettext.text_domain = 'test'
     FastGettext.available_locales = ['en','de']
     FastGettext.locale = 'de'
