@@ -10,8 +10,10 @@
 
 # Extension for String class. This feature is included in Ruby 1.9 or later.
 begin
-  raise unless ("a %{x}" % {:x=>'b'}) == 'a b'
+  raise ArgumentError if ("a %{x}" % {:x=>'b'}) != 'a b'
 rescue ArgumentError
+  # either we are on vanilla 1.8(call with hash raises ArgumentError)
+  # or someone else already patched % but did it wrong
   class String
     alias :_fast_gettext_old_format_m :% # :nodoc:
 

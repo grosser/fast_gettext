@@ -2,6 +2,16 @@ require 'spec/spec_helper'
 
 #just to make sure we did not mess up while copying...
 describe String do
+  before :all do
+    if "i18n gem overwrites % method".respond_to?(:interpolate_without_ruby_19_syntax)
+      class String
+        def %(*args)
+          interpolate_without_ruby_19_syntax(*args)
+        end
+      end
+    end
+  end
+
   it "does not translate twice" do
     ("%{a} %{b}" % {:a=>'%{b}',:b=>'c'}).should == '%{b} c'
   end
