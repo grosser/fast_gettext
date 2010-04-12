@@ -5,7 +5,7 @@ module FastGettext
   # TODO refactor...
   class PoFile
     def self.to_mo_file(file)
-      require File.join(File.dirname(__FILE__),'..','..','vendor','poparser')
+      require 'fast_gettext/vendor/poparser'
       mo_file = FastGettext::GetText::MOFile.new
       FastGettext::GetText::PoParser.new.parse(File.read(file),mo_file)
       MoFile.new(mo_file)

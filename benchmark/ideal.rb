@@ -1,9 +1,11 @@
 require 'benchmark/base'
 
+$LOAD_PATH.unshift 'lib'
+
 module FastestGettext
   def set_domain(folder,domain,locale)
     @data = {}
-    require File.join(File.dirname(__FILE__),'..','vendor','mofile')
+    require 'fast_gettext/vendor/mofile'
     FastGettext::GetText::MOFile.open(File.join(folder,locale,'LC_MESSAGES',"#{domain}.mo"), "UTF-8").each{|k,v|@data[k]=v}
   end
   def _(word)

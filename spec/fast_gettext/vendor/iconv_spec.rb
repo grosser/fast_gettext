@@ -1,7 +1,7 @@
 
 describe 'Iconv' do
   before do
-    @fake_load_path = File.join('spec','vendor','fake_load_path')
+    @fake_load_path = File.join('spec','fast_gettext','vendor','fake_load_path')
   end
 
   after do
