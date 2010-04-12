@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fast_gettext}
-  s.version = "0.5.2"
+  s.version = "0.5.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2010-04-07}
+  s.date = %q{2010-04-12}
   s.email = %q{grosser.michael@gmail.com}
   s.extra_rdoc_files = [
     "README.markdown"
@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
      "examples/missing_translation_logger.rb",
      "fast_gettext.gemspec",
      "lib/fast_gettext.rb",
+     "lib/fast_gettext/VERSION",
      "lib/fast_gettext/mo_file.rb",
      "lib/fast_gettext/po_file.rb",
      "lib/fast_gettext/storage.rb",
@@ -49,6 +50,12 @@ Gem::Specification.new do |s|
      "lib/fast_gettext/translation_repository/mo.rb",
      "lib/fast_gettext/translation_repository/po.rb",
      "lib/fast_gettext/translation_repository/yaml.rb",
+     "lib/fast_gettext/vendor/README.rdoc",
+     "lib/fast_gettext/vendor/empty.mo",
+     "lib/fast_gettext/vendor/iconv.rb",
+     "lib/fast_gettext/vendor/mofile.rb",
+     "lib/fast_gettext/vendor/poparser.rb",
+     "lib/fast_gettext/vendor/string.rb",
      "spec/aa_unconfigued_spec.rb",
      "spec/fast_gettext/mo_file_spec.rb",
      "spec/fast_gettext/storage_spec.rb",
@@ -61,6 +68,9 @@ Gem::Specification.new do |s|
      "spec/fast_gettext/translation_repository/yaml_spec.rb",
      "spec/fast_gettext/translation_repository_spec.rb",
      "spec/fast_gettext/translation_spec.rb",
+     "spec/fast_gettext/vendor/fake_load_path/iconv.rb",
+     "spec/fast_gettext/vendor/iconv_spec.rb",
+     "spec/fast_gettext/vendor/string_spec.rb",
      "spec/fast_gettext_spec.rb",
      "spec/locale/de/LC_MESSAGES/test.mo",
      "spec/locale/de/test.po",
@@ -71,16 +81,7 @@ Gem::Specification.new do |s|
      "spec/locale/yaml/de.yml",
      "spec/locale/yaml/en.yml",
      "spec/locale/yaml/notfound.yml",
-     "spec/spec_helper.rb",
-     "spec/vendor/fake_load_path/iconv.rb",
-     "spec/vendor/iconv_spec.rb",
-     "spec/vendor/string_spec.rb",
-     "vendor/README.rdoc",
-     "vendor/empty.mo",
-     "vendor/iconv.rb",
-     "vendor/mofile.rb",
-     "vendor/poparser.rb",
-     "vendor/string.rb"
+     "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/grosser/fast_gettext}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -90,9 +91,6 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/spec_helper.rb",
      "spec/aa_unconfigued_spec.rb",
-     "spec/vendor/fake_load_path/iconv.rb",
-     "spec/vendor/iconv_spec.rb",
-     "spec/vendor/string_spec.rb",
      "spec/fast_gettext_spec.rb",
      "spec/fast_gettext/translation_repository_spec.rb",
      "spec/fast_gettext/translation_repository/mo_spec.rb",
@@ -102,6 +100,9 @@ Gem::Specification.new do |s|
      "spec/fast_gettext/translation_repository/base_spec.rb",
      "spec/fast_gettext/translation_repository/po_spec.rb",
      "spec/fast_gettext/translation_repository/chain_spec.rb",
+     "spec/fast_gettext/vendor/fake_load_path/iconv.rb",
+     "spec/fast_gettext/vendor/iconv_spec.rb",
+     "spec/fast_gettext/vendor/string_spec.rb",
      "spec/fast_gettext/translation_spec.rb",
      "spec/fast_gettext/mo_file_spec.rb",
      "spec/fast_gettext/storage_spec.rb",
