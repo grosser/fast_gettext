@@ -189,6 +189,7 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
 ###Contributors
  - [geekq](http://www.innoq.com/blog/vd)
  - [Matt Sanford](http://blog.mzsanford.com)
+ - [Antonio Terceiro](http://softwarelivre.org/terceiro)
  - Rudolf Gavlas
 
 [Michael Grosser](http://pragmatig.wordpress.com)  
