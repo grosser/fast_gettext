@@ -51,7 +51,11 @@ module FastGettext
         folder = "fast_gettext/translation_repository/db_models"
         require "#{folder}/translation_key"
         require "#{folder}/translation_text"
-        'you no longer need to include the models'
+        Module.new do
+          def self.included(base)
+            puts "you no longer need to include the result of require_models"
+          end
+        end
       end
     end
   end

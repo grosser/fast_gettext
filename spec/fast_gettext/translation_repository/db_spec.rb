@@ -2,7 +2,6 @@ require 'spec/spec_helper'
 
 require 'active_record'
 require 'fast_gettext/translation_repository/db'
-
 FastGettext::TranslationRepository::Db.require_models
 describe FastGettext::TranslationRepository::Db do
 
