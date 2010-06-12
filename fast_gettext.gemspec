@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fast_gettext}
-  s.version = "0.5.3"
+  s.version = "0.5.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2010-04-12}
+  s.date = %q{2010-06-12}
   s.email = %q{grosser.michael@gmail.com}
   s.extra_rdoc_files = [
     "README.markdown"
@@ -89,25 +89,25 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{A simple, fast and threadsafe implementation of GetText}
   s.test_files = [
-    "spec/spec_helper.rb",
-     "spec/aa_unconfigued_spec.rb",
-     "spec/fast_gettext_spec.rb",
-     "spec/fast_gettext/translation_repository_spec.rb",
-     "spec/fast_gettext/translation_repository/mo_spec.rb",
-     "spec/fast_gettext/translation_repository/db_spec.rb",
-     "spec/fast_gettext/translation_repository/yaml_spec.rb",
-     "spec/fast_gettext/translation_repository/logger_spec.rb",
-     "spec/fast_gettext/translation_repository/base_spec.rb",
-     "spec/fast_gettext/translation_repository/po_spec.rb",
-     "spec/fast_gettext/translation_repository/chain_spec.rb",
-     "spec/fast_gettext/vendor/fake_load_path/iconv.rb",
-     "spec/fast_gettext/vendor/iconv_spec.rb",
-     "spec/fast_gettext/vendor/string_spec.rb",
-     "spec/fast_gettext/translation_spec.rb",
+    "spec/aa_unconfigued_spec.rb",
      "spec/fast_gettext/mo_file_spec.rb",
      "spec/fast_gettext/storage_spec.rb",
-     "examples/missing_translation_logger.rb",
-     "examples/db/migration.rb"
+     "spec/fast_gettext/translation_spec.rb",
+     "spec/fast_gettext/translation_repository_spec.rb",
+     "spec/fast_gettext/translation_repository/base_spec.rb",
+     "spec/fast_gettext/translation_repository/chain_spec.rb",
+     "spec/fast_gettext/translation_repository/db_spec.rb",
+     "spec/fast_gettext/translation_repository/po_spec.rb",
+     "spec/fast_gettext/translation_repository/mo_spec.rb",
+     "spec/fast_gettext/translation_repository/logger_spec.rb",
+     "spec/fast_gettext/translation_repository/yaml_spec.rb",
+     "spec/fast_gettext/vendor/string_spec.rb",
+     "spec/fast_gettext/vendor/iconv_spec.rb",
+     "spec/fast_gettext/vendor/fake_load_path/iconv.rb",
+     "spec/spec_helper.rb",
+     "spec/fast_gettext_spec.rb",
+     "examples/db/migration.rb",
+     "examples/missing_translation_logger.rb"
   ]
 
   if s.respond_to? :specification_version then
