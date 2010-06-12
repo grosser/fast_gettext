@@ -17,12 +17,19 @@ module FastGettext::TranslationRepository
         @@available_locales ||= TranslationText.count(:group=>:locale).keys.sort
       end
 
-      #this is only for ActiveSupport to get polymorphic_url FastGettext::... namespace free
+      # get polymorphic_url FastGettext::... namespace free
+      # !! copied in translation_text.rb
+      def self.name
+        'TranslationKey'
+      end
+
       def self.model_name
-        if defined? ActiveSupport::ModelName
-          ActiveSupport::ModelName.new('TranslationKey')
-        else
-          'TranslationKey'
+        if defined? ActiveSupport::ModelName # Rails 2
+          ActiveSupport::ModelName.new(name)
+        elsif defined? ActiveModel::Name # Rails 3
+          ActiveModel::Name.new(self)
+        else # Fallback
+          name
         end
       end
     end
