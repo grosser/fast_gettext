@@ -19,7 +19,11 @@ module FastGettext::TranslationRepository
 
       #this is only for ActiveSupport to get polymorphic_url FastGettext::... namespace free
       def self.model_name
-        ActiveSupport::ModelName.new('TranslationKey')
+        if defined? ActiveSupport::ModelName
+          ActiveSupport::ModelName.new('TranslationKey')
+        else
+          'TranslationKey'
+        end
       end
     end
   end
