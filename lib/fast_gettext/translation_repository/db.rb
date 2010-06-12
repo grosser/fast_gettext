@@ -48,9 +48,10 @@ module FastGettext
       end
 
       def self.require_models
-        require 'fast_gettext/translation_repository/db_models/translation_key'
-        require 'fast_gettext/translation_repository/db_models/translation_text'
-        FastGettext::TranslationRepository::DbModels
+        folder = "fast_gettext/translation_repository/db_models"
+        require "#{folder}/translation_key"
+        require "#{folder}/translation_text"
+        'you no longer need to include the models'
       end
     end
   end

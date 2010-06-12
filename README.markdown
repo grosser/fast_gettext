@@ -59,7 +59,7 @@ Or yaml files (use I18n syntax/indentation)
 Or database (scaleable, good for many locales/translators)
     # db access is cached <-> only first lookup hits the db 
     require "fast_gettext/translation_repository/db"
-    include FastGettext::TranslationRepository::Db.require_models #load and include default models
+    FastGettext::TranslationRepository::Db.require_models #load and include default models
     FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
 
 ### 3. Choose text domain and locale for translation

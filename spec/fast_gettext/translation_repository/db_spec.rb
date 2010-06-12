@@ -3,7 +3,7 @@ require 'spec/spec_helper'
 require 'active_record'
 require 'fast_gettext/translation_repository/db'
 
-include FastGettext::TranslationRepository::Db.require_models
+FastGettext::TranslationRepository::Db.require_models
 describe FastGettext::TranslationRepository::Db do
 
   before :all do
