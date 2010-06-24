@@ -49,5 +49,9 @@ module FastGettext
     def Nn_(*keys)
       keys
     end
+
+    def ns_(*args)
+      n_(*args).split(NAMESPACE_SEPERATOR).last
+    end
   end
 end

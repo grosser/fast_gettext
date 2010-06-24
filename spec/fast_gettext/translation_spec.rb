@@ -101,6 +101,13 @@ describe FastGettext::Translation do
     end
   end
 
+  describe :ns_ do
+    it "translates whith namespace" do
+      ns_('Fruit|Apple','Fruit|Apples',2).should == 'Apples'
+    end
+  end
+
+
   describe :caching do
     describe :cache_hit do
       before do
