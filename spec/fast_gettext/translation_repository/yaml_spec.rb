@@ -2,6 +2,7 @@ require 'spec/spec_helper'
 
 describe 'FastGettext::TranslationRepository::Yaml' do
   before do
+    FastGettext.pluralisation_rule = nil
     @rep = FastGettext::TranslationRepository.build('test', :path => File.join('spec', 'locale', 'yaml'), :type => :yaml)
     @rep.is_a?(FastGettext::TranslationRepository::Yaml).should be_true
     FastGettext.locale = 'de'
@@ -43,11 +44,11 @@ describe 'FastGettext::TranslationRepository::Yaml' do
     FastGettext.n_('cars.axis',1).should == 'Achse'
   end
 
-  it "can be used to do wanky pluralisation rules" do
-    FastGettext.stub!(:current_repository).and_return @rep
-    4.times do |i|
+  4.times do |i|
+    it "can be used to do wanky pluralisation rules #{i}" do
+      FastGettext.stub!(:current_repository).and_return @rep
       @rep.stub!(:pluralisation_rule).and_return lambda{i}
-      FastGettext.n_('cars.silly',1).should == i.to_s
+      FastGettext.n_('cars.silly',1).should == i.to_s # cars.silly translations are 0,1,2,3
     end
   end
 

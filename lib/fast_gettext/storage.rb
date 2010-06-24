@@ -56,6 +56,8 @@ module FastGettext
     end
 
 
+    # if overwritten by user( FastGettext.pluralisation_rule = xxx) use it,
+    # otherwise fall back to repo or to default lambda 
     def pluralisation_rule
       Thread.current[:fast_gettext_pluralisation_rule] ||  current_repository.pluralisation_rule || lambda{|i| i!=1}
     end
