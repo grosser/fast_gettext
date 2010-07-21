@@ -104,16 +104,21 @@ describe 'Storage' do
       thread_save(:default_available_locales, 'xx').should == false
     end
 
+    it "converts locales to s" do
+      self.available_locales = [:x]
+      available_locales.should == ['x']
+    end
+
     it "uses default_available_locales when available_locales is not set" do
       self.available_locales = nil
-      self.default_available_locales = 'x'
-      available_locales.should == 'x'
+      self.default_available_locales = ['x']
+      available_locales.should == ['x']
     end
 
     it "does not use default when available_locales is set" do
-      self.available_locales = 'x'
-      self.default_available_locales = 'y'
-      available_locales.should == 'x'
+      self.available_locales = ['x']
+      self.default_available_locales = ['y']
+      available_locales.should == ['x']
     end
   end
 

@@ -25,7 +25,9 @@ module FastGettext
 
 
     def available_locales
-      Thread.current[:fast_gettext_available_locales] || default_available_locales
+      locales = Thread.current[:fast_gettext_available_locales] || default_available_locales
+      return unless locales
+      locales.map{|s|s.to_s}
     end
 
     # == cattr_accessor :default_available_locales
