@@ -4,10 +4,10 @@ module FastGettext
   #  - abstract po files for Po Repository
   # TODO refactor...
   class PoFile
-    def self.to_mo_file(file)
+    def self.to_mo_file(file, options={})
       require 'fast_gettext/vendor/poparser'
       mo_file = FastGettext::GetText::MOFile.new
-      FastGettext::GetText::PoParser.new.parse(File.read(file),mo_file)
+      FastGettext::GetText::PoParser.new.parse(File.read(file), mo_file, !options[:ignore_fuzzy])
       MoFile.new(mo_file)
     end
   end

@@ -52,6 +52,7 @@ From mo files (traditional/default)
 
 Or po files (less maintenance than mo)
     FastGettext.add_text_domain('my_app',:path=>'locale', :type=>:po)
+    # :ignore_fuzzy => true to silence warnings
 
 Or yaml files (use I18n syntax/indentation)
     FastGettext.add_text_domain('my_app',:path=>'config/locales', :type=>:yaml)

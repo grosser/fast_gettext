@@ -26,4 +26,16 @@ describe 'FastGettext::TranslationRepository::Po' do
     rep['car'].should == 'Test'#just check it is loaded correctly
     rep.pluralisation_rule.call(2).should == 3
   end
+
+  describe 'fuzzy' do
+    it "should warn on fuzzy by default" do
+      $stderr.should_receive(:print).at_least(:once)
+      FastGettext::TranslationRepository.build('test',:path=>File.join('spec','fuzzy_locale'),:type=>:po)
+    end
+
+    it "should ignore fuzzy when told to do so" do
+      $stderr.should_not_receive(:print)
+      FastGettext::TranslationRepository.build('test',:path=>File.join('spec','fuzzy_locale'),:type=>:po, :ignore_fuzzy => true)
+    end
+  end
 end
