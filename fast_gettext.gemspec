@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fast_gettext}
-  s.version = "0.5.8"
+  s.version = "0.5.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2010-07-21}
+  s.date = %q{2010-09-16}
   s.email = %q{grosser.michael@gmail.com}
   s.extra_rdoc_files = [
     "README.markdown"
@@ -72,6 +72,7 @@ Gem::Specification.new do |s|
      "spec/fast_gettext/vendor/iconv_spec.rb",
      "spec/fast_gettext/vendor/string_spec.rb",
      "spec/fast_gettext_spec.rb",
+     "spec/fuzzy_locale/de/test.po",
      "spec/locale/de/LC_MESSAGES/test.mo",
      "spec/locale/de/test.po",
      "spec/locale/en/LC_MESSAGES/plural_test.mo",
