@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fast_gettext}
-  s.version = "0.5.9"
+  s.version = "0.5.10"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2010-09-16}
+  s.date = %q{2010-09-17}
   s.email = %q{grosser.michael@gmail.com}
   s.extra_rdoc_files = [
     "README.markdown"
@@ -82,6 +82,7 @@ Gem::Specification.new do |s|
      "spec/locale/yaml/de.yml",
      "spec/locale/yaml/en.yml",
      "spec/locale/yaml/notfound.yml",
+     "spec/obsolete_locale/de/test.po",
      "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/grosser/fast_gettext}
