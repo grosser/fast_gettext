@@ -7,7 +7,7 @@ module FastGettext
     def self.to_mo_file(file, options={})
       require 'fast_gettext/vendor/poparser'
       mo_file = FastGettext::GetText::MOFile.new
-      FastGettext::GetText::PoParser.new.parse(File.read(file), mo_file, !options[:ignore_fuzzy])
+      FastGettext::GetText::PoParser.new.parse(File.read(file), mo_file, !options[:ignore_fuzzy], !options[:ignore_obsolete])
       MoFile.new(mo_file)
     end
   end

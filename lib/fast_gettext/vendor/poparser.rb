@@ -30,7 +30,7 @@ module_eval <<'..end src/poparser.ry modeval..id7a99570e05', 'src/poparser.ry', 
     ret
   end
   
-  def parse(str, data, ignore_fuzzy = true)
+  def parse(str, data, ignore_fuzzy = true, show_obsolete = true)
     @comments = []
     @data = data
     @fuzzy = false
@@ -59,8 +59,10 @@ module_eval <<'..end src/poparser.ry modeval..id7a99570e05', 'src/poparser.ry', 
 	@q.push [:PLURAL_NUM, $1]
 	str = $'
       when /\A\#~(.*)/
-	$stderr.print _("Warning: obsolete msgid exists.\n")
-	$stderr.print "         #{$&}\n"
+  if show_obsolete
+	  $stderr.print _("Warning: obsolete msgid exists.\n")
+	  $stderr.print "         #{$&}\n"
+	end
 	@q.push [:COMMENT, $&]
 	str = $'
       when /\A\#(.*)/
