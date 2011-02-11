@@ -47,7 +47,7 @@ describe 'FastGettext::TranslationRepository::Yaml' do
   4.times do |i|
     it "can be used to do wanky pluralisation rules #{i}" do
       FastGettext.stub!(:current_repository).and_return @rep
-      @rep.stub!(:pluralisation_rule).and_return lambda{i}
+      @rep.stub!(:pluralisation_rule).and_return lambda{|x| i}
       FastGettext.n_('cars.silly',1).should == i.to_s # cars.silly translations are 0,1,2,3
     end
   end
