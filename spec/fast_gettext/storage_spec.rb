@@ -5,29 +5,40 @@ describe 'Storage' do
 
   before do
     #reset everything to nil
-    self.available_locales = nil
+    self.default_available_locales = nil
     self.default_text_domain = nil
     self.default_locale = nil
-    send(:_locale=,nil)#nil is not allowed to be set...
-    default_locale.should be_nil
-    available_locales.should be_nil
+    self.available_locales = nil
+    self.text_domain = 'xxx'
+    send(:_locale=, nil)#nil is not allowed to be set...
+
+    default_locale.should == nil
+    default_available_locales.should == nil
+    available_locales.should == nil
     locale.should == 'en'
+    text_domain.should == 'xxx'
   end
 
-  def thread_save(method, value)
-    send("#{method}=",value)
+  def thread_save(method, value_a, value_b)
+    send("#{method}=",value_a)
 
     # mess around with other threads
     100.times do
-      Thread.new {FastGettext.send("#{method}=",'en')}
+      Thread.new {FastGettext.send("#{method}=",value_b)}
     end
+    sleep 0.1 # Ruby 1.9 cannot switch threads fat enough <-> spec fails without this WTF!
     
-    send(method) == value
+    !!(send(method) == value_a)
   end
 
-  {:locale=>'de', :available_locales=>['de'], :text_domain=>'xx', :pluralisation_rule=>lambda{|x|x==4}}.each do |method, value|
+  {
+    :locale=>['de','en'],
+    :available_locales=>[['de'],['en']],
+    :text_domain=>['xx','yy'],
+    :pluralisation_rule=>[lambda{|x|x==4},lambda{|x|x==1}]
+  }.each do |method, (value_a, value_b)|
     it "stores #{method} thread-save" do
-      thread_save(method, value).should == true
+      thread_save(method, value_a, value_b).should == true
     end
   end
 
@@ -50,7 +61,7 @@ describe 'Storage' do
 
   describe :default_locale do
     it "stores default_locale non-thread-safe" do
-      thread_save(:default_locale, 'de').should == false
+      thread_save(:default_locale, 'de', 'en').should == false
     end
 
     it "does not overwrite locale" do
@@ -79,7 +90,7 @@ describe 'Storage' do
 
   describe :default_text_domain do
     it "stores default_text_domain non-thread-safe" do
-      thread_save(:default_text_domain, 'xx').should == false
+      thread_save(:default_text_domain, 'xx', 'en').should == false
     end
 
     it "uses default_text_domain when text_domain is not set" do
@@ -96,12 +107,8 @@ describe 'Storage' do
   end
 
   describe :default_available_locales do
-    after do
-      self.default_available_locales = nil
-    end
-
     it "stores default_available_locales non-thread-safe" do
-      thread_save(:default_available_locales, 'xx').should == false
+      thread_save(:default_available_locales, ['xx'], ['yy']).should == false
     end
 
     it "converts locales to s" do
@@ -195,10 +202,6 @@ describe 'Storage' do
   end
 
   describe :silence_errors do
-    before do
-      FastGettext.text_domain = 'xxx'
-    end
-
     it "raises when a textdomain was empty" do
       begin 
         FastGettext._('x')
