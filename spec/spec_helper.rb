@@ -4,7 +4,7 @@ $LOAD_PATH.unshift File.expand_path("../lib", File.dirname(__FILE__))
 require 'fast_gettext'
 
 # ---- revert to defaults
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   config.before :all do
     FastGettext.locale = 'de'
     FastGettext.available_locales = nil
