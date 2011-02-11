@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require File.expand_path('spec/spec_helper')
 
 default_setup
 class IncludeTest

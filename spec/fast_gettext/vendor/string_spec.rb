@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require File.expand_path('spec/spec_helper')
 
 #just to make sure we did not mess up while copying...
 describe String do

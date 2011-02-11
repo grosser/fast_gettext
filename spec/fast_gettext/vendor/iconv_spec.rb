@@ -1,3 +1,4 @@
+require File.expand_path('spec/spec_helper')
 
 describe 'Iconv' do
   before do

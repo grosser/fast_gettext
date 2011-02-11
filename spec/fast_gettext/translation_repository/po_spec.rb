@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require File.expand_path('spec/spec_helper')
 
 describe 'FastGettext::TranslationRepository::Po' do
   before do
