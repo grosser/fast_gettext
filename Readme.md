@@ -1,6 +1,6 @@
 FastGettext
 ===========
-GetText but 3.5 x faster, 560 x less memory, simple, clean namespace (7 vs 34) and threadsave!  
+GetText but 3.5 x faster, 560 x less memory, simple, clean namespace (7 vs 34) and threadsave!
 
 It supports multiple backends (.mo, .po, .yml files, Database(ActiveRecor + any other), Chain, Loggers) and can easily be extended.
 
@@ -59,7 +59,7 @@ Or yaml files (use I18n syntax/indentation)
     FastGettext.add_text_domain('my_app',:path=>'config/locales', :type=>:yaml)
 
 Or database (scaleable, good for many locales/translators)
-    # db access is cached <-> only first lookup hits the db 
+    # db access is cached <-> only first lookup hits the db
     require "fast_gettext/translation_repository/db"
     FastGettext::TranslationRepository::Db.require_models #load and include default models
     FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
@@ -90,7 +90,7 @@ Use the [original GetText](http://github.com/mutoh/gettext) to create and manage
 (Work on a po/mo parser & reader that is easier to use has started, contributions welcome @ [pomo](http://github.com/grosser/pomo) )
 
 ###Database
-[Example migration for ActiveRecord](http://github.com/grosser/fast_gettext/blob/master/examples/db/migration.rb)  
+[Example migration for ActiveRecord](http://github.com/grosser/fast_gettext/blob/master/examples/db/migration.rb)<br/>
 The default plural seperator is `||||` but you may overwrite it (or suggest a better one..).
 
 This is usable with any model DataMapper/Sequel or any other(non-database) backend, the only thing you need to do is respond to the self.translation(key, locale) call.
@@ -100,7 +100,7 @@ To manage translations via a Web GUI, use a [Rails application and the translati
 
 Rails
 =======================
-Try the [gettext_i18n_rails plugin](http://github.com/grosser/gettext_i18n_rails), it simplifies the setup.  
+Try the [gettext_i18n_rails plugin](http://github.com/grosser/gettext_i18n_rails), it simplifies the setup.<br/>
 Try the [translation_db_engine](http://github.com/grosser/translation_db_engine), to manage your translations in a db.
 
 Setting `available_locales`,`text_domain` or `locale` will not work inside the `evironment.rb`,
@@ -195,6 +195,6 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
  - [J. Pablo Fernández](http://pupeno.com)
  - Rudolf Gavlas
 
-[Michael Grosser](http://pragmatig.wordpress.com)  
-grosser.michael@gmail.com  
-Hereby placed under public domain, do what you want, just do not hold me accountable...  
+[Michael Grosser](http://grosser.it)<br/>
+michael@grosser.it<br/>
+Hereby placed under public domain, do what you want, just do not hold me accountable...
