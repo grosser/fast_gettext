@@ -12,6 +12,9 @@ describe 'Storage' do
     self.text_domain = 'xxx'
     send(:_locale=, nil)#nil is not allowed to be set...
 
+    # fake a simple text-domain
+    translation_repositories[text_domain] = FastGettext::TranslationRepository::Base.new('x')
+
     default_locale.should == nil
     default_available_locales.should == nil
     available_locales.should == nil
@@ -27,7 +30,7 @@ describe 'Storage' do
       Thread.new {FastGettext.send("#{method}=",value_b)}
     end
     sleep 0.1 # Ruby 1.9 cannot switch threads fat enough <-> spec fails without this WTF!
-    
+
     !!(send(method) == value_a)
   end
 
@@ -202,17 +205,32 @@ describe 'Storage' do
   end
 
   describe :silence_errors do
+    before do
+      self.text_domain = rand(99999).to_s
+    end
+
     it "raises when a textdomain was empty" do
-      begin 
+      begin
         FastGettext._('x')
-        "".should == "success!?"
+        raise 'NOPE!'
       rescue FastGettext::Storage::NoTextDomainConfigured
       end
     end
 
-    it "can silence erros" do
+    it "can silence errors" do
       FastGettext.silence_errors
       FastGettext._('x').should == 'x'
+    end
+
+    it "does not overwrite existing textdomain" do
+      self.translation_repositories[FastGettext.text_domain] = 1
+      FastGettext.silence_errors
+      self.translation_repositories[FastGettext.text_domain].should == 1
+    end
+
+    it "has ./locale as locale path when silenced" do
+      FastGettext.silence_errors
+      FastGettext.locale_path.should == 'locale'
     end
   end
 
