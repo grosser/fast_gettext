@@ -35,9 +35,9 @@ module FastGettext
 
     #translate, but discard namespace if nothing was found
     # Car|Tire -> Tire if no translation could be found
-    def s_(key,seperator=nil)
+    def s_(key,separator=nil)
       translation = FastGettext.cached_find(key) and return translation
-      key.split(seperator||NAMESPACE_SEPERATOR).last
+      key.split(separator||NAMESPACE_SEPARATOR).last
     end
 
     #tell gettext: this string need translation (will be found during parsing)
@@ -51,7 +51,7 @@ module FastGettext
     end
 
     def ns_(*args)
-      n_(*args).split(NAMESPACE_SEPERATOR).last
+      n_(*args).split(NAMESPACE_SEPARATOR).last
     end
   end
 end

@@ -10,9 +10,9 @@ module FastGettext
 
   VERSION = File.read( File.join(File.dirname(__FILE__), 'fast_gettext', 'VERSION') ).strip
   LOCALE_REX =  /^[a-z]{2}$|^[a-z]{2}_[A-Z]{2}$/
-  NAMESPACE_SEPERATOR = '|'
+  NAMESPACE_SEPARATOR = '|'
 
-  # users should not include FastGettext, since this would conterminate their namespace
+  # users should not include FastGettext, since this would contaminate their namespace
   # rather use
   # FastGettext.locale = ..
   # FastGettext.text_domain = ..
