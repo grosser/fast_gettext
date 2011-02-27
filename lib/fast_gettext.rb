@@ -27,4 +27,9 @@ module FastGettext
   def add_text_domain(name,options)
     translation_repositories[name] = TranslationRepository.build(name,options)
   end
+
+  # some repositories know where to store their locales
+  def locale_path
+    translation_repositories[text_domain].instance_variable_get(:@options)[:path]
+  end
 end
