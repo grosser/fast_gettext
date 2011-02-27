@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
   s.date = %q{2011-02-27}
-  s.email = %q{grosser.michael@gmail.com}
+  s.email = %q{michael@grosser.it}
   s.files = [
     "CHANGELOG",
     "Gemfile",
@@ -86,7 +86,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/grosser/fast_gettext}
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.4.2}
-  s.summary = %q{A simple, fast and threadsafe implementation of GetText}
+  s.summary = %q{A simple, fast, memory-efficient and threadsafe implementation of GetText}
   s.test_files = [
     "examples/db/migration.rb",
     "examples/missing_translation_logger.rb",
