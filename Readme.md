@@ -177,6 +177,7 @@ Write your own TranslationRepository!
 FAQ
 ===
  - [Problems with ActiveRecord messages?](http://wiki.github.com/grosser/fast_gettext/activerecord)
+ - [Iconv require error in 1.9.2](http://exceptionz.wordpress.com/2010/02/03/how-to-fix-the-iconv-require-error-in-ruby-1-9)
 
 
 TODO
