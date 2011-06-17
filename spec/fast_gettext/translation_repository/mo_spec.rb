@@ -7,7 +7,7 @@ describe 'FastGettext::TranslationRepository::Mo' do
   end
 
   it "can be built" do
-    @rep.available_locales.sort.should == ['de','en']
+    @rep.available_locales.sort.should == ['de','en','gsw_CH']
   end
 
   it "can translate" do
