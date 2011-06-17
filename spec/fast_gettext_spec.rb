@@ -37,6 +37,11 @@ describe FastGettext do
     IncludeTest.xx.should == 'Auto'
   end
 
+  it "loads 3-letter locales as well" do
+    FastGettext.locale = 'gsw_CH'
+    FastGettext._('Car was successfully created.').should == "Z auto isch erfolgriich gspeicharat worda."
+  end
+
   it "has a VERSION" do
     FastGettext::VERSION.should =~ /^\d+\.\d+\.\d+$/
   end
