@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fast_gettext}
-  s.version = "0.5.11"
+  s.version = "0.5.12"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2011-02-27}
+  s.date = %q{2011-06-17}
   s.email = %q{michael@grosser.it}
   s.files = [
     "CHANGELOG",
@@ -77,6 +77,8 @@ Gem::Specification.new do |s|
     "spec/locale/en/LC_MESSAGES/test.mo",
     "spec/locale/en/plural_test.po",
     "spec/locale/en/test.po",
+    "spec/locale/gsw_CH/LC_MESSAGES/test.mo",
+    "spec/locale/gsw_CH/test.po",
     "spec/locale/yaml/de.yml",
     "spec/locale/yaml/en.yml",
     "spec/locale/yaml/notfound.yml",
@@ -85,7 +87,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://github.com/grosser/fast_gettext}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.4.2}
+  s.rubygems_version = %q{1.6.2}
   s.summary = %q{A simple, fast, memory-efficient and threadsafe implementation of GetText}
   s.test_files = [
     "examples/db/migration.rb",
