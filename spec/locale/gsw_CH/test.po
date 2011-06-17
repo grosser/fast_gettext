@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: version 0.0.1\n"
+"POT-Creation-Date: 2009-02-26 19:50+0100\n"
+"PO-Revision-Date: 2011-06-17 14:09+0100\n"
+"Last-Translator: Ramón Cahenzli <rca@psy-q.ch>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: app/helpers/translation_helper.rb:3
+msgid "%{relative_time} ago"
+msgstr "vor %{relative_time}"
+
+#: app/views/cars/show.html.erb:5
+msgid "Axis"
+msgid_plural "Axis"
+msgstr[0] "Achsa"
+msgstr[1] "Achsana"
+
+#: app/controllers/cars_controller.rb:47
+msgid "Car was successfully created."
+msgstr "Z auto isch erfolgriich gspeicharat worda."
+
+#: app/controllers/cars_controller.rb:64
+msgid "Car was successfully updated."
+msgstr "Z auto isch erfolgriich aktualisiart worda."
+
+#: app/views/cars/show.html.erb:1
+#: locale/model_attributes.rb:3
+msgid "Car|Model"
+msgstr "Modell"
+
+#: app/views/cars/show.html.erb:3
+#: locale/model_attributes.rb:4
+msgid "Car|Wheels count"
+msgstr "Räderzahl"
+
+#: app/views/cars/show.html.erb:7
+msgid "Created"
+msgstr "Erstellt"
+
+#: app/views/cars/show.html.erb:9
+msgid "Month"
+msgstr "Monat"
+
+#: locale/model_attributes.rb:2
+msgid "car"
+msgstr "Auto"
+
+#: locale/testlog_phrases.rb:2
+msgid "this is a dynamic translation which was found thorugh gettext_test_log!"
+msgstr "Das isch a dynamischi übersetzig, wo dur gettext_test_log gfunda worda isch!"
+

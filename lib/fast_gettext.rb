@@ -9,7 +9,7 @@ module FastGettext
   extend self
 
   VERSION = File.read( File.join(File.dirname(__FILE__), 'fast_gettext', 'VERSION') ).strip
-  LOCALE_REX =  /^[a-z]{2}$|^[a-z]{2}_[A-Z]{2}$/
+  LOCALE_REX =  /^[a-z]{2,3}$|^[a-z]{2,3}_[A-Z]{2,3}$/
   NAMESPACE_SEPARATOR = '|'
 
   # users should not include FastGettext, since this would contaminate their namespace
