@@ -195,6 +195,7 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
  - [Antonio Terceiro](http://softwarelivre.org/terceiro)
  - [J. Pablo Fernández](http://pupeno.com)
  - Rudolf Gavlas
+ - [Ramón Cahenzli](http://www.psy-q.ch)
 
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
