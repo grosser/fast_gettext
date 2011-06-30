@@ -41,7 +41,7 @@ module FastGettext
           file = File.join(locale_folder,relative_file_path)
           next unless File.exist? file
           locale = File.basename(locale_folder)
-          yield(locale,file)
+          @files[locale] = yield(locale,file)
         end
       end
     end
