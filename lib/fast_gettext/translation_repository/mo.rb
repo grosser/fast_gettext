@@ -23,7 +23,7 @@ module FastGettext
       def find_and_store_files(name,options)
         # parse all .mo files with the right name, that sit in locale/LC_MESSAGES folders
         find_files_in_locale_folders(File.join('LC_MESSAGES',"#{name}.mo"), options[:path]) do |locale,file|
-          @files[locale] = MoFile.new(file)
+          MoFile.new(file)
         end
       end
 
