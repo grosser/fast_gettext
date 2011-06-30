@@ -189,13 +189,14 @@ Author
 ======
 Mo/Po-file parsing from Masao Mutoh, see vendor/README
 
-###Contributors
+### [Contributors](http://github.com/grosser/fast_gettext/contributors)
  - [geekq](http://www.innoq.com/blog/vd)
  - [Matt Sanford](http://blog.mzsanford.com)
  - [Antonio Terceiro](http://softwarelivre.org/terceiro)
  - [J. Pablo Fernández](http://pupeno.com)
  - Rudolf Gavlas
  - [Ramón Cahenzli](http://www.psy-q.ch)
+ - [Rainux Luo](http://rainux.org)
 
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
