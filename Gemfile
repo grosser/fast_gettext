@@ -5,5 +5,5 @@ group :dev do
   gem 'sqlite3'
   gem 'rspec', '~>2'
   gem 'jeweler'
-  gem 'activerecord'
+  gem 'activerecord', ENV['AR']
 end

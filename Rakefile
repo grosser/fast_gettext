@@ -1,5 +1,6 @@
 task :default do
-  sh "bundle exec rspec spec"
+  sh "AR='~>2' bundle && bundle exec rspec spec" # ActiveRecord 2
+  sh "AR='~>3' bundle && bundle exec rspec spec" # ActiveRecord 3
 end
 
 task :benchmark do
