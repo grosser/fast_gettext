@@ -1,7 +1,5 @@
-task :default => :spec
-require "rspec/core/rake_task"
-RSpec::Core::RakeTask.new(:spec) do |t|
-  t.rspec_opts = '--backtrace --color'
+task :default do
+  sh "bundle exec rspec spec"
 end
 
 task :benchmark do
@@ -29,5 +27,5 @@ begin
 
   Jeweler::GemcutterTasks.new
 rescue LoadError
-  puts "Jeweler, or one of its dependencies, is not available. Install it with: sudo gem install jeweler"
+  puts "Jeweler, or one of its dependencies, is not available. Install it with: gem install jeweler"
 end
