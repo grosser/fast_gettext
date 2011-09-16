@@ -1,6 +1,5 @@
 require File.expand_path('spec/spec_helper')
 
-#just to make sure we did not mess up while copying...
 describe String do
   before :all do
     if "i18n gem overwrites % method".respond_to?(:interpolate_without_ruby_19_syntax)
@@ -81,6 +80,16 @@ describe String do
   if RUBY_VERSION >= '1.9'
     it "does not raise when key was not found" do
       ("%{typo} xxx" % {:something=>1}).should == "%{typo} xxx"
+    end
+  end
+
+  describe 'with i18n loaded' do
+    it "interpolates if i18n is loaded before" do
+      system("bundle exec ruby spec/cases/interpolate_i18n_before_fast_gettext.rb").should == true
+    end
+
+    it "interpolates if i18n is loaded before" do
+      system("bundle exec ruby spec/cases/interpolate_i18n_after_fast_gettext.rb").should == true
     end
   end
 end
