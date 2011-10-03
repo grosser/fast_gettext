@@ -56,7 +56,7 @@ describe 'FastGettext::TranslationRepository::Chain' do
       end
 
       it "uses the second repo in the chain if the first does not respond" do
-        @one.should_receive(:plural).with('a','b').and_return [nil,nil]
+        @one.should_receive(:plural).with('a','b').and_return []
         @two.should_receive(:plural).with('a','b').and_return ['A','B']
         @rep.plural('a','b').should == ['A','B']
       end

@@ -15,6 +15,6 @@ describe 'FastGettext::TranslationRepository::Base' do
   end
 
   it "cannot pluralize" do
-    @rep.plural('Axis','Axis').should == ['Axis','Axis']
+    @rep.plural('Axis','Axis').should == []
   end
 end

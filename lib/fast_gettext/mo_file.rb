@@ -20,10 +20,9 @@ module FastGettext
     end
 
     #returns the plural forms or all singular translations that where found
+    # Car, Cars => [Auto,Autos] or []
     def plural(*msgids)
-      translations = plural_translations(msgids)
-      return translations unless translations.empty?
-      msgids.map{|msgid| self[msgid] || msgid} #try to translate each id
+      split_plurals(self[msgids*PLURAL_SEPERATOR].to_s)
     end
 
     def pluralisation_rule
@@ -56,12 +55,6 @@ module FastGettext
 
     def split_plurals(singular_plural)
       singular_plural.split(PLURAL_SEPERATOR)
-    end
-
-    # Car, Cars => [Auto,Autos] or []
-    def plural_translations(msgids)
-      plurals = self[msgids*PLURAL_SEPERATOR]
-      if plurals then split_plurals(plurals) else [] end
     end
   end
 end

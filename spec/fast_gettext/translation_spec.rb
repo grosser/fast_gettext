@@ -63,7 +63,11 @@ describe FastGettext::Translation do
         n_('singular','plural','c','d',2).should == 'plural'
       end
     end
-    
+
+    it "returns a simple translation when no combined was found" do
+      n_('Axis','NOTFOUNDs',1).should == 'Achse'
+    end
+
     it "returns the appropriate key if no translation was found" do
       n_('NOTFOUND','NOTFOUNDs',1).should == 'NOTFOUND'
       n_('NOTFOUND','NOTFOUNDs',2).should == 'NOTFOUNDs'

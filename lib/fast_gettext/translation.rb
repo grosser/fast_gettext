@@ -28,9 +28,18 @@ module FastGettext
     def n_(*keys)
       count = keys.pop
       translations = FastGettext.cached_plural_find *keys
+
       selected = FastGettext.pluralisation_rule.call(count)
-      selected = selected ? 1 : 0 unless selected.is_a? Numeric #convert booleans to numbers
-      translations[selected] || keys[selected] || keys.last
+      selected = (selected ? 1 : 0) unless selected.is_a? Numeric #convert booleans to numbers
+
+      result = translations[selected]
+      if result
+        result
+      elsif keys[selected]
+        _(keys[selected])
+      else
+        keys.last
+      end
     end
 
     #translate, but discard namespace if nothing was found
