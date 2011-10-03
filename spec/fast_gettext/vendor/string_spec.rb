@@ -84,12 +84,16 @@ describe String do
   end
 
   describe 'with i18n loaded' do
-    xit "interpolates if i18n is loaded before" do
-      system("bundle exec ruby spec/cases/interpolate_i18n_before_fast_gettext.rb").should == true
+    it "interpolates if i18n is loaded before" do
+      pending do
+        system("bundle exec ruby spec/cases/interpolate_i18n_before_fast_gettext.rb 2>&1").should == true
+      end
     end
 
-    xit "interpolates if i18n is loaded before" do
-      system("bundle exec ruby spec/cases/interpolate_i18n_after_fast_gettext.rb").should == true
+    it "interpolates if i18n is loaded before" do
+      pending do
+        system("bundle exec ruby spec/cases/interpolate_i18n_after_fast_gettext.rb 2>&1").should == true
+      end
     end
   end
 end
