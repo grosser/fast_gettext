@@ -95,15 +95,21 @@ module FastGettext
 
     def cached_find(key)
       translation = current_cache[key]
-      return translation if translation or translation == false #found or was not found before
-      current_cache[key] = current_repository[key] || false
+      if translation.nil? # uncached
+        current_cache[key] = current_repository[key] || false
+      else
+        translation
+      end
     end
 
     def cached_plural_find(*keys)
       key = '||||' + keys * '||||'
       translation = current_cache[key]
-      return translation if translation or translation == false #found or was not found before
-      current_cache[key] = current_repository.plural(*keys) || false
+      if translation.nil? # uncached
+        current_cache[key] = current_repository.plural(*keys) || false
+      else
+        translation
+      end
     end
 
     def locale
