@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fast_gettext}
-  s.version = "0.5.13"
+  s.version = "0.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2011-06-30}
+  s.date = %q{2011-10-03}
   s.email = %q{michael@grosser.it}
   s.files = [
     "CHANGELOG",
@@ -55,6 +55,8 @@ Gem::Specification.new do |s|
     "lib/fast_gettext/vendor/poparser.rb",
     "lib/fast_gettext/vendor/string.rb",
     "spec/aa_unconfigued_spec.rb",
+    "spec/cases/interpolate_i18n_after_fast_gettext.rb",
+    "spec/cases/interpolate_i18n_before_fast_gettext.rb",
     "spec/fast_gettext/mo_file_spec.rb",
     "spec/fast_gettext/storage_spec.rb",
     "spec/fast_gettext/translation_repository/base_spec.rb",
@@ -89,27 +91,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.6.2}
   s.summary = %q{A simple, fast, memory-efficient and threadsafe implementation of GetText}
-  s.test_files = [
-    "examples/db/migration.rb",
-    "examples/missing_translation_logger.rb",
-    "spec/aa_unconfigued_spec.rb",
-    "spec/fast_gettext/mo_file_spec.rb",
-    "spec/fast_gettext/storage_spec.rb",
-    "spec/fast_gettext/translation_repository/base_spec.rb",
-    "spec/fast_gettext/translation_repository/chain_spec.rb",
-    "spec/fast_gettext/translation_repository/db_spec.rb",
-    "spec/fast_gettext/translation_repository/logger_spec.rb",
-    "spec/fast_gettext/translation_repository/mo_spec.rb",
-    "spec/fast_gettext/translation_repository/po_spec.rb",
-    "spec/fast_gettext/translation_repository/yaml_spec.rb",
-    "spec/fast_gettext/translation_repository_spec.rb",
-    "spec/fast_gettext/translation_spec.rb",
-    "spec/fast_gettext/vendor/fake_load_path/iconv.rb",
-    "spec/fast_gettext/vendor/iconv_spec.rb",
-    "spec/fast_gettext/vendor/string_spec.rb",
-    "spec/fast_gettext_spec.rb",
-    "spec/spec_helper.rb"
-  ]
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
