@@ -125,10 +125,20 @@ since it runs in a different thread then e.g. controllers, so set them inside yo
 
 Advanced features
 =================
-###Abnormal pluralisation
-Pluralisation rules can be set directly via a lambda (see specs/), or by using the Gettext
-plural definition (see spec/locale/en/test_plural.po or [Plural expressions for all languages](http://translate.sourceforge.net/wiki/l10n/pluralforms).
+### Abnormal pluralisation
+Plurals are selected by index, think of it as `['car', 'cars'][index]`<br/>
+A pluralisation rules decides which form to use e.g. in english its `count == 1 ? 0 : 1`.<br/>
+If you have any languages that do not fit this rule, you have to add a custom pluralisation rule.
 
+Via Ruby:
+
+    FastGettext.pluralisation_rule = lamda{|count| count > 5 ? 1 : (count > 2 ? 0 : 2)}
+
+Via mo/pofile:
+
+    Plural-Forms: nplurals=2; plural=n==2?3:4;
+
+[Plural expressions for all languages](http://translate.sourceforge.net/wiki/l10n/pluralforms).
 
 ###default_text_domain
 If you only use one text domain, setting `FastGettext.default_text_domain = 'app'`
