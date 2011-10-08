@@ -15,7 +15,7 @@
     $Id: mo.rb,v 1.10 2008/06/17 16:40:52 mutoh Exp $
 =end
 
-require 'iconv'
+require 'fast_gettext/vendor/iconv'
 require 'stringio'
 
 #Modifications:
@@ -151,9 +151,8 @@ module FastGettext
           else
             if @output_charset
               begin
-                iconv = Iconv || FastGettext::Iconv
-                str = iconv.conv(@output_charset, @charset, str) if @charset
-              rescue iconv::Failure
+                str = FastGettext::Iconv.conv(@output_charset, @charset, str) if @charset
+              rescue FastGettext::Iconv::Failure
                 if $DEBUG
                   warn "@charset = ", @charset
                   warn"@output_charset = ", @output_charset
