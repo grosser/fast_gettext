@@ -1,6 +1,16 @@
 require File.expand_path('spec/spec_helper')
 
 describe String do
+  def pending_18
+    if RUBY_VERSION > '1.9'
+      yield
+    else
+      pending do
+        yield
+      end
+    end
+  end
+
   before :all do
     if "i18n gem overwrites % method".respond_to?(:interpolate_without_ruby_19_syntax)
       class String
@@ -85,13 +95,13 @@ describe String do
 
   describe 'with i18n loaded' do
     it "interpolates if i18n is loaded before" do
-      pending do
+      pending_18 do
         system("bundle exec ruby spec/cases/interpolate_i18n_before_fast_gettext.rb  > /dev/null 2>&1").should == true
       end
     end
 
     it "interpolates if i18n is loaded before" do
-      pending do
+      pending_18 do
         system("bundle exec ruby spec/cases/interpolate_i18n_after_fast_gettext.rb > /dev/null 2>&1").should == true
       end
     end
