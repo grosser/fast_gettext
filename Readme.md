@@ -192,8 +192,8 @@ FAQ
 
 TODO
 ====
+ - Add a fallback for Iconv.conv in ruby 1.9.4 -> lib/fast_gettext/vendor/iconv
  - YML backend that reads ActiveSupport::I18n files
- - any ideas ? :D
 
 Author
 ======
