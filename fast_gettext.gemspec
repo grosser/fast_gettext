@@ -4,14 +4,15 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{fast_gettext}
-  s.version = "0.6.0"
+  s.name = "fast_gettext"
+  s.version = "0.6.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2011-10-03}
-  s.email = %q{michael@grosser.it}
+  s.date = "2011-10-08"
+  s.email = "michael@grosser.it"
   s.files = [
+    ".travis.yml",
     "CHANGELOG",
     "Gemfile",
     "Gemfile.lock",
@@ -55,6 +56,8 @@ Gem::Specification.new do |s|
     "lib/fast_gettext/vendor/poparser.rb",
     "lib/fast_gettext/vendor/string.rb",
     "spec/aa_unconfigued_spec.rb",
+    "spec/cases/fake_load_path/iconv.rb",
+    "spec/cases/iconv_fallback.rb",
     "spec/cases/interpolate_i18n_after_fast_gettext.rb",
     "spec/cases/interpolate_i18n_before_fast_gettext.rb",
     "spec/fast_gettext/mo_file_spec.rb",
@@ -68,7 +71,6 @@ Gem::Specification.new do |s|
     "spec/fast_gettext/translation_repository/yaml_spec.rb",
     "spec/fast_gettext/translation_repository_spec.rb",
     "spec/fast_gettext/translation_spec.rb",
-    "spec/fast_gettext/vendor/fake_load_path/iconv.rb",
     "spec/fast_gettext/vendor/iconv_spec.rb",
     "spec/fast_gettext/vendor/string_spec.rb",
     "spec/fast_gettext_spec.rb",
@@ -87,10 +89,10 @@ Gem::Specification.new do |s|
     "spec/obsolete_locale/de/test.po",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/grosser/fast_gettext}
+  s.homepage = "http://github.com/grosser/fast_gettext"
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
-  s.summary = %q{A simple, fast, memory-efficient and threadsafe implementation of GetText}
+  s.rubygems_version = "1.8.10"
+  s.summary = "A simple, fast, memory-efficient and threadsafe implementation of GetText"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
