@@ -210,4 +210,6 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
 
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
-Hereby placed under public domain, do what you want, just do not hold me accountable...
+Hereby placed under public domain, do what you want, just do not hold me accountable...<br/>
+[![Flattr](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=grosser&url=https://github.com/grosser/fast_gettext&title=fast_gettext&language=en_GB&tags=github&category=software)
+[![Build Status](https://secure.travis-ci.org/grosser/fast_gettext.png)](http://travis-ci.org/grosser/fast_gettext)
