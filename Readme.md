@@ -87,7 +87,7 @@ Tell Gettext where your .mo or .po files lie, e.g. for locale/de/my_app.po and l
     FastGettext.add_text_domain('my_app',:path=>'locale')
 
 Use the [original GetText](http://github.com/mutoh/gettext) to create and manage po/mo-files.
-(Work on a po/mo parser & reader that is easier to use has started, contributions welcome @ [pomo](http://github.com/grosser/pomo) )
+(Work on a po/mo parser & reader that is easier to use has started, contributions welcome @ [get_pomo](http://github.com/grosser/get_pomo) )
 
 ###Database
 [Example migration for ActiveRecord](http://github.com/grosser/fast_gettext/blob/master/examples/db/migration.rb)<br/>
