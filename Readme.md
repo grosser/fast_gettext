@@ -1,8 +1,8 @@
 FastGettext
 ===========
-GetText but 3.5 x faster, 560 x less memory, simple, clean namespace (7 vs 34) and threadsave!
+GetText but 3.5 x faster, 560 x less memory, simple, clean namespace (7 vs 34) and threadsafe!
 
-It supports multiple backends (.mo, .po, .yml files, Database(ActiveRecor + any other), Chain, Loggers) and can easily be extended.
+It supports multiple backends (.mo, .po, .yml files, Database(ActiveRecord + any other), Chain, Loggers) and can easily be extended.
 
 [Example Rails application](https://github.com/grosser/gettext_i18n_rails_example)
 
@@ -127,7 +127,7 @@ Advanced features
 =================
 ### Abnormal pluralisation
 Plurals are selected by index, think of it as `['car', 'cars'][index]`<br/>
-A pluralisation rules decides which form to use e.g. in english its `count == 1 ? 0 : 1`.<br/>
+A pluralisation rule decides which form to use e.g. in english its `count == 1 ? 0 : 1`.<br/>
 If you have any languages that do not fit this rule, you have to add a custom pluralisation rule.
 
 Via Ruby:
@@ -167,7 +167,7 @@ When you want to know which keys could not be translated or were used, add a Log
     }
     FastGettext.add_text_domain 'combined', :type=>:chain, :chain=>repos
 If the Logger is in position #1 it will see all translations, if it is in position #2 it will only see the unfound.
-Unfound may not always mean missing, if you chose not to translate a word because the key is a good translation, it will appear nevertheless.
+Unfound may not always mean missing, if you choose not to translate a word because the key is a good translation, it will appear nevertheless.
 A lambda or anything that responds to `call` will do as callback. A good starting point may be `examples/missing_translations_logger.rb`.
 
 ###Plugins
