@@ -26,4 +26,10 @@ describe 'FastGettext::TranslationRepository::Mo' do
     rep['car'].should == 'Test'#just check it is loaded correctly
     rep.pluralisation_rule.call(2).should == 3
   end
+
+  it "can work in SAFE mode" do
+    $SAFE = 1
+    rep = FastGettext::TranslationRepository.build('safe_test',:path=>File.join('spec','locale'))
+    rep.is_a?(FastGettext::TranslationRepository::Mo).should be_true
+  end
 end
