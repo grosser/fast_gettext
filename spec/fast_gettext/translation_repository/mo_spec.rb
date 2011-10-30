@@ -28,8 +28,6 @@ describe 'FastGettext::TranslationRepository::Mo' do
   end
 
   it "can work in SAFE mode" do
-    $SAFE = 1
-    rep = FastGettext::TranslationRepository.build('safe_test',:path=>File.join('spec','locale'))
-    rep.is_a?(FastGettext::TranslationRepository::Mo).should be_true
+    `ruby spec/cases/safe_mode_can_handle_locales.rb 2>&1`.should == 'true'
   end
 end
