@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fast_gettext}
-  s.version = "0.6.2"
+  s.version = "0.6.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael Grosser"]
-  s.date = %q{2011-10-30}
+  s.date = %q{2011-12-04}
   s.email = %q{michael@grosser.it}
   s.files = [
     ".travis.yml",
@@ -62,6 +62,7 @@ Gem::Specification.new do |s|
     "spec/cases/interpolate_i18n_before_fast_gettext.rb",
     "spec/cases/safe_mode_can_handle_locales.rb",
     "spec/fast_gettext/mo_file_spec.rb",
+    "spec/fast_gettext/po_file_spec.rb",
     "spec/fast_gettext/storage_spec.rb",
     "spec/fast_gettext/translation_repository/base_spec.rb",
     "spec/fast_gettext/translation_repository/chain_spec.rb",
