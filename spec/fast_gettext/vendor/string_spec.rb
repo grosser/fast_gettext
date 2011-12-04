@@ -27,7 +27,7 @@ describe String do
 
   describe "old % style replacement" do
     it "substitudes using % + Hash" do
-      ("x%{name}y" %{:name=>'a'}).should == 'xay'
+      ("x%{name}y" % {:name=>'a'}).should == 'xay'
     end
 
     it "does not substitute after %%" do
