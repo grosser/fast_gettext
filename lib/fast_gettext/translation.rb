@@ -27,7 +27,7 @@ module FastGettext
     # n_('apple','apples',3)
     def n_(*keys)
       count = keys.pop
-      translations = FastGettext.cached_plural_find *keys
+      translations = FastGettext.cached_plural_find(*keys)
 
       selected = FastGettext.pluralisation_rule.call(count)
       selected = (selected ? 1 : 0) unless selected.is_a? Numeric #convert booleans to numbers
