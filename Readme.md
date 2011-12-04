@@ -208,6 +208,7 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
  - [Ramón Cahenzli](http://www.psy-q.ch)
  - [Rainux Luo](http://rainux.org)
  - [Dmitry Borodaenko](https://github.com/angdraug)
+ - [Kouhei Sutou](https://github.com/kou)
 
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
