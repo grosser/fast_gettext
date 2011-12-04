@@ -69,8 +69,8 @@ module_eval <<'..end src/poparser.ry modeval..id7a99570e05', 'src/poparser.ry', 
 	@q.push [:COMMENT, $&]
 	str = $'      
       when /\A\"(.*)\"/
-	@q.push [:STRING, $1]
 	str = $'
+	@q.push [:STRING, unescape_string($1)]
       else
 	#c = str[0,1]
 	#@q.push [:STRING, c]
@@ -110,6 +110,9 @@ module_eval <<'..end src/poparser.ry modeval..id7a99570e05', 'src/poparser.ry', 
     @comments << comment
   end 
 
+  def unescape_string(string)
+    string.gsub(/\\\\/, "\\")
+  end
 
 ..end src/poparser.ry modeval..id7a99570e05
 
