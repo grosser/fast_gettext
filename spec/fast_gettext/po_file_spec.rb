@@ -30,6 +30,6 @@ describe FastGettext::PoFile do
   end
 
   it "unescapes '\\'" do
-    de["You should escape '\\' as '\\\\'."].should == "Sie sollten escape '\\' als '\\\\'."
+    de["You should escape '\\' as '\\\\'."].should == "Du solltest '\\' als '\\\\' escapen."
   end
 end

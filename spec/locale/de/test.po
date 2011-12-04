@@ -62,4 +62,4 @@ msgstr ""
 
 #: locale/test_escape.rb:2
 msgid "You should escape '\\' as '\\\\'."
-msgstr "Sie sollten escape '\\' als '\\\\'."
+msgstr "Du solltest '\\' als '\\\\' escapen."
