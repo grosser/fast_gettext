@@ -1,4 +1,4 @@
-$VERBOSE = true
+# $VERBOSE = true # ignore complaints in spec files
 
 # ---- requirements
 require 'rubygems'
