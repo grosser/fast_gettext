@@ -43,22 +43,27 @@ Comparison
 Setup
 =====
 ### 1. Install
+
     sudo gem install fast_gettext
 
 ### 2. Add a translation repository
 
 From mo files (traditional/default)
+
     FastGettext.add_text_domain('my_app',:path=>'locale')
 
 Or po files (less maintenance than mo)
+
     FastGettext.add_text_domain('my_app',:path=>'locale', :type=>:po)
     # :ignore_fuzzy => true to silence warnings about fuzzy translations
     # :ignore_obsolete => true to silence warnings about obsolete translations
 
 Or yaml files (use I18n syntax/indentation)
+
     FastGettext.add_text_domain('my_app',:path=>'config/locales', :type=>:yaml)
 
 Or database (scaleable, good for many locales/translators)
+
     # db access is cached <-> only first lookup hits the db
     require "fast_gettext/translation_repository/db"
     FastGettext::TranslationRepository::Db.require_models #load and include default models
@@ -66,11 +71,13 @@ Or database (scaleable, good for many locales/translators)
 
 ### 3. Choose text domain and locale for translation
 Do this once in every Thread. (e.g. Rails -> ApplicationController)
+
     FastGettext.text_domain = 'my_app'
     FastGettext.available_locales = ['de','en','fr','en_US','en_UK'] # only allow these locales to be set (optional)
     FastGettext.locale = 'de'
 
 ### 4. Start translating
+
     include FastGettext::Translation
     _('Car') == 'Auto'
     _('not-found') == 'not-found'
@@ -84,6 +91,7 @@ Managing translations
 Generate .po or .mo files using GetText parser (example tasks at [gettext_i18n_rails](http://github.com/grosser/gettext_i18n_rails))
 
 Tell Gettext where your .mo or .po files lie, e.g. for locale/de/my_app.po and locale/de/LC_MESSAGES/my_app.mo
+
     FastGettext.add_text_domain('my_app',:path=>'locale')
 
 Use the [original GetText](http://github.com/mutoh/gettext) to create and manage po/mo-files.
@@ -153,6 +161,7 @@ Fallback when no available_locales are set
 ###Chains
 You can use any number of repositories to find a translation. Simply add them to a chain and when
 the first cannot translate a given key, the next is asked and so forth.
+
     repos = [
       FastGettext::TranslationRepository.build('new', :path=>'....'),
       FastGettext::TranslationRepository.build('old', :path=>'....')
@@ -161,11 +170,13 @@ the first cannot translate a given key, the next is asked and so forth.
 
 ###Logger
 When you want to know which keys could not be translated or were used, add a Logger to a Chain:
+
     repos = [
       FastGettext::TranslationRepository.build('app', :path=>'....')
       FastGettext::TranslationRepository.build('logger', :type=>:logger, :callback=>lamda{|key_or_array_of_ids| ... }),
     }
     FastGettext.add_text_domain 'combined', :type=>:chain, :chain=>repos
+
 If the Logger is in position #1 it will see all translations, if it is in position #2 it will only see the unfound.
 Unfound may not always mean missing, if you choose not to translate a word because the key is a good translation, it will appear nevertheless.
 A lambda or anything that responds to `call` will do as callback. A good starting point may be `examples/missing_translations_logger.rb`.
@@ -173,6 +184,7 @@ A lambda or anything that responds to `call` will do as callback. A good startin
 ###Plugins
 Want a xml version ?
 Write your own TranslationRepository!
+
     #fast_gettext/translation_repository/xxx.rb
     module FastGettext
       module TranslationRepository
@@ -213,5 +225,4 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
 Hereby placed under public domain, do what you want, just do not hold me accountable...<br/>
-[![Flattr](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=grosser&url=https://github.com/grosser/fast_gettext&title=fast_gettext&language=en_GB&tags=github&category=software)
 [![Build Status](https://secure.travis-ci.org/grosser/fast_gettext.png)](http://travis-ci.org/grosser/fast_gettext)
