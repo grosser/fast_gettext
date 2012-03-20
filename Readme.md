@@ -35,7 +35,7 @@ Comparison
     <td></td>
     <td>db, yml, mo, po, logger, chain</td>
     <td>mo</td>
-    <td>yml</td>
+    <td>yml (db/key-value/po/chain in other I18n backends)</td>
   </tr>
 </table>
 <small>*50.000 translations with ruby enterprise 1.8.6 through `rake benchmark`</small>
