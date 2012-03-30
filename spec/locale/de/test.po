@@ -38,6 +38,9 @@ msgstr "Auto wurde erfolgreich aktualisiert"
 msgid "Car|Model"
 msgstr "Modell"
 
+msgid "Untranslated"
+msgstr ""
+
 #: app/views/cars/show.html.erb:3 locale/model_attributes.rb:4
 msgid "Car|Wheels count"
 msgstr "Räderzahl"
@@ -63,3 +66,6 @@ msgstr ""
 #: locale/test_escape.rb:2
 msgid "You should escape '\\' as '\\\\'."
 msgstr "Du solltest '\\' als '\\\\' escapen."
+
+msgid "Umläüte"
+msgstr "Umlaute"
