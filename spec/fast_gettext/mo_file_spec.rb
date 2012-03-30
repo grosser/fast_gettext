@@ -1,3 +1,4 @@
+# encoding: utf-8
 require File.expand_path('spec/spec_helper')
 
 de_file = File.join('spec','locale','de','LC_MESSAGES','test.mo')
@@ -13,7 +14,7 @@ describe FastGettext::MoFile do
   end
 
   it "stores untranslated values as nil" do
-    de['Car|Model'].should == nil
+    de['Untranslated'].should == nil
   end
 
   it "finds pluralized values" do
@@ -26,5 +27,9 @@ describe FastGettext::MoFile do
 
   it "can access plurals through []" do
     de['Axis'].should == 'Achse' #singular
+  end
+  
+  it "can successfully translate non-ASCII keys" do
+    de["Umläüte"].should == "Umlaute"
   end
 end

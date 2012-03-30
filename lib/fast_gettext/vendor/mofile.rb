@@ -1,25 +1,23 @@
+# encoding: utf-8
+
 =begin
     mofile.rb - A simple class for operating GNU MO file.
 
-    Copyright (C) 2003-2008  Masao Mutoh
+    Copyright (C) 2012  Kouhei Sutou <kou@clear-code.com>
+    Copyright (C) 2003-2009  Masao Mutoh
     Copyright (C) 2002  Masahiro Sakai, Masao Mutoh
     Copyright (C) 2001  Masahiro Sakai
 
         Masahiro Sakai                  <s01397ms at sfc.keio.ac.jp>
-        Masao Mutoh                     <mutoh at highway.ne.jp>
+        Masao Mutoh                     <mutomasa at gmail.com>
 
     You can redistribute this file and/or modify it under the same term
     of Ruby.  License of Ruby is included with Ruby distribution in
     the file "README".
 
-    $Id: mo.rb,v 1.10 2008/06/17 16:40:52 mutoh Exp $
 =end
 
-require 'fast_gettext/vendor/iconv'
 require 'stringio'
-
-#Modifications:
-#  use Iconv or FastGettext::Icvon
 
 module FastGettext
   module GetText
@@ -48,6 +46,10 @@ module FastGettext
 
       MAGIC_BIG_ENDIAN    = "\x95\x04\x12\xde"
       MAGIC_LITTLE_ENDIAN = "\xde\x12\x04\x95"
+      if "".respond_to?(:force_encoding)
+        MAGIC_BIG_ENDIAN.force_encoding("ASCII-8BIT")
+        MAGIC_LITTLE_ENDIAN.force_encoding("ASCII-8BIT")
+      end
 
       def self.open(arg = nil, output_charset = nil)
         result = self.new(output_charset)
@@ -59,6 +61,7 @@ module FastGettext
         @last_modified = nil
         @little_endian = true
         @output_charset = output_charset
+        @plural_proc = nil
         super()
       end
 
@@ -149,45 +152,42 @@ module FastGettext
               @plural = "0" unless @plural
             end
           else
-            if @output_charset
-              begin
-                str = FastGettext::Iconv.conv(@output_charset, @charset, str) if @charset
-              rescue FastGettext::Iconv::Failure
-                if $DEBUG
-                  warn "@charset = ", @charset
-                  warn"@output_charset = ", @output_charset
-                  warn "msgid = ", original_strings[i]
-                  warn "msgstr = ", str
-                end
-              end
+            if @charset and @output_charset
+              str = convert_encoding(str, original_strings[i])
             end
           end
-          self[original_strings[i]] = str.freeze
+          self[convert_encoding(original_strings[i], original_strings[i])] = str.freeze
         end
         self
       end
 
-      # Is this number a prime number ?
-      # http://apidock.com/ruby/Prime
       def prime?(number)
         ('1' * number) !~ /^1?$|^(11+?)\1+$/
       end
 
-      def next_prime(seed)
-        require 'mathn'
-        prime = Prime.new
-        while current = prime.succ
-          return current if current > seed
+      begin
+        require 'prime'
+        def next_prime(seed)
+          Prime.instance.find{|x| x > seed }
+        end
+      rescue LoadError
+        def next_prime(seed)
+          require 'mathn'
+          prime = Prime.new
+          while current = prime.succ
+            return current if current > seed
+          end
         end
       end
 
+      HASHWORDBITS = 32
       # From gettext-0.12.1/gettext-runtime/intl/hash-string.h
       # Defines the so called `hashpjw' function by P.J. Weinberger
       # [see Aho/Sethi/Ullman, COMPILERS: Principles, Techniques and Tools,
       # 1986, 1987 Bell Telephone Laboratories, Inc.]
-      HASHWORDBITS = 32
       def hash_string(str)
         hval = 0
+        i = 0
         str.each_byte do |b|
           break if b == '\0'
           hval <<= 4
@@ -201,8 +201,8 @@ module FastGettext
         hval
       end
 
+      #Save data as little endian format.
       def save_to_stream(io)
-        #Save data as little endian format.
         header_size = 4 * 7
         table_size  = 4 * 2 * size
 
@@ -226,17 +226,17 @@ module FastGettext
 
         orig_table_data = Array.new()
         ary.each{|item, _|
-          orig_table_data.push(item.size)
+          orig_table_data.push(item.bytesize)
           orig_table_data.push(pos)
-          pos += item.size + 1 # +1 is <NUL>
+          pos += item.bytesize + 1 # +1 is <NUL>
         }
         io.write(orig_table_data.pack('V*'))
 
         trans_table_data = Array.new()
         ary.each{|_, item|
-          trans_table_data.push(item.size)
+          trans_table_data.push(item.bytesize)
           trans_table_data.push(pos)
-          pos += item.size + 1 # +1 is <NUL>
+          pos += item.bytesize + 1 # +1 is <NUL>
         }
         io.write(trans_table_data.pack('V*'))
 
@@ -286,9 +286,74 @@ module FastGettext
         #Do nothing
       end
 
+      def plural_as_proc
+        unless @plural_proc
+          @plural_proc = Proc.new{|n| eval(@plural)}
+          begin
+            @plural_proc.call(1)
+          rescue
+            @plural_proc = Proc.new{|n| 0}
+          end
+        end
+        @plural_proc
+      end
 
       attr_accessor :little_endian, :path, :last_modified
       attr_reader :charset, :nplurals, :plural
+
+      private
+      if "".respond_to?(:encode)
+        def convert_encoding(string, original_string)
+          begin
+            string.encode(@output_charset, @charset)
+          rescue EncodingError
+            if $DEBUG
+              warn "@charset = ", @charset
+              warn "@output_charset = ", @output_charset
+              warn "msgid = ", original_string
+              warn "msgstr = ", string
+            end
+            string
+          end
+        end
+      else
+        require 'fast_gettext/vendor/iconv'
+        def convert_encoding(string, original_string)
+          begin
+            str = FastGettext::Iconv.conv(@output_charset, @charset, string)
+          rescue FastGettext::Iconv::Failure
+            if $DEBUG
+              warn "@charset = ", @charset
+              warn "@output_charset = ", @output_charset
+              warn "msgid = ", original_string
+              warn "msgstr = ", str
+            end
+          end
+        end
+      end
     end
   end
+end
+
+# Test
+
+if $0 == __FILE__
+  if (ARGV.include? "-h") or (ARGV.include? "--help")
+    STDERR.puts("mo.rb [filename.mo ...]")
+    exit
+  end
+
+  ARGV.each{ |item|
+    mo = FastGettext::GetText::MOFile.open(item)
+    puts "------------------------------------------------------------------"
+    puts "charset  = \"#{mo.charset}\""
+    puts "nplurals = \"#{mo.nplurals}\""
+    puts "plural   = \"#{mo.plural}\""
+    puts "------------------------------------------------------------------"
+    mo.each do |key, value|
+      puts "original message = #{key.inspect}"
+      puts "translated message = #{value.inspect}"
+      puts "--------------------------------------------------------------------"
+    end
+  }
 end
