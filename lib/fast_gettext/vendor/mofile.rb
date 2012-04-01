@@ -17,6 +17,8 @@
 
 =end
 
+# Changes: Namespaced + uses FastGettext::Icvon
+
 require 'stringio'
 
 module FastGettext
