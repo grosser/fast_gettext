@@ -3,6 +3,7 @@ require 'fast_gettext/storage'
 require 'fast_gettext/translation'
 require 'fast_gettext/translation_repository'
 require 'fast_gettext/vendor/string'
+require 'fast_gettext/version'
 
 module FastGettext
   include FastGettext::Storage
