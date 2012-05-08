@@ -316,6 +316,16 @@ describe 'Storage' do
     end
   end
 
+  describe :format_locale do
+    it "allows 2-letter locales to be formatted" do
+      format_locale("de-ch").should == "de_CH"
+    end
+
+    it "allows 3-letter locales to be formatted" do
+      format_locale("gsw-ch").should == "gsw_CH"
+    end
+  end
+
   describe FastGettext::Storage::NoTextDomainConfigured do
     it "shows what to do" do
       FastGettext::Storage::NoTextDomainConfigured.new.to_s.should =~ /FastGettext\.add_text_domain/
