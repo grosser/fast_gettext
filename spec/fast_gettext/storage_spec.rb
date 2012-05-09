@@ -1,4 +1,5 @@
 require "spec_helper"
+require 'fast_gettext/translation_repository/base'
 
 describe 'Storage' do
   include FastGettext::Storage
