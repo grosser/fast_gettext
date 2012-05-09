@@ -1,5 +1,5 @@
 # encoding: utf-8
-require File.expand_path('spec/spec_helper')
+require "spec_helper"
 
 de_file = File.join('spec','locale','de','LC_MESSAGES','test.mo')
 de = FastGettext::MoFile.new(de_file)

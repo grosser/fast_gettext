@@ -1,4 +1,4 @@
-require File.expand_path('spec/spec_helper')
+require "spec_helper"
 require 'fast_gettext/po_file'
 
 de_file = File.join('spec','locale','de','test.po')

@@ -1,4 +1,4 @@
-require File.expand_path('spec/spec_helper')
+require "spec_helper"
 
 class MockRepo
   def [](key)#should_receive :[] does not work so well...

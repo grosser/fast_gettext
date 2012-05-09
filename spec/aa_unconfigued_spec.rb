@@ -1,4 +1,4 @@
-require File.expand_path('spec/spec_helper')
+require "spec_helper"
 
 describe 'unconfigured' do
   it "gives a useful error message when trying to just translate" do

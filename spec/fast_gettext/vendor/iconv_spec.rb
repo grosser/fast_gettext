@@ -1,4 +1,4 @@
-require File.expand_path('spec/spec_helper')
+require "spec_helper"
 
 describe 'Iconv' do
   it "also works when Iconv was not found locally" do

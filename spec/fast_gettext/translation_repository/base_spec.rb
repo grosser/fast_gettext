@@ -1,4 +1,4 @@
-require File.expand_path('spec/spec_helper')
+require "spec_helper"
 require 'fast_gettext/translation_repository/base'
 
 describe 'FastGettext::TranslationRepository::Base' do

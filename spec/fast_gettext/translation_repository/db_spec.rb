@@ -1,4 +1,4 @@
-require File.expand_path('spec/spec_helper')
+require "spec_helper"
 
 require 'active_record'
 require 'fast_gettext/translation_repository/db'
