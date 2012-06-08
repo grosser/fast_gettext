@@ -37,14 +37,28 @@ describe 'FastGettext::TranslationRepository::Po' do
       $stderr.should_not_receive(:print)
       FastGettext::TranslationRepository.build('test',:path=>File.join('spec','fuzzy_locale'),:type=>:po, :ignore_fuzzy => true)
     end
+
+    it "should not use fuzzy by default" do
+      FastGettext.locale = 'de'
+      $stderr.should_receive(:print).at_least(:once)
+      rep = FastGettext::TranslationRepository.build('test',:path=>File.join('spec','fuzzy_locale'),:type=>:po)
+      rep['%{relative_time} ago'].should be_nil
+    end
+
+    it "should use fuzzy when told to do so" do
+      FastGettext.locale = 'de'
+      $stderr.should_receive(:print).at_least(:once)
+      rep = FastGettext::TranslationRepository.build('test',:path=>File.join('spec','fuzzy_locale'),:type=>:po, :use_fuzzy => true)
+      rep['%{relative_time} ago'].should == 'vor %{relative_time}'
+    end
   end
-  
+
   describe 'obsolete' do
     it "should warn on obsolete by default" do
       $stderr.should_receive(:print).at_least(:once)
       FastGettext::TranslationRepository.build('test',:path=>File.join('spec','obsolete_locale'),:type=>:po)
     end
-  
+
     it "should ignore obsolete when told to do so" do
       $stderr.should_not_receive(:print)
       FastGettext::TranslationRepository.build('test',:path=>File.join('spec','obsolete_locale'),:type=>:po, :ignore_obsolete => true)
