@@ -28,23 +28,41 @@ describe 'FastGettext::TranslationRepository::Po' do
   end
 
   describe 'fuzzy' do
-    it "should warn on fuzzy by default" do
+    it "should warn on fuzzy and not use it by default" do
+      FastGettext.locale = 'de'
       $stderr.should_receive(:print).at_least(:once)
-      FastGettext::TranslationRepository.build('test',:path=>File.join('spec','fuzzy_locale'),:type=>:po)
+      rep = FastGettext::TranslationRepository.build('test',:path=>File.join('spec','fuzzy_locale'),:type=>:po)
+      rep['%{relative_time} ago'].should be_nil
     end
 
-    it "should ignore fuzzy when told to do so" do
+    it "should ignore fuzzy and not use it when set ignore_fuzzy to true" do
+      FastGettext.locale = 'de'
       $stderr.should_not_receive(:print)
-      FastGettext::TranslationRepository.build('test',:path=>File.join('spec','fuzzy_locale'),:type=>:po, :ignore_fuzzy => true)
+      rep = FastGettext::TranslationRepository.build('test',:path=>File.join('spec','fuzzy_locale'),:type=>:po, :ignore_fuzzy => true)
+      rep['%{relative_time} ago'].should be_nil
+    end
+
+    it "should warn on fuzzy and use fuzzy when set use_fuzzy to true" do
+      FastGettext.locale = 'de'
+      $stderr.should_receive(:print).at_least(:once)
+      rep = FastGettext::TranslationRepository.build('test',:path=>File.join('spec','fuzzy_locale'),:type=>:po, :use_fuzzy => true)
+      rep['%{relative_time} ago'].should == 'vor %{relative_time}'
+    end
+
+    it "should ignore fuzzy and use fuzzy when set ignore_fuzzy and use_fuzzy to true" do
+      FastGettext.locale = 'de'
+      $stderr.should_not_receive(:print)
+      rep = FastGettext::TranslationRepository.build('test',:path=>File.join('spec','fuzzy_locale'),:type=>:po, :use_fuzzy => true, :ignore_fuzzy => true)
+      rep['%{relative_time} ago'].should == 'vor %{relative_time}'
     end
   end
-  
+
   describe 'obsolete' do
     it "should warn on obsolete by default" do
       $stderr.should_receive(:print).at_least(:once)
       FastGettext::TranslationRepository.build('test',:path=>File.join('spec','obsolete_locale'),:type=>:po)
     end
-  
+
     it "should ignore obsolete when told to do so" do
       $stderr.should_not_receive(:print)
       FastGettext::TranslationRepository.build('test',:path=>File.join('spec','obsolete_locale'),:type=>:po, :ignore_obsolete => true)
