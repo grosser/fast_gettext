@@ -1,27 +1,43 @@
-=begin
-  poparser.rb - Generate a .mo
-
-  Copyright (C) 2003-2009 Masao Mutoh <mutoh at highway.ne.jp>
-
-  You may redistribute it and/or modify it under the same
-  license terms as Ruby.
-=end
+# -*- coding: utf-8 -*-
+#
+# poparser.rb - Generate a .mo
+#
+# Copyright (C) 2003-2009 Masao Mutoh <mutomasa at gmail.com>
+# Copyright (C) 2012 Kouhei Sutou <kou@clear-code.com>
+#
+# You may redistribute it and/or modify it under the same
+# license terms as Ruby or LGPL.
 
 #MODIFIED
-# removed include GetText etc
-# added stub translation method _(x)
-require 'racc/parser'
+# removed include GetText
+# added stub translation method _(message_id)
 
+require 'racc/parser.rb'
 module FastGettext
 module GetText
-
   class PoParser < Racc::Parser
 
-    def _(x)
-      x
-    end
+  module_eval(<<'...end poparser.ry/module_eval...', 'poparser.ry', 118)
 
-module_eval <<'..end src/poparser.ry modeval..id7a99570e05', 'src/poparser.ry', 108
+  def _(message_id)
+    message_id
+  end
+  private :_
+
+  attr_writer :ignore_fuzzy, :report_warning
+  def initialize
+    @ignore_fuzzy = true
+    @report_warning = true
+  end
+
+  def ignore_fuzzy?
+    @ignore_fuzzy
+  end
+
+  def report_warning?
+    @report_warning
+  end
+
   def unescape(orig)
     ret = orig.gsub(/\\n/, "\n")
     ret.gsub!(/\\t/, "\t")
@@ -29,13 +45,18 @@ module_eval <<'..end src/poparser.ry modeval..id7a99570e05', 'src/poparser.ry', 
     ret.gsub!(/\\"/, "\"")
     ret
   end
-  
-  def parse(str, data, ignore_fuzzy = true, show_obsolete = true)
+  private :unescape
+
+  def unescape_string(string)
+    string.gsub(/\\\\/, "\\")
+  end
+  private :unescape_string
+
+  def parse(str, data)
     @comments = []
     @data = data
     @fuzzy = false
     @msgctxt = ""
-    $ignore_fuzzy = ignore_fuzzy
 
     str.strip!
     @q = []
@@ -59,24 +80,24 @@ module_eval <<'..end src/poparser.ry modeval..id7a99570e05', 'src/poparser.ry', 
 	@q.push [:PLURAL_NUM, $1]
 	str = $'
       when /\A\#~(.*)/
-  if show_obsolete
-	  $stderr.print _("Warning: obsolete msgid exists.\n")
-	  $stderr.print "         #{$&}\n"
-	end
+        if report_warning?
+          $stderr.print _("Warning: obsolete msgid exists.\n")
+          $stderr.print "         #{$&}\n"
+        end
 	@q.push [:COMMENT, $&]
 	str = $'
       when /\A\#(.*)/
 	@q.push [:COMMENT, $&]
-	str = $'      
-      when /\A\"(.*)\"/
 	str = $'
+      when /\A\"(.*)\"/
 	@q.push [:STRING, unescape_string($1)]
+	str = $'
       else
 	#c = str[0,1]
 	#@q.push [:STRING, c]
 	str = str[1..-1]
       end
-    end 
+    end
     @q.push [false, '$end']
     if $DEBUG
       @q.each do |a,b|
@@ -91,7 +112,7 @@ module_eval <<'..end src/poparser.ry modeval..id7a99570e05', 'src/poparser.ry', 
     end
     @data
   end
-  
+
   def next_token
     @q.shift
   end
@@ -104,175 +125,199 @@ module_eval <<'..end src/poparser.ry modeval..id7a99570e05', 'src/poparser.ry', 
     @comments.clear
     @msgctxt = ""
   end
-      
+
   def on_comment(comment)
     @fuzzy = true if (/fuzzy/ =~ comment)
     @comments << comment
-  end 
-
-  def unescape_string(string)
-    string.gsub(/\\\\/, "\\")
   end
 
-..end src/poparser.ry modeval..id7a99570e05
-
-##### racc 1.4.5 generates ###
-
-racc_reduce_table = [
- 0, 0, :racc_error,
- 0, 10, :_reduce_none,
- 2, 10, :_reduce_none,
- 2, 10, :_reduce_none,
- 2, 10, :_reduce_none,
- 2, 12, :_reduce_5,
- 1, 13, :_reduce_none,
- 1, 13, :_reduce_none,
- 4, 15, :_reduce_8,
- 5, 16, :_reduce_9,
- 2, 17, :_reduce_10,
- 1, 17, :_reduce_none,
- 3, 18, :_reduce_12,
- 1, 11, :_reduce_13,
- 2, 14, :_reduce_14,
- 1, 14, :_reduce_15 ]
-
-racc_reduce_n = 16
-
-racc_shift_n = 26
-
-racc_action_table = [
-     3,    13,     5,     7,     9,    15,    16,    17,    20,    17,
-    13,    17,    13,    13,    11,    17,    23,    20,    13,    17 ]
-
-racc_action_check = [
-     1,    16,     1,     1,     1,    12,    12,    12,    18,    18,
-     7,    14,    15,     9,     3,    19,    20,    21,    23,    25 ]
-
-racc_action_pointer = [
-   nil,     0,   nil,    14,   nil,   nil,   nil,     3,   nil,     6,
-   nil,   nil,     0,   nil,     4,     5,    -6,   nil,     2,     8,
-     8,    11,   nil,    11,   nil,    12 ]
-
-racc_action_default = [
-    -1,   -16,    -2,   -16,    -3,   -13,    -4,   -16,    -6,   -16,
-    -7,    26,   -16,   -15,    -5,   -16,   -16,   -14,   -16,    -8,
-   -16,    -9,   -11,   -16,   -10,   -12 ]
-
-racc_goto_table = [
-    12,    22,    14,     4,    24,     6,     2,     8,    18,    19,
-    10,    21,     1,   nil,   nil,   nil,    25 ]
-
-racc_goto_check = [
-     5,     9,     5,     3,     9,     4,     2,     6,     5,     5,
-     7,     8,     1,   nil,   nil,   nil,     5 ]
-
-racc_goto_pointer = [
-   nil,    12,     5,     2,     4,    -7,     6,     9,    -7,   -17 ]
-
-racc_goto_default = [
-   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil ]
-
-racc_token_table = {
- false => 0,
- Object.new => 1,
- :COMMENT => 2,
- :MSGID => 3,
- :MSGCTXT => 4,
- :MSGID_PLURAL => 5,
- :MSGSTR => 6,
- :STRING => 7,
- :PLURAL_NUM => 8 }
-
-racc_use_result_var = true
-
-racc_nt_base = 9
-
-Racc_arg = [
- racc_action_table,
- racc_action_check,
- racc_action_default,
- racc_action_pointer,
- racc_goto_table,
- racc_goto_check,
- racc_goto_default,
- racc_goto_pointer,
- racc_nt_base,
- racc_reduce_table,
- racc_token_table,
- racc_shift_n,
- racc_reduce_n,
- racc_use_result_var ]
-
-Racc_token_to_s_table = [
-'$end',
-'error',
-'COMMENT',
-'MSGID',
-'MSGCTXT',
-'MSGID_PLURAL',
-'MSGSTR',
-'STRING',
-'PLURAL_NUM',
-'$start',
-'msgfmt',
-'comment',
-'msgctxt',
-'message',
-'string_list',
-'single_message',
-'plural_message',
-'msgstr_plural',
-'msgstr_plural_line']
-
-Racc_debug_parser = true
-
-##### racc system variables end #####
-
- # reduce 0 omitted
-
- # reduce 1 omitted
-
- # reduce 2 omitted
-
- # reduce 3 omitted
-
- # reduce 4 omitted
-
-module_eval <<'.,.,', 'src/poparser.ry', 25
-  def _reduce_5( val, _values, result )
-    @msgctxt = unescape(val[1]) + "\004"
-   result
-  end
-.,.,
-
- # reduce 6 omitted
-
- # reduce 7 omitted
-
-module_eval <<'.,.,', 'src/poparser.ry', 48
-  def _reduce_8( val, _values, result )
-    if @fuzzy and $ignore_fuzzy 
-      if val[1] != ""
-        $stderr.print _("Warning: fuzzy message was ignored.\n")
-        $stderr.print "         msgid '#{val[1]}'\n"
-      else
-        on_message('', unescape(val[3]))
-      end
-      @fuzzy = false
-    else
-      on_message(@msgctxt + unescape(val[1]), unescape(val[3]))
+  def parse_file(po_file, data)
+    args = [ po_file ]
+    # In Ruby 1.9, we must detect proper encoding of a PO file.
+    if String.instance_methods.include?(:encode)
+      encoding = detect_file_encoding(po_file)
+      args << "r:#{encoding}"
     end
-    result = ""
-   result
+    @po_file = po_file
+    parse(File.open(*args) {|io| io.read }, data)
+  end
+
+  def detect_file_encoding(po_file)
+    open(po_file, :encoding => 'ASCII-8BIT') do |input|
+      input.lines.each do |line|
+        return Encoding.find($1) if %r["Content-Type:.*\scharset=(.*)\\n"] =~ line
+      end
+    end
+    Encoding.default_external
+  end
+  private :detect_file_encoding
+...end poparser.ry/module_eval...
+##### State transition tables begin ###
+
+    racc_action_table = [
+      2,    13,    10,     9,     6,    17,    16,    15,    22,    15,
+        15,    13,    13,    13,    15,    11,    22,    24,    13,    15 ]
+
+    racc_action_check = [
+      1,    17,     1,     1,     1,    14,    14,    14,    19,    19,
+        12,     6,    16,     9,    18,     2,    20,    22,    24,    25 ]
+
+    racc_action_pointer = [
+      nil,     0,    15,   nil,   nil,   nil,     4,   nil,   nil,     6,
+        nil,   nil,     3,   nil,     0,   nil,     5,    -6,     7,     2,
+        10,   nil,     9,   nil,    11,    12 ]
+
+    racc_action_default = [
+      -1,   -16,   -16,    -2,    -3,    -4,   -16,    -6,    -7,   -16,
+        -13,    26,    -5,   -15,   -16,   -14,   -16,   -16,    -8,   -16,
+        -9,   -11,   -16,   -10,   -16,   -12 ]
+
+    racc_goto_table = [
+      12,    21,    23,    14,     4,     5,     3,     7,     8,    20,
+        18,    19,     1,   nil,   nil,   nil,   nil,   nil,    25 ]
+
+    racc_goto_check = [
+      5,     9,     9,     5,     3,     4,     2,     6,     7,     8,
+        5,     5,     1,   nil,   nil,   nil,   nil,   nil,     5 ]
+
+    racc_goto_pointer = [
+      nil,    12,     5,     3,     4,    -6,     6,     7,   -10,   -18 ]
+
+    racc_goto_default = [
+      nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil ]
+
+    racc_reduce_table = [
+      0, 0, :racc_error,
+        0, 10, :_reduce_none,
+        2, 10, :_reduce_none,
+        2, 10, :_reduce_none,
+        2, 10, :_reduce_none,
+        2, 12, :_reduce_5,
+        1, 13, :_reduce_none,
+        1, 13, :_reduce_none,
+        4, 15, :_reduce_8,
+        5, 16, :_reduce_9,
+        2, 17, :_reduce_10,
+        1, 17, :_reduce_none,
+        3, 18, :_reduce_12,
+        1, 11, :_reduce_13,
+        2, 14, :_reduce_14,
+        1, 14, :_reduce_15 ]
+
+    racc_reduce_n = 16
+
+    racc_shift_n = 26
+
+    racc_token_table = {
+      false => 0,
+      :error => 1,
+      :COMMENT => 2,
+      :MSGID => 3,
+      :MSGCTXT => 4,
+      :MSGID_PLURAL => 5,
+      :MSGSTR => 6,
+      :STRING => 7,
+      :PLURAL_NUM => 8 }
+
+    racc_nt_base = 9
+
+    racc_use_result_var = true
+
+    Racc_arg = [
+      racc_action_table,
+        racc_action_check,
+        racc_action_default,
+        racc_action_pointer,
+        racc_goto_table,
+        racc_goto_check,
+        racc_goto_default,
+        racc_goto_pointer,
+        racc_nt_base,
+        racc_reduce_table,
+        racc_token_table,
+        racc_shift_n,
+        racc_reduce_n,
+        racc_use_result_var ]
+
+    Racc_token_to_s_table = [
+      "$end",
+        "error",
+        "COMMENT",
+        "MSGID",
+        "MSGCTXT",
+        "MSGID_PLURAL",
+        "MSGSTR",
+        "STRING",
+        "PLURAL_NUM",
+        "$start",
+        "msgfmt",
+        "comment",
+        "msgctxt",
+        "message",
+        "string_list",
+        "single_message",
+        "plural_message",
+        "msgstr_plural",
+        "msgstr_plural_line" ]
+
+    Racc_debug_parser = true
+
+##### State transition tables end #####
+
+# reduce 0 omitted
+
+# reduce 1 omitted
+
+# reduce 2 omitted
+
+# reduce 3 omitted
+
+# reduce 4 omitted
+
+    module_eval(<<'.,.,', 'poparser.ry', 25)
+  def _reduce_5(val, _values, result)
+        @msgctxt = unescape(val[1]) + "\004"
+
+    result
   end
 .,.,
 
-module_eval <<'.,.,', 'src/poparser.ry', 65
-  def _reduce_9( val, _values, result )
-    if @fuzzy and $ignore_fuzzy
+# reduce 6 omitted
+
+# reduce 7 omitted
+
+    module_eval(<<'.,.,', 'poparser.ry', 37)
+  def _reduce_8(val, _values, result)
+        msgid_raw = val[1]
+    msgid = unescape(msgid_raw)
+    msgstr = unescape(val[3])
+    use_message_p = true
+    if @fuzzy and not msgid.empty?
+      use_message_p = (not ignore_fuzzy?)
+      if report_warning?
+        if ignore_fuzzy?
+          $stderr.print _("Warning: fuzzy message was ignored.\n")
+        else
+          $stderr.print _("Warning: fuzzy message was used.\n")
+        end
+        $stderr.print "  #{@po_file}: msgid '#{msgid_raw}'\n"
+      end
+    end
+    @fuzzy = false
+    on_message(@msgctxt + msgid, msgstr) if use_message_p
+    result = ""
+    result
+  end
+.,.,
+
+    module_eval(<<'.,.,', 'poparser.ry', 60)
+  def _reduce_9(val, _values, result)
+        if @fuzzy and ignore_fuzzy?
       if val[1] != ""
-        $stderr.print _("Warning: fuzzy message was ignored.\n")
-        $stderr.print "msgid = '#{val[1]}\n"
+        if report_warning?
+          $stderr.print _("Warning: fuzzy message was ignored.\n")
+          $stderr.print "msgid = '#{val[1]}\n"
+        end
       else
         on_message('', unescape(val[3]))
       end
@@ -281,56 +326,61 @@ module_eval <<'.,.,', 'src/poparser.ry', 65
       on_message(@msgctxt + unescape(val[1]) + "\000" + unescape(val[3]), unescape(val[4]))
     end
     result = ""
-   result
+
+    result
   end
 .,.,
 
-module_eval <<'.,.,', 'src/poparser.ry', 76
-  def _reduce_10( val, _values, result )
-    if val[0].size > 0
+    module_eval(<<'.,.,', 'poparser.ry', 80)
+  def _reduce_10(val, _values, result)
+        if val[0].size > 0
       result = val[0] + "\000" + val[1]
     else
       result = ""
     end
-   result
+
+    result
   end
 .,.,
 
- # reduce 11 omitted
+# reduce 11 omitted
 
-module_eval <<'.,.,', 'src/poparser.ry', 84
-  def _reduce_12( val, _values, result )
-    result = val[2]
-   result
+    module_eval(<<'.,.,', 'poparser.ry', 92)
+  def _reduce_12(val, _values, result)
+        result = val[2]
+
+    result
   end
 .,.,
 
-module_eval <<'.,.,', 'src/poparser.ry', 91
-  def _reduce_13( val, _values, result )
-    on_comment(val[0])
-   result
+    module_eval(<<'.,.,', 'poparser.ry', 99)
+  def _reduce_13(val, _values, result)
+        on_comment(val[0])
+
+    result
   end
 .,.,
 
-module_eval <<'.,.,', 'src/poparser.ry', 99
-  def _reduce_14( val, _values, result )
-    result = val.delete_if{|item| item == ""}.join
-   result
+    module_eval(<<'.,.,', 'poparser.ry', 107)
+  def _reduce_14(val, _values, result)
+        result = val.delete_if{|item| item == ""}.join
+
+    result
   end
 .,.,
 
-module_eval <<'.,.,', 'src/poparser.ry', 103
-  def _reduce_15( val, _values, result )
-    result = val[0]
-   result
+    module_eval(<<'.,.,', 'poparser.ry', 111)
+  def _reduce_15(val, _values, result)
+        result = val[0]
+
+    result
   end
 .,.,
 
- def _reduce_none( val, _values, result )
-  result
- end
+    def _reduce_none(val, _values, result)
+      val[0]
+    end
 
   end   # class PoParser
-
 end   # module GetText
 end

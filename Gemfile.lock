@@ -38,8 +38,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord (~> 3)
+  activerecord
   fast_gettext!
+  i18n
   rake
   rspec (~> 2)
   sqlite3
