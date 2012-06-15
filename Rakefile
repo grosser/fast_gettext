@@ -4,6 +4,7 @@ task :default do
   ['~>2', '~>3'].each do |version|
     sh "export AR='#{version}' && (bundle check || bundle) && bundle exec rspec spec"
   end
+  sh "git checkout Gemfile.lock"
 end
 
 task :benchmark do
