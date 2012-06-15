@@ -1,8 +1,9 @@
 require 'bundler/gem_tasks'
 
 task :default do
-  sh "AR='~>2' && (bundle || bundle install) && bundle exec rspec spec" # ActiveRecord 2
-  sh "AR='~>3' && (bundle || bundle install) && bundle exec rspec spec" # ActiveRecord 3
+  ['~>2', '~>3'].each do |version|
+    sh "export AR='#{version}' && (bundle check || bundle) && bundle exec rspec spec"
+  end
 end
 
 task :benchmark do
