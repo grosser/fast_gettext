@@ -2,7 +2,7 @@ require 'bundler/gem_tasks'
 
 task :default do
   ['~>2', '~>3'].each do |version|
-    sh "export AR='#{version}' && (bundle check || bundle) && bundle exec rspec spec"
+    sh "export AR='#{version}' && (bundle check || bundle install) && bundle exec rspec spec"
   end
   sh "git checkout Gemfile.lock"
 end
