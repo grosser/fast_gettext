@@ -1,4 +1,4 @@
-script: "bundle exec rake"
+script: "rake"
 rvm:
   - ree
   - 1.9.2
