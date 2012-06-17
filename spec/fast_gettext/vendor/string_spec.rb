@@ -5,9 +5,7 @@ describe String do
     if RUBY_VERSION > '1.9'
       yield
     else
-      pending do
-        yield
-      end
+      pending "does not work on 1.8"
     end
   end
 
