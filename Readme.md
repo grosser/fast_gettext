@@ -50,24 +50,24 @@ Setup
 
 From mo files (traditional/default)
 
-    FastGettext.add_text_domain('my_app',:path=>'locale')
+    FastGettext.add_text_domain('my_app',:path => 'locale')
 
 Or po files (less maintenance than mo)
 
-    FastGettext.add_text_domain('my_app',:path=>'locale', :type=>:po)
-    # :ignore_fuzzy => true to silence warnings about fuzzy translations
-    # :ignore_obsolete => true to silence warnings about obsolete translations
+    FastGettext.add_text_domain('my_app',:path => 'locale', :type => :po)
+    # :ignore_fuzzy => true to not use fuzzy translations
+    # :report_warning => false to hide warnings about obsolete/fuzzy translations
 
 Or yaml files (use I18n syntax/indentation)
 
-    FastGettext.add_text_domain('my_app',:path=>'config/locales', :type=>:yaml)
+    FastGettext.add_text_domain('my_app', :path => 'config/locales', :type => :yaml)
 
 Or database (scaleable, good for many locales/translators)
 
     # db access is cached <-> only first lookup hits the db
     require "fast_gettext/translation_repository/db"
     FastGettext::TranslationRepository::Db.require_models #load and include default models
-    FastGettext.add_text_domain('my_app', :type=>:db, :model=>TranslationKey)
+    FastGettext.add_text_domain('my_app', :type => :db, :model => TranslationKey)
 
 ### 3. Choose text domain and locale for translation
 Do this once in every Thread. (e.g. Rails -> ApplicationController)
