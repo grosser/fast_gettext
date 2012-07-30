@@ -1,10 +1,12 @@
 class TranslationKey < ActiveRecord::Base
-  has_many :translations, :class_name => 'TranslationText'
+  has_many :translations, :class_name => 'TranslationText', :dependent => :destroy
 
   accepts_nested_attributes_for :translations, :allow_destroy => true
 
   validates_uniqueness_of :key
   validates_presence_of :key
+
+  attr_accessible :key, :translations_attributes
 
   def self.translation(key, locale)
     return unless translation_key = find_by_key(key)
