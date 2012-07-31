@@ -35,8 +35,8 @@ describe FastGettext::TranslationRepository::Db do
   end
 
   def create_translation(key, text)
-    translation_key = TranslationKey.create!(:key=>key)
-    TranslationText.create!(:translation_key_id=>translation_key.id, :text=>text, :locale=>'de')
+    translation_key = TranslationKey.create!(:key => key)
+    TranslationText.create!(:translation_key_id => translation_key.id, :text => text, :locale => "de")
   end
   
   it "reads locales from the db" do
@@ -67,5 +67,14 @@ describe FastGettext::TranslationRepository::Db do
   it "can pluralize" do
     create_translation 'Axis||||Axis', 'Achse||||Achsen'
     @rep.plural('Axis','Axis').should == ['Achse','Achsen']
+  end
+
+  it "removes texts when key is removed" do
+    t = create_translation("a", "b")
+    expect{
+      expect{
+        t.translation_key.destroy
+      }.to change{ TranslationText.count }.by(-1)
+    }.to change{ TranslationKey.count }.by(-1)
   end
 end

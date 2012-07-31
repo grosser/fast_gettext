@@ -1,5 +1,5 @@
 class TranslationKey < ActiveRecord::Base
-  has_many :translations, :class_name => 'TranslationText'
+  has_many :translations, :class_name => 'TranslationText', :dependent => :destroy
 
   accepts_nested_attributes_for :translations, :allow_destroy => true
 
