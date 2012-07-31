@@ -2,6 +2,7 @@ require "spec_helper"
 
 require 'active_record'
 require 'fast_gettext/translation_repository/db'
+require 'support/be_accessible_matcher'
 FastGettext::TranslationRepository::Db.require_models
 describe FastGettext::TranslationRepository::Db do
 
@@ -66,5 +67,22 @@ describe FastGettext::TranslationRepository::Db do
   it "can pluralize" do
     create_translation 'Axis||||Axis', 'Achse||||Achsen'
     @rep.plural('Axis','Axis').should == ['Achse','Achsen']
+  end
+
+  it "model attributes should be accessible" do
+    key = TranslationKey.new(:key => 'New Key', :translations_attributes => { '0' => {:text => 'New Key En', :locale => 'en'}})
+
+    key.should be_accessible(:key)
+    key.should be_accessible(:translations_attributes)
+    key.should_not be_accessible(:translations)
+
+    key.translations[0].should be_accessible(:text)
+    key.translations[0].should be_accessible(:locale)
+    key.translations[0].should be_accessible(:translation_key_id)
+
+    key.key.should eql('New Key')
+    key.translations.should_not be_empty
+    key.translations[0].text.should == 'New Key En'
+    key.translations[0].locale.should == 'en'
   end
 end
