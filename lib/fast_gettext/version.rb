@@ -1,3 +1,3 @@
 module FastGettext
-  VERSION = Version = '0.6.8'
+  VERSION = Version = '0.6.9'
 end

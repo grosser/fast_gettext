@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fast_gettext (0.6.8)
+    fast_gettext (0.6.9)
 
 GEM
   remote: http://rubygems.org/
