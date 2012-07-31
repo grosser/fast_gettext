@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'active_record'
 require 'fast_gettext/translation_repository/db'
+require 'support/be_accessible_matcher'
 
 FastGettext::TranslationRepository::Db.require_models
 
@@ -76,5 +77,27 @@ describe FastGettext::TranslationRepository::Db do
         t.translation_key.destroy
       }.to change{ TranslationText.count }.by(-1)
     }.to change{ TranslationKey.count }.by(-1)
+  end
+
+  it "model attributes should be accessible" do
+    key = TranslationKey.new(:key => 'New Key', :translations_attributes => { '0' => {:text => 'New Key En', :locale => 'en'}})
+
+    key.key.should == 'New Key'
+
+    key.should be_accessible(:key)
+    key.should be_accessible(:translations)
+    key.should be_accessible(:translations_attributes)
+    key.should_not be_accessible(:created_at)
+
+    translation = key.translations.first
+
+    translation.text.should == 'New Key En'
+    translation.locale.should == 'en'
+
+    translation.should be_accessible(:locale)
+    translation.should be_accessible(:text)
+    translation.should be_accessible(:translation_key)
+    translation.should be_accessible(:translation_key_id)
+    translation.should_not be_accessible(:created_at)
   end
 end
