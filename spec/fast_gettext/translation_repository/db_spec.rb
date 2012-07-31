@@ -1,23 +1,24 @@
-require "spec_helper"
-
+require 'spec_helper'
 require 'active_record'
 require 'fast_gettext/translation_repository/db'
-FastGettext::TranslationRepository::Db.require_models
-describe FastGettext::TranslationRepository::Db do
 
+FastGettext::TranslationRepository::Db.require_models
+
+describe FastGettext::TranslationRepository::Db do
   before :all do
-    ActiveRecord::Base.establish_connection({
+    ActiveRecord::Base.establish_connection(
       :adapter => "sqlite3",
       :database => ":memory:"
-    })
+    )
 
     #create model table
-    #TODO surpress output ?
+    ActiveRecord::Migration.verbose = false
     ActiveRecord::Schema.define(:version => 1) do
       create_table :translation_keys do |t|
         t.string :key, :unique=>true, :null=>false
         t.timestamps
       end
+
       create_table :translation_texts do |t|
         t.string :text, :locale
         t.integer :translation_key_id, :null=>false
