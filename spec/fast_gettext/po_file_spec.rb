@@ -14,7 +14,7 @@ describe FastGettext::PoFile do
   end
 
   it "stores untranslated values as nil" do
-    de['Car|Model'].should == "Modell"
+    de['Untranslated'].should == nil
   end
 
   it "finds pluralized values" do
