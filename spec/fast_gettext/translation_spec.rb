@@ -27,6 +27,14 @@ describe FastGettext::Translation do
       _('car').should == 'Auto'
     end
 
+    it "returns the original string if its translation is blank" do
+      _('Untranslated').should == 'Untranslated'
+    end
+
+    it "does not return the blank translation if a string's translation is blank" do
+      _('Untranslated').should_not == ''
+    end
+
     it "returns key if not translation was found" do
       _('NOT|FOUND').should == 'NOT|FOUND'
     end
