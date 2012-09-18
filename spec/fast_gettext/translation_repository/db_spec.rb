@@ -70,6 +70,11 @@ describe FastGettext::TranslationRepository::Db do
     @rep.plural('Axis','Axis').should == ['Achse','Achsen']
   end
 
+  it "can ignore newline format" do
+    create_translation "good\r\nmorning", "guten\r\nMorgen"
+    @rep["good\nmorning"].should == "guten\r\nMorgen"
+  end
+
   it "removes texts when key is removed" do
     t = create_translation("a", "b")
     expect{
