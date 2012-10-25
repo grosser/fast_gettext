@@ -8,9 +8,9 @@ task :default do
 end
 
 task :benchmark do
-  puts "Running on #{RUBY}"
+  puts "Running on #{RUBY_DESCRIPTION}"
   %w[baseline ideal fast_gettext original i18n_simple].each do |bench|
-    puts `ruby benchmark/#{bench}.rb`
+    puts `ruby -I. benchmark/#{bench}.rb`
     puts ""
   end
 end

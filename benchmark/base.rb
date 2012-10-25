@@ -35,7 +35,11 @@ end
 
 def memory
   pid = Process.pid
-  map = `pmap -d #{pid}`
+  if RUBY_PLATFORM.downcase.include?("darwin")
+    map = `vmmap #{pid}`
+  else
+    map = `pmap -d #{pid}`
+  end
   map.split("\n").last.strip.squeeze(' ').split(' ')[3].to_i - DEFAULTS[:memory]
 end
 

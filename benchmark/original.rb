@@ -1,10 +1,13 @@
 require 'benchmark/base'
 
 begin
-gem 'gettext', '>=2.0.0'
+  gem 'gettext', '>=2.0.0'
 rescue LoadError
-  $LOAD_PATH.unshift 'lib'
+  puts 'To run this benchmark, please install the gettext gem'
+  exit 1
 end
+
+$LOAD_PATH.unshift 'lib'
 require 'gettext'
 include GetText
 
