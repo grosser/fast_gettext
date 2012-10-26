@@ -105,4 +105,10 @@ describe FastGettext::TranslationRepository::Db do
     translation.should be_accessible(:translation_key_id)
     translation.should_not be_accessible(:created_at)
   end
+
+  it "expires the cache when updated" do
+    FastGettext.should_receive(:expire_cache_for).with('car')
+    translation_text = create_translation 'car', 'Auto'
+    translation_text.update_attributes :text => 'Autobot'
+  end
 end
