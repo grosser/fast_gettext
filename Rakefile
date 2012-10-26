@@ -1,4 +1,5 @@
 require 'bundler/gem_tasks'
+require 'bump/tasks'
 
 task :default do
   ['~>2', '~>3'].each do |version|
