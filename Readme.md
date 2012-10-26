@@ -223,6 +223,7 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
  - [Kouhei Sutou](https://github.com/kou)
  - [Hoang Nghiem](https://github.com/hoangnghiem)
  - [Costa Shapiro](https://github.com/costa)
+ - [Jamie Dyer](https://github.com/kernow)
 
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
