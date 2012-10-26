@@ -112,6 +112,10 @@ module FastGettext
       end
     end
 
+    def expire_cache_for(key)
+      current_cache.delete(key)
+    end
+
     def locale
       _locale || ( default_locale || (available_locales||[]).first || 'en' )
     end

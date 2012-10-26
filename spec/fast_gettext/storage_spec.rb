@@ -327,6 +327,16 @@ describe 'Storage' do
     end
   end
 
+  describe :expire_cache_for do
+    it "expires the cached key" do
+      should_receive(:current_repository).and_return 'xxx' => 'new string'
+      current_cache['xxx'] = 'old string'
+      cached_find('xxx').should == 'old string'
+      expire_cache_for('xxx')
+      cached_find('xxx').should == 'new string'
+    end
+  end
+
   describe FastGettext::Storage::NoTextDomainConfigured do
     it "shows what to do" do
       FastGettext::Storage::NoTextDomainConfigured.new.to_s.should =~ /FastGettext\.add_text_domain/
