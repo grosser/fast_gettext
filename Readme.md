@@ -228,4 +228,4 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
 License: MIT<br/>
-[![Build Status](https://secure.travis-ci.org/grosser/fast_gettext.png)](http://travis-ci.org/grosser/fast_gettext)
+[![Build Status](https://travis-ci.org/grosser/fast_gettext.png)](https://travis-ci.org/grosser/fast_gettext)
