@@ -122,7 +122,7 @@ module FastGettext
 
     def locale=(new_locale)
       new_locale = best_locale_in(new_locale)
-      self._locale = new_locale if new_locale
+      self._locale = new_locale
     end
 
     # for chaining: puts set_locale('xx') == 'xx' ? 'applied' : 'rejected'
