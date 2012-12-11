@@ -7,8 +7,9 @@ require 'fast_gettext'
 # ---- revert to defaults
 RSpec.configure do |config|
   config.before do
-    FastGettext.locale = 'de'
+    FastGettext.default_available_locales = nil
     FastGettext.available_locales = nil
+    FastGettext.locale = 'de'
   end
 end
 
