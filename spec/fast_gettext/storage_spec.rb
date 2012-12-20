@@ -171,7 +171,7 @@ describe 'Storage' do
     it "set_locale resets to default with :reset_on_unknown" do
       self.locale = 'de'
       self.available_locales = ['fr']
-      self.set_locale('en', :reset_on_unknown => true).should == 'fr'
+      self.set_locale('en').should == 'fr'
     end
 
     {

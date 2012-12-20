@@ -1,3 +1,4 @@
+0.7.0 -- set_locale resets to default locale if none of the available locales was tried to set
 0.6.0 -- plurals use singular translations as fallack e.g. you translated 'Axis' then n_('Axis','Axis',1) would return the translation for 'Axis' if no plural translation was found
 0.4.14 -- "" is translated as "", not as gettext meta information
 0.4.0 -- pluralisation_rules is no longer stored in each repository, only retrived. Added Chain and Logger repository.

@@ -127,7 +127,7 @@ since it runs in a different thread then e.g. controllers, so set them inside yo
       def set_locale
         FastGettext.available_locales = ['de','en',...]
         FastGettext.text_domain = 'frontend'
-        FastGettext.set_locale(params[:locale] || session[:locale] || request.env['HTTP_ACCEPT_LANGUAGE'], :reset_on_unknown => true)
+        FastGettext.set_locale(params[:locale] || session[:locale] || request.env['HTTP_ACCEPT_LANGUAGE'])
         session[:locale] = I18n.locale = FastGettext.locale
       end
 
