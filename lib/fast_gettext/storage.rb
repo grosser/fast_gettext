@@ -121,15 +121,15 @@ module FastGettext
     end
 
     def locale=(new_locale)
-      new_locale = best_locale_in(new_locale)
-      self._locale = new_locale if new_locale
+      set_locale(new_locale)
     end
 
     # for chaining: puts set_locale('xx') == 'xx' ? 'applied' : 'rejected'
     # returns the current locale, not the one that was supplied
     # like locale=(), whoes behavior cannot be changed
-    def set_locale(new_locale)
-      self.locale = new_locale
+    def set_locale(new_locale, options={})
+      new_locale = best_locale_in(new_locale)
+      self._locale = new_locale if new_locale || options[:reset_on_unknown]
       locale
     end
 

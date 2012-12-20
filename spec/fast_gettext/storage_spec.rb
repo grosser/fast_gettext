@@ -168,6 +168,12 @@ describe 'Storage' do
       self.set_locale('en').should == 'de'
     end
 
+    it "set_locale resets to default with :reset_on_unknown" do
+      self.locale = 'de'
+      self.available_locales = ['fr']
+      self.set_locale('en', :reset_on_unknown => true).should == 'fr'
+    end
+
     {
       'Opera' => "de-DE,de;q=0.9,en;q=0.8",
       'Firefox' => "de-de,de;q=0.8,en-us;q=0.5,en;q=0.3",
