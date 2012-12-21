@@ -8,5 +8,5 @@ Gem::Specification.new name, FastGettext::VERSION do |s|
   s.email = "michael@grosser.it"
   s.homepage = "http://github.com/grosser/#{name}"
   s.files = `git ls-files`.split("\n")
-  s.license = "MIT"
+  s.license = ["MIT", "Ruby"]
 end
