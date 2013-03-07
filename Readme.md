@@ -229,5 +229,5 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
 
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
-License: MIT and Ruby<br/>
+License: MIT, some vendor parts under Ruby license (see headers)<br/>
 [![Build Status](https://travis-ci.org/grosser/fast_gettext.png)](https://travis-ci.org/grosser/fast_gettext)
