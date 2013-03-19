@@ -9,6 +9,7 @@ class TranslationKey < ActiveRecord::Base
   attr_accessible :key, :translations, :translations_attributes
 
   before_save :normalize_newlines
+  after_save :expire_cache
 
   def self.translation(key, locale)
     return unless translation_key = find_by_key(newline_normalize(key))
@@ -28,5 +29,9 @@ class TranslationKey < ActiveRecord::Base
 
   def normalize_newlines
     self.key = self.class.newline_normalize(key)
+  end
+
+  def expire_cache
+    FastGettext.expire_cache_for(key)
   end
 end

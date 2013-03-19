@@ -106,9 +106,20 @@ describe FastGettext::TranslationRepository::Db do
     translation.should_not be_accessible(:created_at)
   end
 
-  it "expires the cache when updated" do
+  it "expires the cache when a key is created " do
     FastGettext.should_receive(:expire_cache_for).with('car')
+    TranslationKey.create!(:key => 'car')
+  end
+
+  it "expires the cache when a translation is created " do
+    translation_key = TranslationKey.create!(:key => 'car')
+    FastGettext.should_receive(:expire_cache_for).with('car')
+    TranslationText.create!(:translation_key_id => translation_key.id, :text => 'Some text', :locale => "de")
+  end
+
+  it "expires the cache when a translation is updated " do
     translation_text = create_translation 'car', 'Auto'
+    FastGettext.should_receive(:expire_cache_for).with('car')
     translation_text.update_attributes :text => 'Autobot'
   end
 end
