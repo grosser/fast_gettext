@@ -24,6 +24,9 @@ describe FastGettext do
   it "provides access to FastGettext::Translations methods" do
     FastGettext._('car').should == 'Auto'
     _('car').should == 'Auto'
+    _("%{relative_time} ago").should == "vor %{relative_time}"
+    (_("%{relative_time} ago") % {:relative_time => 1}).should == "vor 1"
+    (N_("%{relative_time} ago") % {:relative_time => 1}).should == "1 ago"
     s_("XXX|not found").should == "not found"
     n_('Axis','Axis',1).should == 'Achse'
     N_('XXXXX').should == 'XXXXX'
