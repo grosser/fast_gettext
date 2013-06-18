@@ -38,6 +38,13 @@ module FastGettext
         end
         []
       end
+
+      def reload
+        chain.each do |c|
+          c.reload
+        end
+        super
+      end
     end
   end
 end
