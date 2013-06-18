@@ -46,11 +46,17 @@ describe 'Storage' do
     end
   end
 
-  it "stores translation_repositories non-thread-safe" do
-    self.translation_repositories[:x]=1
-    t = Thread.new{self.translation_repositories[:x]=2}
-    t.join
-    self.translation_repositories[:x].should == 2
+  context "non-thread safe" do
+    after do
+      self.translation_repositories.clear
+    end
+
+    it "stores translation_repositories" do
+      self.translation_repositories[:x]=1
+      t = Thread.new{self.translation_repositories[:x]=2}
+      t.join
+      self.translation_repositories[:x].should == 2
+    end
   end
 
   describe :pluralisation_rule do
@@ -214,6 +220,10 @@ describe 'Storage' do
   describe :silence_errors do
     before do
       self.text_domain = rand(99999).to_s
+    end
+
+    after do
+      self.translation_repositories.clear
     end
 
     it "raises when a textdomain was empty" do
