@@ -17,4 +17,8 @@ describe 'FastGettext::TranslationRepository::Base' do
   it "cannot pluralize" do
     @rep.plural('Axis','Axis').should == []
   end
+
+  it "can be reloaded" do
+    @rep.reload.should be_true
+  end
 end
