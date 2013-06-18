@@ -20,6 +20,29 @@ describe 'FastGettext::TranslationRepository::Mo' do
     @rep.plural('Axis','Axis').should == ['Achse','Achsen']
   end
 
+  describe :reload do
+    before do
+      mo_file = FastGettext::MoFile.new('spec/locale/de/LC_MESSAGES/test2.mo')
+
+      FastGettext::MoFile.stub(:new).and_return(FastGettext::MoFile.empty)
+      FastGettext::MoFile.stub(:new).with('spec/locale/de/LC_MESSAGES/test.mo').and_return(mo_file)
+    end
+
+    it "can reload" do
+      FastGettext.locale = 'de'
+
+      @rep['Untranslated'].should be_nil
+
+      @rep.reload
+
+      @rep['Untranslated'].should == 'Translated'
+    end
+
+    it "returns true" do
+      @rep.reload.should be_true
+    end
+  end
+
   it "has access to the mo repositories pluralisation rule" do
     FastGettext.locale = 'en'
     rep = FastGettext::TranslationRepository.build('plural_test',:path=>File.join('spec','locale'))

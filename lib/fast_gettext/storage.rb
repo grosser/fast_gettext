@@ -72,6 +72,14 @@ module FastGettext
       Thread.current[:fast_gettext_current_cache] = cache
     end
 
+    def reload!
+      self.current_cache = {}
+
+      translation_repositories.each do |name, repository|
+        repository.reload
+      end
+    end
+
     #global, since re-parsing whole folders takes too much time...
     @@translation_repositories={}
     def translation_repositories

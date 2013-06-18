@@ -18,6 +18,11 @@ module FastGettext
         current_translations.pluralisation_rule
       end
 
+      def reload
+        find_and_store_files(@name, @options)
+        super
+      end
+
       protected
 
       def find_and_store_files(name,options)
