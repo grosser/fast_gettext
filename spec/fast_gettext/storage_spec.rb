@@ -298,6 +298,22 @@ describe 'Storage' do
     end
   end
 
+  describe :reload! do
+    it "reloads all repositories" do
+      FastGettext.translation_repositories.each do |name, repository|
+        repository.should_receive(:reload)
+      end
+
+      FastGettext.reload!
+    end
+
+    it "clears the cache" do
+      FastGettext.should_receive(:current_cache=).with({})
+
+      FastGettext.reload!
+    end
+  end
+
   describe :key_exist? do
     it "does not find default keys" do
       FastGettext._('abcde')
