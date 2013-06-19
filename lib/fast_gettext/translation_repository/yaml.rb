@@ -26,6 +26,11 @@ module FastGettext
         self['pluralisation_rule'] ? lambda{|n| eval(self['pluralisation_rule']) } : nil
       end
 
+      def reload
+        find_and_store_files(@options)
+        super
+      end
+
       protected
 
       MAX_FIND_DEPTH = 10

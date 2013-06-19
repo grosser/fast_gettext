@@ -27,6 +27,10 @@ describe 'FastGettext::TranslationRepository::Chain' do
     it "has no pluralisation rule" do
       @rep.pluralisation_rule.should == nil
     end
+
+    it "returns true on reload" do
+      @rep.reload.should be_true
+    end
   end
 
   describe "filled chain" do
@@ -75,6 +79,19 @@ describe 'FastGettext::TranslationRepository::Chain' do
         @one.should_receive(:pluralisation_rule).and_return nil
         @two.should_receive(:pluralisation_rule).and_return 'x'
         @rep.pluralisation_rule.should == 'x'
+      end
+    end
+
+    describe :reload do
+      it "reloads all repositories" do
+        @one.should_receive(:reload)
+        @two.should_receive(:reload)
+        @rep.reload
+      end
+
+      it "returns true" do
+        @rep.chain.each { |c| c.stub(:reload) }
+        @rep.reload.should be_true
       end
     end
   end

@@ -33,6 +33,29 @@ describe 'FastGettext::TranslationRepository::Yaml' do
     @rep.plural('cars.axis').should == ['Achse', 'Achsen', nil, nil]
   end
 
+  describe :reload do
+    before do
+      yaml = YAML.load_file('spec/locale/yaml/de2.yml')
+
+      YAML.stub(:load_file).and_return('en' => {}, 'de' => {})
+      YAML.stub(:load_file).with('spec/locale/yaml/de.yml').and_return(yaml)
+    end
+
+    it "can reload" do
+      FastGettext.locale = 'de'
+
+      @rep['cars.car'].should == 'Auto'
+
+      @rep.reload
+
+      @rep['cars.car'].should == 'Aufzugskabine'
+    end
+
+    it "returns true" do
+      @rep.reload.should be_true
+    end
+  end
+
   it "handles unfound plurals with nil" do
     @rep.plural('cars.xxx').should == [nil, nil, nil, nil]
   end

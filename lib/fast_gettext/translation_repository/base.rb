@@ -25,6 +25,10 @@ module FastGettext
         current_translations.plural(*keys)
       end
 
+      def reload
+        true
+      end
+
       protected
 
       def current_translations
