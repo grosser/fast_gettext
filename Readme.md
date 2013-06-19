@@ -226,6 +226,7 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
  - [Costa Shapiro](https://github.com/costa)
  - [Jamie Dyer](https://github.com/kernow)
  - [Stephan Kulow](https://github.com/coolo)
+ - [Fotos Georgiadis](https://github.com/fotos)
 
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
