@@ -8,8 +8,8 @@ module FastGettext
     #  - provide access to translations in yaml files
     class Yaml < Base
       def initialize(name,options={})
-        find_and_store_files(options)
         super
+        reload
       end
 
       def available_locales

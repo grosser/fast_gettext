@@ -40,9 +40,7 @@ module FastGettext
       end
 
       def reload
-        chain.each do |c|
-          c.reload
-        end
+        chain.each(&:reload)
         super
       end
     end

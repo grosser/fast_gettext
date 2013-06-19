@@ -6,8 +6,8 @@ module FastGettext
     #  - provide access to translations in mo files
     class Mo < Base
       def initialize(name,options={})
-        find_and_store_files(name,options)
         super
+        reload
       end
 
       def available_locales
