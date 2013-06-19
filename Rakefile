@@ -1,9 +1,10 @@
+require 'bundler/setup'
 require 'bundler/gem_tasks'
 require 'bump/tasks'
 require 'appraisal'
 
 task :default do
-  sh "bundle exec rake appraisal:install && bundle exec rake appraisal spec"
+  sh "rake appraisal:install && rake appraisal spec"
 end
 
 task :spec do

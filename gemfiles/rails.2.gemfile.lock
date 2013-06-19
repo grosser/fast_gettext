@@ -4,7 +4,7 @@ PATH
     fast_gettext (0.7.0)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     actionmailer (2.3.14)
       actionpack (= 2.3.14)
