@@ -17,8 +17,32 @@ module FastGettext
       klas.extend self
     end
 
-    def _(key)
-      FastGettext.cached_find(key) or key
+    def _(key, contexts = {})
+
+      if contexts.empty?
+        translate = FastGettext.cached_find(key)
+        translate ||= key
+
+      else
+        # Very simple dynamic translation support.
+        # Mark the key string for dynamic translation.
+        # Example:
+        #    _("Here is some %{id}", :id => 4)
+        # Now you just have to keep the %{id} in your translated string.
+        #   _("Here is another %{var}", :var => "example")
+
+        translate = FastGettext.current_repository[key]
+        translate ||= key
+
+        # prevent from caching
+        translate = String.new(translate)
+
+        contexts.each do |k, v|
+          translate.gsub!("\%{#{k}}", v.to_s)
+        end
+      end
+
+      translate
     end
 
     #translate pluralized
