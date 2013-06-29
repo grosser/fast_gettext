@@ -83,6 +83,7 @@ Do this once in every Thread. (e.g. Rails -> ApplicationController)
     _('not-found') == 'not-found'
     s_('Namespace|no-found') == 'not-found'
     n_('Axis','Axis',3) == 'Achsen' #German plural of Axis
+    _('Hello %{name}!') % {:name => "Pete"} == 'Hello Pete!'
 
 
 Managing translations
