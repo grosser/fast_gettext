@@ -1,3 +1,5 @@
+require "protected_attributes" if ActiveRecord::VERSION::MAJOR >= 4
+
 class TranslationText < ActiveRecord::Base
   belongs_to :translation_key, :class_name => 'TranslationKey'
   validates_presence_of :locale

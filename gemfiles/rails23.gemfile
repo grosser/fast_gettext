@@ -9,6 +9,6 @@ gem "rspec"
 gem "activerecord"
 gem "i18n"
 gem "bump"
-gem "rails", "~>2.0"
+gem "rails", "~>2.3.0"
 
 gemspec :path=>"../"

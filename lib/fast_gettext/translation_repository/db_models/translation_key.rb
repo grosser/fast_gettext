@@ -1,3 +1,5 @@
+require "protected_attributes" if ActiveRecord::VERSION::MAJOR >= 4
+
 class TranslationKey < ActiveRecord::Base
   has_many :translations, :class_name => 'TranslationText', :dependent => :destroy
 

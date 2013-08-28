@@ -20,9 +20,9 @@ def default_setup
   FastGettext.locale = 'de'
 end
 
-def pending_if(condition)
+def pending_if(condition, *args)
   if condition
-    pending { yield }
+    pending(*args) { yield }
   else
     yield
   end
