@@ -19,7 +19,13 @@ class TranslationKey < ActiveRecord::Base
   end
 
   def self.available_locales
-    @@available_locales ||= TranslationText.count(:group=>:locale).keys.sort
+    @@available_locales ||= begin
+      if ActiveRecord::VERSION::MAJOR >= 3
+        TranslationText.group(:locale).count
+      else
+        TranslationText.count(:group=>:locale)
+      end.keys.sort
+    end
   end
 
   protected
