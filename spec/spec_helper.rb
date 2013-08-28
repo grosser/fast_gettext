@@ -19,3 +19,11 @@ def default_setup
   FastGettext.available_locales = ['en','de','gsw_CH']
   FastGettext.locale = 'de'
 end
+
+def pending_if(condition)
+  if condition
+    pending { yield }
+  else
+    yield
+  end
+end
