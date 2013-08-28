@@ -13,5 +13,5 @@ matrix:
   exclude:
     - rvm: 2.0.0
       gemfile: gemfiles/rails23.gemfile
-    - rvm: 2.0.0
+    - rvm: ree
       gemfile: gemfiles/rails40.gemfile
