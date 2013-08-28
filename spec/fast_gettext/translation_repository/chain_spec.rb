@@ -36,9 +36,9 @@ describe 'FastGettext::TranslationRepository::Chain' do
   describe "filled chain" do
     before do
       @one = MockRepo.new
-      @one.stub!(:singular).with('xx').and_return 'one'
+      @one.stub(:singular).with('xx').and_return 'one'
       @two = MockRepo.new
-      @two.stub!(:singular).with('xx').and_return 'two'
+      @two.stub(:singular).with('xx').and_return 'two'
       @rep = FastGettext::TranslationRepository.build('chain', :chain=>[@one, @two], :type=>:chain)
     end
 

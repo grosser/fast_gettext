@@ -61,7 +61,7 @@ describe 'Storage' do
 
   describe :pluralisation_rule do
     it "defaults to singular-if-1 when it is not set" do
-      stub!(:current_repository).and_return mock('',:pluralisation_rule=>nil)
+      should_receive(:current_repository).at_least(1).and_return double(:pluralisation_rule => nil)
       self.pluralisation_rule = nil
       pluralisation_rule.call(1).should == false
       pluralisation_rule.call(0).should == true
@@ -256,8 +256,8 @@ describe 'Storage' do
       FastGettext.text_domain = 'xxx'
       FastGettext.available_locales = ['de','en']
       FastGettext.locale = 'de'
-      FastGettext.current_repository.stub!(:"[]").with('abc').and_return 'old'
-      FastGettext.current_repository.stub!(:"[]").with('unfound').and_return nil
+      FastGettext.current_repository.stub(:"[]").with('abc').and_return 'old'
+      FastGettext.current_repository.stub(:"[]").with('unfound').and_return nil
       FastGettext._('abc')
       FastGettext._('unfound')
       FastGettext.locale = 'en'
@@ -333,7 +333,6 @@ describe 'Storage' do
 
     it "does not overwrite an existing cache value" do
       current_cache['xxx']='xxx'
-      stub!(:current_repository).and_return 'xxx'=>'1'
       key_exist?('xxx')
       current_cache['xxx'].should == 'xxx'
     end
