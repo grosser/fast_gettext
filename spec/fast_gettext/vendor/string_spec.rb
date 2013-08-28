@@ -84,16 +84,16 @@ describe String do
   end
 
   describe 'with i18n loaded' do
-    let(:pending_condition) { RUBY_VERSION < "1.9" or ActiveRecord::VERSION::MAJOR >= 4 }
+    let(:pending_condition) { (RUBY_VERSION < "1.9" and ActiveRecord::VERSION::MAJOR == 3) or ActiveRecord::VERSION::MAJOR >= 4 }
 
     it "interpolates if i18n is loaded before" do
-      pending_if pending_condition, "does not work on ree or rails 4"  do
+      pending_if pending_condition, "does not work on ree + rails 3 or rails 4"  do
         system("bundle exec ruby spec/cases/interpolate_i18n_before_fast_gettext.rb  > /dev/null 2>&1").should == true
       end
     end
 
     it "interpolates if i18n is loaded before" do
-      pending_if pending_condition, "does not work on ree or rails 4"  do
+      pending_if pending_condition, "does not work on ree + rails 3 or rails 4"  do
         system("bundle exec ruby spec/cases/interpolate_i18n_after_fast_gettext.rb > /dev/null 2>&1").should == true
       end
     end
