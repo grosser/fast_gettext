@@ -31,11 +31,11 @@ describe 'FastGettext::TranslationRepository::Mo' do
     it "can reload" do
       FastGettext.locale = 'de'
 
-      @rep['Untranslated'].should be_nil
+      @rep['Untranslated and translated in test2'].should be_nil
 
       @rep.reload
 
-      @rep['Untranslated'].should == 'Translated'
+      @rep['Untranslated and translated in test2'].should == 'Translated'
     end
 
     it "returns true" do
