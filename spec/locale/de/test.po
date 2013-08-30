@@ -41,6 +41,9 @@ msgstr "Modell"
 msgid "Untranslated"
 msgstr ""
 
+msgid "Untranslated and translated in test2"
+msgstr ""
+
 #: app/views/cars/show.html.erb:3 locale/model_attributes.rb:4
 msgid "Car|Wheels count"
 msgstr "Räderzahl"

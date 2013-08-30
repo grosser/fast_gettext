@@ -1,8 +1,6 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# this is the same file as test.po but with "2" added to each translation
+# and one extra translation added
+
 #, fuzzy
 msgid ""
 msgstr ""
@@ -16,56 +14,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: app/helpers/translation_helper.rb:3
 msgid "%{relative_time} ago"
-msgstr "vor %{relative_time}"
+msgstr "vor %{relative_time} 2"
 
-#: app/views/cars/show.html.erb:5
 msgid "Axis"
-msgid_plural "Axis"
-msgstr[0] "Achse"
-msgstr[1] "Achsen"
+msgid_plural "Axis 2"
+msgstr[0] "Achse 2"
+msgstr[1] "Achsen 2"
 
-#: app/controllers/cars_controller.rb:47
 msgid "Car was successfully created."
-msgstr "Auto wurde erfolgreich gespeichert"
+msgstr "Auto wurde erfolgreich gespeichert 2"
 
-#: app/controllers/cars_controller.rb:64
 msgid "Car was successfully updated."
-msgstr "Auto wurde erfolgreich aktualisiert"
+msgstr "Auto wurde erfolgreich aktualisiert 2"
 
-#: app/views/cars/show.html.erb:1 locale/model_attributes.rb:3
 msgid "Car|Model"
-msgstr "Modell"
+msgstr "Modell 2"
 
 msgid "Untranslated"
+msgstr ""
+
+msgid "Untranslated and translated in test2"
 msgstr "Translated"
 
-#: app/views/cars/show.html.erb:3 locale/model_attributes.rb:4
 msgid "Car|Wheels count"
-msgstr "Räderzahl"
+msgstr "Räderzahl 2"
 
-#: app/views/cars/show.html.erb:7
 msgid "Created"
-msgstr "Erstellt"
+msgstr "Erstellt 2"
 
-#: app/views/cars/show.html.erb:9
 msgid "Month"
-msgstr "Monat"
+msgstr "Monat 2"
 
-#: locale/model_attributes.rb:2
 msgid "car"
-msgstr "Auto"
+msgstr "Auto 2"
 
-#: locale/testlog_phrases.rb:2
 msgid "this is a dynamic translation which was found thorugh gettext_test_log!"
 msgstr ""
 "Dies ist eine dynamische Übersetzung, die durch gettext_test_log "
-"gefunden wurde!"
+"gefunden wurde! 2"
 
-#: locale/test_escape.rb:2
 msgid "You should escape '\\' as '\\\\'."
-msgstr "Du solltest '\\' als '\\\\' escapen."
+msgstr "Du solltest '\\' als '\\\\' escapen. 2"
 
 msgid "Umläüte"
-msgstr "Umlaute"
+msgstr "Umlaute 2"
+
+msgid "only in test2 domain"
+msgstr "nur in test2 Domain"

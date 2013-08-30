@@ -197,6 +197,31 @@ Write your own TranslationRepository!
       end
     end
 
+###Multi domain support
+
+If you have more than one gettext domain, there are two sets of functions
+available:
+
+    include FastGettext::TranslationMultidomain
+
+    d_("domainname", "string") # finds 'string' in domain domainname
+    dn_("domainname", "string", "strings", 1) # ditto
+    # etc.
+
+These are helper methods so you don't need to write:
+
+    FastGettext.text_domain = "domainname"
+    _("string")
+
+It is useful in Rails plugins in the views for example. The second set of
+functions are D functions which search for string in _all_ domains. If there
+are multiple translations in different domains, it returns them in random
+order (depends on the Ruby hash implementation):
+
+    include FastGettext::TranslationMultidomain
+
+    D_("string") # finds 'string' in any domain
+    # etc.
 
 FAQ
 ===
