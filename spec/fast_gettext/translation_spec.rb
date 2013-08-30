@@ -252,7 +252,7 @@ describe FastGettext::Translation do
 
       it "sets text domain back to previous one" do
         old_domain = FastGettext.text_domain
-        D_('car').should == 'Auto'
+        D_('car').should match('(Auto|Auto 2)')
         FastGettext.text_domain.should == old_domain
       end
     end
