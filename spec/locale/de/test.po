@@ -60,6 +60,20 @@ msgstr "Monat"
 msgid "car"
 msgstr "Auto"
 
+msgid "Weapon|bow"
+msgstr "Bogen"
+
+msgid "Movement|bow"
+msgstr "biegen"
+
+msgctxt "Music"
+msgid "bass"
+msgstr "Bass"
+
+msgctxt "Fish"
+msgid "bass"
+msgstr "Barsch"
+
 #: locale/testlog_phrases.rb:2
 msgid "this is a dynamic translation which was found thorugh gettext_test_log!"
 msgstr ""

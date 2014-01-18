@@ -28,11 +28,12 @@ describe FastGettext do
     (_("%{relative_time} ago") % {:relative_time => 1}).should == "vor 1"
     (N_("%{relative_time} ago") % {:relative_time => 1}).should == "1 ago"
     s_("XXX|not found").should == "not found"
+    p_("XXX|not found").should == "not found"
     n_('Axis','Axis',1).should == 'Achse'
     N_('XXXXX').should == 'XXXXX'
     Nn_('X','Y').should == ['X','Y']
   end
-  
+
   it "is extended to a class and included into a class" do
     IncludeTest.ext.should == 'Auto'
     IncludeTest.ext.should == 'Auto'

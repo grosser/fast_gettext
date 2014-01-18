@@ -105,16 +105,46 @@ describe FastGettext::Translation do
       s_('car').should == 'Auto'
     end
 
+    it "returns contextual translation" do
+      s_("Weapon|bow").should == "Bogen"
+    end
+
+    it "returns contextual translation for another context" do
+      s_("Movement|bow").should == "biegen"
+    end
+
     it "returns cleaned key if a translation was not found" do
       s_("XXX|not found").should == "not found"
     end
 
-    it "can use a custom seperator" do
+    it "can use a custom separator" do
       s_("XXX/not found",'/').should == "not found"
     end
 
     it "returns block when specified" do
       s_('not found'){:block}.should == :block
+    end
+  end
+
+  describe :p_ do
+    it "translates simple text" do
+      p_('car').should == 'Auto'
+    end
+
+    it "returns contextual translation" do
+      p_("Music", "bass").should == "Bass"
+    end
+
+    it "returns contextual translation for another context" do
+      p_("Fish", "bass").should == "Barsch"
+    end
+
+    it "returns cleaned key if a translation was not found" do
+      p_("XXX", "not found").should == "not found"
+    end
+
+    it "returns block when specified" do
+      p_('not found'){:block}.should == :block
     end
   end
 
