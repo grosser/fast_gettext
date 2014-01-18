@@ -52,7 +52,7 @@ module FastGettext
     #translate, using context to choose the correct translation
     def p_(context=nil, key, &block)
       #translation = FastGettext.cached_find(key) and return translation
-      block ? block.call : key
+      block ? block.call : s_("#{context}|#{key}")
     end
 
     #tell gettext: this string need translation (will be found during parsing)

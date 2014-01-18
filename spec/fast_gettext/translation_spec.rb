@@ -127,10 +127,6 @@ describe FastGettext::Translation do
   end
 
   describe :p_ do
-    it "translates simple text" do
-      p_('car').should == 'Auto'
-    end
-
     it "returns contextual translation" do
       p_("Music", "bass").should == "Bass"
     end
