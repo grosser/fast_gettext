@@ -1,4 +1,4 @@
-require 'benchmark/base'
+require_relative 'base'
 require 'active_support'
 
 I18n.backend = I18n::Backend::Simple.new

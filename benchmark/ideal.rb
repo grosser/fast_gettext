@@ -1,6 +1,4 @@
-require 'benchmark/base'
-
-$LOAD_PATH.unshift 'lib'
+require_relative 'base'
 
 module FastestGettext
   def set_domain(folder,domain,locale)

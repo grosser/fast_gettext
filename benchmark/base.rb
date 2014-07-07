@@ -1,5 +1,5 @@
-require 'rubygems'
 require 'benchmark'
+$LOAD_PATH.unshift 'lib'
 
 RUNS = 50_0000
 DEFAULTS = {:memory=>0}

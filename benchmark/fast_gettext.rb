@@ -1,6 +1,5 @@
-require 'benchmark/base'
+require_relative 'base'
 
-$LOAD_PATH.unshift 'lib'
 require 'fast_gettext'
 include FastGettext::Translation
 
