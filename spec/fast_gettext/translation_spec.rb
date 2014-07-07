@@ -310,11 +310,11 @@ describe FastGettext::Translation do
     describe :cache_hit do
       before do
         #singular cache keys
-        FastGettext.current_cache['xxx'] = '1'
+        FastGettext.cache['xxx'] = '1'
 
         #plural cache keys
-        FastGettext.current_cache['||||xxx'] = ['1','2']
-        FastGettext.current_cache['||||xxx||||yyy'] = ['1','2']
+        FastGettext.cache['||||xxx'] = ['1','2']
+        FastGettext.cache['||||xxx||||yyy'] = ['1','2']
       end
 
       it "uses the cache when translating with _" do

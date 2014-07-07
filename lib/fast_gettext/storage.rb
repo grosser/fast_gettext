@@ -23,6 +23,7 @@ module FastGettext
       @current[key] = value
     end
 
+    # TODO only used for tests, maybe if-else around it ...
     def [](key)
       @current[key]
     end
@@ -57,7 +58,7 @@ module FastGettext
     [:available_locales, :_locale, :text_domain, :pluralisation_rule].each do |method_name|
       key = "fast_gettext_#{method_name}".to_sym
       define_method "#{method_name}=" do |value|
-        update_current_cache if Thread.current[key] != Thread.current[key]=value
+        switch_cache if Thread.current[key] != Thread.current[key]=value
       end
     end
 
@@ -77,7 +78,7 @@ module FastGettext
     @@default_available_locales = nil
     def default_available_locales=(avail_locales)
       @@default_available_locales = avail_locales
-      update_current_cache
+      switch_cache
     end
 
     def default_available_locales
@@ -92,7 +93,7 @@ module FastGettext
     @@default_text_domain = nil
     def default_text_domain=(domain)
       @@default_text_domain = domain
-      update_current_cache
+      switch_cache
     end
 
     def default_text_domain
@@ -106,12 +107,12 @@ module FastGettext
     end
 
     # TODO make class configurable
-    def current_cache
-      Thread.current[:fast_gettext_current_cache] ||= Cache.new
+    def cache
+      Thread.current[:fast_gettext_cache] ||= Cache.new
     end
 
     def reload!
-      current_cache.reload!
+      cache.reload!
       translation_repositories.values.each(&:reload)
     end
 
@@ -137,16 +138,16 @@ module FastGettext
     end
 
     def cached_find(key)
-      current_cache.fetch(key) { current_repository[key] }
+      cache.fetch(key) { current_repository[key] }
     end
 
     def cached_plural_find(*keys)
       key = '||||' + keys * '||||'
-      current_cache.fetch(key) { current_repository.plural(*keys) }
+      cache.fetch(key) { current_repository.plural(*keys) }
     end
 
     def expire_cache_for(key)
-      current_cache.delete(key)
+      cache.delete(key)
     end
 
     def locale
@@ -169,7 +170,7 @@ module FastGettext
     @@default_locale = nil
     def default_locale=(new_locale)
       @@default_locale = best_locale_in(new_locale)
-      update_current_cache
+      switch_cache
     end
 
     def default_locale
@@ -225,8 +226,8 @@ module FastGettext
       locale.sub(/^([a-zA-Z]{2,3})[-_]([a-zA-Z]{2,3})$/){$1.downcase+'_'+$2.upcase}
     end
 
-    def update_current_cache
-      self.current_cache.switch_to(text_domain, locale)
+    def switch_cache
+      self.cache.switch_to(text_domain, locale)
     end
   end
 end

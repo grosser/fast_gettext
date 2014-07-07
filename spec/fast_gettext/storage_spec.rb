@@ -251,7 +251,7 @@ describe 'Storage' do
     end
   end
 
-  describe :current_cache do
+  describe :cache do
     before do
       FastGettext.text_domain = 'xxx'
       FastGettext.available_locales = ['de','en']
@@ -264,37 +264,37 @@ describe 'Storage' do
     end
 
     it "stores a translation seperate by locale" do
-      FastGettext.current_cache['abc'].should == nil
+      FastGettext.cache['abc'].should == nil
     end
 
     it "stores a translation seperate by domain" do
       FastGettext.locale = 'de'
       FastGettext.text_domain = nil
-      FastGettext.current_cache['abc'].should == nil
+      FastGettext.cache['abc'].should == nil
     end
 
     it "cache is restored through setting of default_text_domain" do
       FastGettext.locale = 'de'
       FastGettext.text_domain = nil
       FastGettext.default_text_domain = 'xxx'
-      FastGettext.current_cache['abc'].should == 'old'
+      FastGettext.cache['abc'].should == 'old'
     end
 
     it "cache is restored through setting of default_locale" do
       FastGettext.send(:_locale=,nil)#reset locale to nil
       FastGettext.default_locale = 'de'
       FastGettext.locale.should == 'de'
-      FastGettext.current_cache['abc'].should == 'old'
+      FastGettext.cache['abc'].should == 'old'
     end
 
     it "stores a translation permanently" do
       FastGettext.locale = 'de'
-      FastGettext.current_cache['abc'].should == 'old'
+      FastGettext.cache['abc'].should == 'old'
     end
 
     it "stores a unfound translation permanently" do
       FastGettext.locale = 'de'
-      FastGettext.current_cache['unfound'].should == false
+      FastGettext.cache['unfound'].should == false
     end
   end
 
@@ -308,7 +308,7 @@ describe 'Storage' do
     end
 
     it "clears the cache" do
-      FastGettext.current_cache.should_receive(:reload!)
+      FastGettext.cache.should_receive(:reload!)
 
       FastGettext.reload!
     end
@@ -328,13 +328,13 @@ describe 'Storage' do
     it "sets the current cache with a found result" do
       should_receive(:current_repository).and_return 'xxx'=>'1'
       key_exist?('xxx')
-      current_cache['xxx'].should == '1'
+      cache['xxx'].should == '1'
     end
 
     it "does not overwrite an existing cache value" do
-      current_cache['xxx']='xxx'
+      cache['xxx']='xxx'
       key_exist?('xxx')
-      current_cache['xxx'].should == 'xxx'
+      cache['xxx'].should == 'xxx'
     end
 
     it "is false for gettext meta key" do
@@ -361,7 +361,7 @@ describe 'Storage' do
   describe :expire_cache_for do
     it "expires the cached key" do
       should_receive(:current_repository).and_return 'xxx' => 'new string'
-      current_cache['xxx'] = 'old string'
+      cache['xxx'] = 'old string'
       cached_find('xxx').should == 'old string'
       expire_cache_for('xxx')
       cached_find('xxx').should == 'new string'
