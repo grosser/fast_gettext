@@ -308,7 +308,7 @@ describe 'Storage' do
     end
 
     it "clears the cache" do
-      FastGettext.should_receive(:current_cache=).with({})
+      FastGettext.current_cache.should_receive(:reload!)
 
       FastGettext.reload!
     end

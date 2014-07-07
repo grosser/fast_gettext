@@ -3,6 +3,50 @@ module FastGettext
   #  - store data threadsave
   #  - provide error messages when repositories are unconfigured
   #  - accept/reject locales that are set by the user
+  class Cache
+    def initialize
+      @store = {}
+      reload!
+    end
+
+    def fetch(key)
+      translation = @current[key]
+      if translation.nil? # uncached
+        @current[key] = yield || false # TODO get rid of this false hack and cache :missing
+      else
+        translation
+      end
+    end
+
+    # TODO only used for tests, maybe if-else around it ...
+    def []=(key, value)
+      @current[key] = value
+    end
+
+    def [](key)
+      @current[key]
+    end
+
+    # key performance gain:
+    # - no need to lookup locale on each translation
+    # - no need to lookup text_domain on each translation
+    # - super-simple hash lookup
+    def switch_to(text_domain, locale)
+      @store[text_domain] ||= {}
+      @store[text_domain][locale] ||= {}
+      @store[text_domain][locale][""] = false # ignore gettext meta key when translating
+      @current = @store[text_domain][locale]
+    end
+
+    def delete(key)
+      @current.delete(key)
+    end
+
+    def reload!
+      @current = {} # TODO no longer stores "" after this ...
+    end
+  end
+
   module Storage
     class NoTextDomainConfigured < RuntimeError
       def to_s
@@ -40,7 +84,6 @@ module FastGettext
       @@default_available_locales
     end
 
-
     def text_domain
       Thread.current[:fast_gettext_text_domain] || default_text_domain
     end
@@ -56,23 +99,19 @@ module FastGettext
       @@default_text_domain
     end
 
-
     # if overwritten by user( FastGettext.pluralisation_rule = xxx) use it,
     # otherwise fall back to repo or to default lambda
     def pluralisation_rule
       Thread.current[:fast_gettext_pluralisation_rule] ||  current_repository.pluralisation_rule || lambda{|i| i!=1}
     end
 
+    # TODO make class configurable
     def current_cache
-      Thread.current[:fast_gettext_current_cache] || {}
-    end
-
-    def current_cache=(cache)
-      Thread.current[:fast_gettext_current_cache] = cache
+      Thread.current[:fast_gettext_current_cache] ||= Cache.new
     end
 
     def reload!
-      self.current_cache = {}
+      current_cache.reload!
       translation_repositories.values.each(&:reload)
     end
 
@@ -98,22 +137,12 @@ module FastGettext
     end
 
     def cached_find(key)
-      translation = current_cache[key]
-      if translation.nil? # uncached
-        current_cache[key] = current_repository[key] || false
-      else
-        translation
-      end
+      current_cache.fetch(key) { current_repository[key] }
     end
 
     def cached_plural_find(*keys)
       key = '||||' + keys * '||||'
-      translation = current_cache[key]
-      if translation.nil? # uncached
-        current_cache[key] = current_repository.plural(*keys) || false
-      else
-        translation
-      end
+      current_cache.fetch(key) { current_repository.plural(*keys) }
     end
 
     def expire_cache_for(key)
@@ -197,10 +226,7 @@ module FastGettext
     end
 
     def update_current_cache
-      caches[text_domain] ||= {}
-      caches[text_domain][locale] ||= {}
-      caches[text_domain][locale][""] = false #ignore gettext meta key when translating
-      self.current_cache = caches[text_domain][locale]
+      self.current_cache.switch_to(text_domain, locale)
     end
   end
 end
