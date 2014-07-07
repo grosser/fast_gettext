@@ -74,30 +74,27 @@ module FastGettext
       locales.map{|s|s.to_s}
     end
 
-    # == cattr_accessor :default_available_locales
-    @@default_available_locales = nil
-    def default_available_locales=(avail_locales)
-      @@default_available_locales = avail_locales
-      switch_cache
-    end
+    # cattr_accessor with defaults
+    [
+      [:default_available_locales, "nil"],
+      [:default_text_domain, "nil"],
+      [:cache_class, "FastGettext::Cache"]
+    ].each do |name, default|
+      eval <<-Ruby
+        @@#{name} = #{default}
+        def #{name}=(value)
+          @@#{name} = value
+          switch_cache
+        end
 
-    def default_available_locales
-      @@default_available_locales
+        def #{name}
+          @@#{name}
+        end
+      Ruby
     end
 
     def text_domain
       Thread.current[:fast_gettext_text_domain] || default_text_domain
-    end
-
-    # == cattr_accessor :default_text_domain
-    @@default_text_domain = nil
-    def default_text_domain=(domain)
-      @@default_text_domain = domain
-      switch_cache
-    end
-
-    def default_text_domain
-      @@default_text_domain
     end
 
     # if overwritten by user( FastGettext.pluralisation_rule = xxx) use it,
@@ -108,7 +105,7 @@ module FastGettext
 
     # TODO make class configurable
     def cache
-      Thread.current[:fast_gettext_cache] ||= Cache.new
+      Thread.current[:fast_gettext_cache] ||= cache_class.new
     end
 
     def reload!
