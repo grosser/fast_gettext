@@ -9,6 +9,7 @@ gemfile:
   - gemfiles/rails23.gemfile
   - gemfiles/rails32.gemfile
   - gemfiles/rails40.gemfile
+  - gemfiles/rails41.gemfile
 bundler_args: --no-deployment
 matrix:
   exclude:
@@ -18,3 +19,6 @@ matrix:
       gemfile: gemfiles/rails23.gemfile
     - rvm: ree
       gemfile: gemfiles/rails40.gemfile
+    - rvm: ree
+      gemfile: gemfiles/rails41.gemfile
+
