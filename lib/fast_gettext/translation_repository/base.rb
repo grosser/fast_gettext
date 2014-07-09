@@ -37,7 +37,7 @@ module FastGettext
 
       def find_files_in_locale_folders(relative_file_path,path)
         path ||= "locale"
-        raise "path #{path} cound not be found!" unless File.exist?(path)
+        raise "path #{path} could not be found!" unless File.exist?(path)
 
         @files = {}
         Dir[File.join(path,'*')].each do |locale_folder|
