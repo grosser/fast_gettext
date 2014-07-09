@@ -44,7 +44,8 @@ module FastGettext
     end
 
     def reload!
-      @current = {} # TODO no longer stores "" after this ...
+      @current = {}
+      @current[""] = false
     end
   end
 
