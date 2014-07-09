@@ -1,3 +1,5 @@
+require 'fast_gettext/cache'
+
 module FastGettext
   # Responsibility:
   #  - store data threadsave
@@ -13,7 +15,7 @@ module FastGettext
     [:available_locales, :_locale, :text_domain, :pluralisation_rule].each do |method_name|
       key = "fast_gettext_#{method_name}".to_sym
       define_method "#{method_name}=" do |value|
-        update_current_cache if Thread.current[key] != Thread.current[key]=value
+        switch_cache if Thread.current[key] != Thread.current[key]=value
       end
     end
 
@@ -29,33 +31,28 @@ module FastGettext
       locales.map{|s|s.to_s}
     end
 
-    # == cattr_accessor :default_available_locales
-    @@default_available_locales = nil
-    def default_available_locales=(avail_locales)
-      @@default_available_locales = avail_locales
-      update_current_cache
-    end
+    # cattr_accessor with defaults
+    [
+      [:default_available_locales, "nil"],
+      [:default_text_domain, "nil"],
+      [:cache_class, "FastGettext::Cache"]
+    ].each do |name, default|
+      eval <<-Ruby
+        @@#{name} = #{default}
+        def #{name}=(value)
+          @@#{name} = value
+          switch_cache
+        end
 
-    def default_available_locales
-      @@default_available_locales
+        def #{name}
+          @@#{name}
+        end
+      Ruby
     end
-
 
     def text_domain
       Thread.current[:fast_gettext_text_domain] || default_text_domain
     end
-
-    # == cattr_accessor :default_text_domain
-    @@default_text_domain = nil
-    def default_text_domain=(domain)
-      @@default_text_domain = domain
-      update_current_cache
-    end
-
-    def default_text_domain
-      @@default_text_domain
-    end
-
 
     # if overwritten by user( FastGettext.pluralisation_rule = xxx) use it,
     # otherwise fall back to repo or to default lambda
@@ -63,16 +60,12 @@ module FastGettext
       Thread.current[:fast_gettext_pluralisation_rule] ||  current_repository.pluralisation_rule || lambda{|i| i!=1}
     end
 
-    def current_cache
-      Thread.current[:fast_gettext_current_cache] || {}
-    end
-
-    def current_cache=(cache)
-      Thread.current[:fast_gettext_current_cache] = cache
+    def cache
+      Thread.current[:fast_gettext_cache] ||= cache_class.new
     end
 
     def reload!
-      self.current_cache = {}
+      cache.reload!
       translation_repositories.values.each(&:reload)
     end
 
@@ -80,13 +73,6 @@ module FastGettext
     @@translation_repositories={}
     def translation_repositories
       @@translation_repositories
-    end
-
-    # used to speedup simple translations, does not work for pluralisation
-    # caches[text_domain][locale][key]=translation
-    @@caches={}
-    def caches
-      @@caches
     end
 
     def current_repository
@@ -98,26 +84,16 @@ module FastGettext
     end
 
     def cached_find(key)
-      translation = current_cache[key]
-      if translation.nil? # uncached
-        current_cache[key] = current_repository[key] || false
-      else
-        translation
-      end
+      cache.fetch(key) { current_repository[key] }
     end
 
     def cached_plural_find(*keys)
       key = '||||' + keys * '||||'
-      translation = current_cache[key]
-      if translation.nil? # uncached
-        current_cache[key] = current_repository.plural(*keys) || false
-      else
-        translation
-      end
+      cache.fetch(key) { current_repository.plural(*keys) }
     end
 
     def expire_cache_for(key)
-      current_cache.delete(key)
+      cache.delete(key)
     end
 
     def locale
@@ -140,7 +116,7 @@ module FastGettext
     @@default_locale = nil
     def default_locale=(new_locale)
       @@default_locale = best_locale_in(new_locale)
-      update_current_cache
+      switch_cache
     end
 
     def default_locale
@@ -196,11 +172,8 @@ module FastGettext
       locale.sub(/^([a-zA-Z]{2,3})[-_]([a-zA-Z]{2,3})$/){$1.downcase+'_'+$2.upcase}
     end
 
-    def update_current_cache
-      caches[text_domain] ||= {}
-      caches[text_domain][locale] ||= {}
-      caches[text_domain][locale][""] = false #ignore gettext meta key when translating
-      self.current_cache = caches[text_domain][locale]
+    def switch_cache
+      cache.switch_to(text_domain, locale)
     end
   end
 end
