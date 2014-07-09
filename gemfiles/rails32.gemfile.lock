@@ -33,9 +33,6 @@ GEM
     activesupport (3.2.14)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
-    appraisal (0.5.2)
-      bundler
-      rake
     arel (3.0.2)
     builder (3.0.4)
     bump (0.4.2)
@@ -96,13 +93,13 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.37)
+    wwtd (0.5.5)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   activerecord
-  appraisal
   bump
   fast_gettext!
   i18n
@@ -110,3 +107,4 @@ DEPENDENCIES
   rake
   rspec
   sqlite3
+  wwtd
