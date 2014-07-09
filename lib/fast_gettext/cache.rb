@@ -19,11 +19,6 @@ module FastGettext
       @current[key] = value
     end
 
-    # TODO only used for tests, maybe if-else around it ...
-    def [](key)
-      @current[key]
-    end
-
     # key performance gain:
     # - no need to lookup locale on each translation
     # - no need to lookup text_domain on each translation

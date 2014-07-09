@@ -264,37 +264,37 @@ describe 'Storage' do
     end
 
     it "stores a translation seperate by locale" do
-      FastGettext.cache['abc'].should == nil
+      FastGettext.cache.fetch('abc') { :missing }.should == :missing
     end
 
     it "stores a translation seperate by domain" do
       FastGettext.locale = 'de'
       FastGettext.text_domain = nil
-      FastGettext.cache['abc'].should == nil
+      FastGettext.cache.fetch('abc') { :missing }.should == :missing
     end
 
     it "cache is restored through setting of default_text_domain" do
       FastGettext.locale = 'de'
       FastGettext.text_domain = nil
       FastGettext.default_text_domain = 'xxx'
-      FastGettext.cache['abc'].should == 'old'
+      FastGettext.cache.fetch('abc') { :missing }.should == 'old'
     end
 
     it "cache is restored through setting of default_locale" do
       FastGettext.send(:_locale=,nil)#reset locale to nil
       FastGettext.default_locale = 'de'
       FastGettext.locale.should == 'de'
-      FastGettext.cache['abc'].should == 'old'
+      FastGettext.cache.fetch('abc') { :missing }.should == 'old'
     end
 
     it "stores a translation permanently" do
       FastGettext.locale = 'de'
-      FastGettext.cache['abc'].should == 'old'
+      FastGettext.cache.fetch('abc') { :missing }.should == 'old'
     end
 
     it "stores a unfound translation permanently" do
       FastGettext.locale = 'de'
-      FastGettext.cache['unfound'].should == false
+      FastGettext.cache.fetch('unfound') { :missing }.should == false
     end
   end
 
@@ -328,13 +328,13 @@ describe 'Storage' do
     it "sets the current cache with a found result" do
       should_receive(:current_repository).and_return 'xxx'=>'1'
       key_exist?('xxx')
-      cache['xxx'].should == '1'
+      cache.fetch('xxx').should == '1'
     end
 
     it "does not overwrite an existing cache value" do
       cache['xxx']='xxx'
       key_exist?('xxx')
-      cache['xxx'].should == 'xxx'
+      cache.fetch('xxx').should == 'xxx'
     end
 
     it "is false for gettext meta key" do
