@@ -60,7 +60,6 @@ module FastGettext
       Thread.current[:fast_gettext_pluralisation_rule] ||  current_repository.pluralisation_rule || lambda{|i| i!=1}
     end
 
-    # TODO make class configurable
     def cache
       Thread.current[:fast_gettext_cache] ||= cache_class.new
     end
@@ -74,13 +73,6 @@ module FastGettext
     @@translation_repositories={}
     def translation_repositories
       @@translation_repositories
-    end
-
-    # used to speedup simple translations, does not work for pluralisation
-    # caches[text_domain][locale][key]=translation
-    @@caches={}
-    def caches
-      @@caches
     end
 
     def current_repository
@@ -181,7 +173,7 @@ module FastGettext
     end
 
     def switch_cache
-      self.cache.switch_to(text_domain, locale)
+      cache.switch_to(text_domain, locale)
     end
   end
 end

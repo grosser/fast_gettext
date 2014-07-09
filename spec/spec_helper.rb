@@ -24,7 +24,6 @@ def default_setup
   Thread.current[:fast_gettext_pluralisation_rule] = nil
   Thread.current[:fast_gettext_cache] = nil
   FastGettext.send(:class_variable_set, :@@translation_repositories, {})
-  FastGettext.send(:class_variable_set, :@@caches, {})
   FastGettext.add_text_domain('test',:path=>File.join(File.dirname(__FILE__),'locale'))
   FastGettext.text_domain = 'test'
   FastGettext.available_locales = ['en','de','gsw_CH']
