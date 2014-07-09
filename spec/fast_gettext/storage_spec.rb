@@ -317,7 +317,7 @@ describe 'Storage' do
   describe :key_exist? do
     it "does not find default keys" do
       FastGettext._('abcde')
-      key_exist?('abcde').should be_false
+      key_exist?('abcde').should == false
     end
 
     it "finds using the current repository" do

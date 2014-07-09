@@ -3,7 +3,7 @@ require "spec_helper"
 describe 'FastGettext::TranslationRepository::Mo' do
   before do
     @rep = FastGettext::TranslationRepository.build('test',:path=>File.join('spec', 'locale'))
-    @rep.is_a?(FastGettext::TranslationRepository::Mo).should be_true
+    @rep.is_a?(FastGettext::TranslationRepository::Mo).should == true
   end
 
   it "can be built" do
@@ -39,7 +39,7 @@ describe 'FastGettext::TranslationRepository::Mo' do
     end
 
     it "returns true" do
-      @rep.reload.should be_true
+      @rep.reload.should == true
     end
   end
 

@@ -4,7 +4,7 @@ describe 'FastGettext::TranslationRepository::Yaml' do
   before do
     FastGettext.pluralisation_rule = nil
     @rep = FastGettext::TranslationRepository.build('test', :path => File.join('spec', 'locale', 'yaml'), :type => :yaml)
-    @rep.is_a?(FastGettext::TranslationRepository::Yaml).should be_true
+    @rep.is_a?(FastGettext::TranslationRepository::Yaml).should == true
     FastGettext.locale = 'de'
   end
 
@@ -52,7 +52,7 @@ describe 'FastGettext::TranslationRepository::Yaml' do
     end
 
     it "returns true" do
-      @rep.reload.should be_true
+      @rep.reload.should == true
     end
   end
 

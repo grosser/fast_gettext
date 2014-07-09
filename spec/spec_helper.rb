@@ -1,8 +1,8 @@
 # $VERBOSE = true # ignore complaints in spec files
 
 # ---- requirements
-$LOAD_PATH.unshift File.expand_path("../lib", File.dirname(__FILE__))
 require 'fast_gettext'
+require 'active_record'
 
 # ---- revert to defaults
 RSpec.configure do |config|
@@ -11,6 +11,9 @@ RSpec.configure do |config|
     FastGettext.available_locales = nil
     FastGettext.locale = 'de'
   end
+
+  config.expect_with(:rspec) { |c| c.syntax = :should }
+  config.mock_with(:rspec) { |c| c.syntax = :should }
 end
 
 def default_setup
@@ -29,12 +32,10 @@ def default_setup
   FastGettext.send(:update_current_cache)
 end
 
+# TODO remove
 def pending_if(condition, *args)
-  if condition
-    pending(*args) { yield }
-  else
-    yield
-  end
+  pending(*args) if condition
+  yield
 end
 
 def setup_extra_domain

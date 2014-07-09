@@ -84,7 +84,7 @@ describe String do
   end
 
   describe 'with i18n loaded' do
-    let(:pending_condition) { (RUBY_VERSION < "1.9" and ActiveRecord::VERSION::MAJOR == 3) or ActiveRecord::VERSION::MAJOR >= 4 }
+    let(:pending_condition) { (RUBY_VERSION < "1.9" and ActiveRecord::VERSION::MAJOR == 3) or (ActiveRecord::VERSION::MAJOR == 4 and ActiveRecord::VERSION::MINOR == 0)}
 
     it "interpolates if i18n is loaded before" do
       pending_if pending_condition, "does not work on ree + rails 3 or rails 4"  do

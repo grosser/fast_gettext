@@ -19,6 +19,6 @@ describe 'FastGettext::TranslationRepository::Base' do
   end
 
   it "can be reloaded" do
-    @rep.reload.should be_true
+    @rep.reload.should == true
   end
 end

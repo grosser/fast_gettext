@@ -29,7 +29,7 @@ describe 'FastGettext::TranslationRepository::Chain' do
     end
 
     it "returns true on reload" do
-      @rep.reload.should be_true
+      @rep.reload.should == true
     end
   end
 
@@ -91,7 +91,7 @@ describe 'FastGettext::TranslationRepository::Chain' do
 
       it "returns true" do
         @rep.chain.each { |c| c.stub(:reload) }
-        @rep.reload.should be_true
+        @rep.reload.should == true
       end
     end
   end

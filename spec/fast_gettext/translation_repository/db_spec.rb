@@ -39,7 +39,7 @@ describe FastGettext::TranslationRepository::Db do
     translation_key = TranslationKey.create!(:key => key)
     TranslationText.create!(:translation_key_id => translation_key.id, :text => text, :locale => "de")
   end
-  
+
   it "reads locales from the db" do
     locales = ['de','en','es']
     locales.reverse.each do |locale|
@@ -77,11 +77,11 @@ describe FastGettext::TranslationRepository::Db do
 
   it "removes texts when key is removed" do
     t = create_translation("a", "b")
-    expect{
-      expect{
+    lambda{
+      lambda{
         t.translation_key.destroy
-      }.to change{ TranslationText.count }.by(-1)
-    }.to change{ TranslationKey.count }.by(-1)
+      }.should change{ TranslationText.count }.by(-1)
+    }.should change{ TranslationKey.count }.by(-1)
   end
 
   it "model attributes should be accessible" do

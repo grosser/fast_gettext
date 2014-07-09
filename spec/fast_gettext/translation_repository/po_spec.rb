@@ -3,7 +3,7 @@ require "spec_helper"
 describe 'FastGettext::TranslationRepository::Po' do
   before do
     @rep = FastGettext::TranslationRepository.build('test',:path=>File.join('spec','locale'),:type=>:po)
-    @rep.is_a?(FastGettext::TranslationRepository::Po).should be_true
+    @rep.is_a?(FastGettext::TranslationRepository::Po).should == true
   end
 
   it "can be built" do
@@ -50,13 +50,13 @@ describe 'FastGettext::TranslationRepository::Po' do
       repo["%{relative_time} ago"].should == nil
     end
   end
-  
+
   describe 'obsolete' do
     it "should warn on obsolete by default" do
       $stderr.should_receive(:print).at_least(:once)
       FastGettext::TranslationRepository.build('test',:path=>File.join('spec','obsolete_locale'),:type=>:po)
     end
-  
+
     it "should ignore obsolete when told to do so" do
       $stderr.should_not_receive(:print)
       FastGettext::TranslationRepository.build('test',:path=>File.join('spec','obsolete_locale'),:type=>:po, :report_warning => false)

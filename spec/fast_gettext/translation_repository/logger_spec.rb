@@ -4,11 +4,14 @@ describe 'FastGettext::TranslationRepository::Logger' do
   before do
     @callback = lambda{}
     @rep = FastGettext::TranslationRepository.build('test', :type=>:logger, :callback=>@callback)
-    @rep.is_a?(FastGettext::TranslationRepository::Logger).should be_true
+    @rep.is_a?(FastGettext::TranslationRepository::Logger).should == true
   end
-  subject{@rep}
 
-  it{ should have(0).available_locales}
+  subject { @rep }
+
+  it "has available_locales" do
+    subject.available_locales.size.should == 0
+  end
 
   it "has no pluralisation_rule" do
     @rep.pluralisation_rule.should == nil
