@@ -7,7 +7,9 @@ Gem::Specification.new name, FastGettext::VERSION do |s|
   s.authors = ["Michael Grosser"]
   s.email = "michael@grosser.it"
   s.homepage = "http://github.com/grosser/#{name}"
-  s.files = `git ls-files lib`.split("\n")
+  s.files = `git ls-files`.split("\n")
+  s.test_files = `git ls-files -- spec/*`.split("\n")
+
   s.licenses = ["MIT", "Ruby"]
 
   s.add_development_dependency 'rake'
