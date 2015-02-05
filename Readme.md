@@ -142,7 +142,7 @@ If you have any languages that do not fit this rule, you have to add a custom pl
 
 Via Ruby:
 
-    FastGettext.pluralisation_rule = lamda{|count| count > 5 ? 1 : (count > 2 ? 0 : 2)}
+    FastGettext.pluralisation_rule = lambda{|count| count > 5 ? 1 : (count > 2 ? 0 : 2)}
 
 Via mo/pofile:
 
@@ -175,7 +175,7 @@ When you want to know which keys could not be translated or were used, add a Log
 
     repos = [
       FastGettext::TranslationRepository.build('app', :path=>'....')
-      FastGettext::TranslationRepository.build('logger', :type=>:logger, :callback=>lamda{|key_or_array_of_ids| ... }),
+      FastGettext::TranslationRepository.build('logger', :type=>:logger, :callback=>lambda{|key_or_array_of_ids| ... }),
     }
     FastGettext.add_text_domain 'combined', :type=>:chain, :chain=>repos
 
