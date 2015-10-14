@@ -26,8 +26,6 @@ GEM
     i18n (0.6.9)
     json (1.8.1)
     minitest (5.4.0)
-    protected_attributes (1.0.8)
-      activemodel (>= 4.0.1, < 5.0)
     rake (10.3.2)
     rspec (3.0.0)
       rspec-core (~> 3.0.0)
@@ -55,8 +53,10 @@ DEPENDENCIES
   bump
   fast_gettext!
   i18n
-  protected_attributes
   rake
   rspec
   sqlite3
   wwtd
+
+BUNDLED WITH
+   1.10.6
