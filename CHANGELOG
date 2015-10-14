@@ -1,3 +1,4 @@
+1.0.0 -- do not enforce attr_accessible unless ProtectedAttributes are loaded
 0.9.0 -- reworked internals of caching to be plugable
 0.7.0 -- set_locale resets to default locale if none of the available locales was tried to set
 0.6.0 -- plurals use singular translations as fallack e.g. you translated 'Axis' then n_('Axis','Axis',1) would return the translation for 'Axis' if no plural translation was found
