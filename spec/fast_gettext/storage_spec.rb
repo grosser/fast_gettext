@@ -356,6 +356,10 @@ describe 'Storage' do
     it "allows 3-letter locales to be formatted" do
       format_locale("gsw-ch").should == "gsw_CH"
     end
+
+    it "allows 2-letter + 4 letter locals to be formatted properly" do
+      format_locale("zh-hant").should == "zh_Hant"
+    end
   end
 
   describe :expire_cache_for do
