@@ -2,9 +2,10 @@ require "spec_helper"
 require 'fast_gettext/po_file'
 
 de_file = File.join('spec','locale','de','test.po')
-de = FastGettext::PoFile.to_mo_file(de_file)
 
 describe FastGettext::PoFile do
+  let(:de) { FastGettext::PoFile.new(de_file) }
+
   before :all do
     File.exist?(de_file).should == true
   end
@@ -31,5 +32,35 @@ describe FastGettext::PoFile do
 
   it "unescapes '\\'" do
     de["You should escape '\\' as '\\\\'."].should == "Du solltest '\\' als '\\\\' escapen."
+  end
+
+  it "doesn't load the file when new instance is created" do
+    File.should_not_receive(:read).with(de_file)
+    FastGettext::PoFile.new(de_file)
+  end
+
+  it "loads the file when a translation is touched for the first time" do
+    File.should_receive(:read).once.with(de_file).and_call_original
+
+    de['car']
+    de['car']
+  end
+
+  describe "eager loading" do
+    let(:de) { FastGettext::PoFile.new(de_file, :eager_load => true) }
+
+    it "loads the file when new instance is created" do
+      File.should_receive(:read).once.with(de_file).and_call_original
+      FastGettext::PoFile.new(de_file, :eager_load => true)
+    end
+
+    it "doesn't load the file when a translation is touched" do
+      de
+      File.should_not_receive(:read).with(de_file)
+
+      de['car']
+      de['car']
+    end
+
   end
 end
