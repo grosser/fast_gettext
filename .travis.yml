@@ -1,5 +1,6 @@
 bundler_args: ""
 script: "bundle exec rake spec"
+sudo: false
 rvm:
   - ree
   - 1.9.3
