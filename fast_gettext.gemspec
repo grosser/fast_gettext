@@ -1,6 +1,5 @@
-$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 name = "fast_gettext"
-require "#{name}/version"
+require "./lib/#{name}/version"
 
 Gem::Specification.new name, FastGettext::VERSION do |s|
   s.summary = "A simple, fast, memory-efficient and threadsafe implementation of GetText"
