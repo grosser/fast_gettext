@@ -8,7 +8,7 @@ module FastGettext
     # file => path or FastGettext::GetText::MOFile
     def initialize(file, options={})
       @filename = file
-      load_data if options.fetch(:eager_load, false)
+      load_data if options[:eager_load]
     end
 
     def [](key)
@@ -42,10 +42,10 @@ module FastGettext
     end
 
     def load_data
-      if @filename.is_a? FastGettext::GetText::MOFile
-        @data = @filename
+      @data = if @filename.is_a? FastGettext::GetText::MOFile
+        @filename
       else
-        @data = FastGettext::GetText::MOFile.open(@filename, "UTF-8")
+        FastGettext::GetText::MOFile.open(@filename, "UTF-8")
       end
       make_singular_and_plural_available
     end

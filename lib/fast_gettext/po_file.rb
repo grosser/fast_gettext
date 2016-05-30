@@ -8,20 +8,21 @@ module FastGettext
       super
     end
 
-    def load_data
-      if @filename.is_a? FastGettext::GetText::MOFile
-        @data = @filename
-      else
-        @data = FastGettext::PoFile.parse_po_file(@filename, @options)
-      end
-      make_singular_and_plural_available
-    end
-
     def self.to_mo_file(file, options={})
       MoFile.new(parse_po_file(file, options))
     end
 
     protected
+
+    def load_data
+      @data = if @filename.is_a? FastGettext::GetText::MOFile
+        @filename
+      else
+        FastGettext::PoFile.parse_po_file(@filename, @options)
+      end
+      make_singular_and_plural_available
+    end
+
     def self.parse_po_file(file, options={})
       require 'fast_gettext/vendor/poparser'
       parser = FastGettext::GetText::PoParser.new
