@@ -54,12 +54,14 @@ describe 'FastGettext::TranslationRepository::Po' do
   describe 'obsolete' do
     it "should warn on obsolete by default" do
       $stderr.should_receive(:print).at_least(:once)
-      FastGettext::TranslationRepository.build('test',:path=>File.join('spec','obsolete_locale'),:type=>:po)
+      repo = FastGettext::TranslationRepository.build('test',:path=>File.join('spec','obsolete_locale'),:type=>:po)
+      repo['car']
     end
 
     it "should ignore obsolete when told to do so" do
       $stderr.should_not_receive(:print)
-      FastGettext::TranslationRepository.build('test',:path=>File.join('spec','obsolete_locale'),:type=>:po, :report_warning => false)
+      repo = FastGettext::TranslationRepository.build('test',:path=>File.join('spec','obsolete_locale'),:type=>:po, :report_warning => false)
+      repo['car']
     end
   end
 end

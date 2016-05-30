@@ -2,8 +2,27 @@ require 'fast_gettext/mo_file'
 module FastGettext
   # Responsibility:
   #  - abstract po files for Po Repository
-  class PoFile
+  class PoFile < MoFile
+    def initialize(file, options={})
+      @options = options
+      super
+    end
+
+    def load_data
+      if @filename.is_a? FastGettext::GetText::MOFile
+        @data = @filename
+      else
+        @data = FastGettext::PoFile.parse_po_file(@filename, @options)
+      end
+      make_singular_and_plural_available
+    end
+
     def self.to_mo_file(file, options={})
+      MoFile.new(parse_po_file(file, options))
+    end
+
+    protected
+    def self.parse_po_file(file, options={})
       require 'fast_gettext/vendor/poparser'
       parser = FastGettext::GetText::PoParser.new
 
@@ -13,7 +32,7 @@ module FastGettext
 
       mo_file = FastGettext::GetText::MOFile.new
       parser.parse(File.read(file), mo_file)
-      MoFile.new(mo_file)
+      mo_file
     end
   end
 end

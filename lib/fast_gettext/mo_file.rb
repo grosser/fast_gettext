@@ -6,17 +6,13 @@ module FastGettext
     PLURAL_SEPERATOR = "\000"
 
     # file => path or FastGettext::GetText::MOFile
-    def initialize(file)
-      if file.is_a? FastGettext::GetText::MOFile
-        @data = file
-      else
-        @data = FastGettext::GetText::MOFile.open(file, "UTF-8")
-      end
-      make_singular_and_plural_available
+    def initialize(file, options={})
+      @filename = file
+      load_data if options.fetch(:eager_load, false)
     end
 
     def [](key)
-      @data[key]
+      data[key]
     end
 
     #returns the plural forms or all singular translations that where found
@@ -28,7 +24,7 @@ module FastGettext
     def pluralisation_rule
       #gettext uses 0 as default rule, which would turn off all pluralisation, very clever...
       #additionally parsing fails when directly accessing po files, so this line was taken from gettext/mofile
-      (@data['']||'').split("\n").each do |line|
+      (data['']||'').split("\n").each do |line|
         return lambda{|n|eval($2)} if /^Plural-Forms:\s*nplurals\s*\=\s*(\d*);\s*plural\s*\=\s*([^;]*)\n?/ =~ line
       end
       nil
@@ -39,6 +35,20 @@ module FastGettext
     end
 
     private
+
+    def data
+      load_data if @data.nil?
+      @data
+    end
+
+    def load_data
+      if @filename.is_a? FastGettext::GetText::MOFile
+        @data = @filename
+      else
+        @data = FastGettext::GetText::MOFile.open(@filename, "UTF-8")
+      end
+      make_singular_and_plural_available
+    end
 
     #(if plural==singular, prefer singular)
     def make_singular_and_plural_available

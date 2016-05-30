@@ -26,7 +26,7 @@ describe 'FastGettext::TranslationRepository::Mo' do
       empty_mo_file = FastGettext::MoFile.empty
 
       FastGettext::MoFile.stub(:new).and_return(empty_mo_file)
-      FastGettext::MoFile.stub(:new).with('spec/locale/de/LC_MESSAGES/test.mo').and_return(mo_file)
+      FastGettext::MoFile.stub(:new).with('spec/locale/de/LC_MESSAGES/test.mo', :eager_load => false).and_return(mo_file)
     end
 
     it "can reload" do
