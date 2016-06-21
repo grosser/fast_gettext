@@ -7,12 +7,6 @@ module FastGettext
     #  - can be used instead of searching for translations in multiple domains
     #  - requires reload when current locale is changed
     class Merge < Base
-      # Only repositories with public method #data that return hash of translations are supported
-      SUPPORTED_REPO_TYPES = [
-        FastGettext::TranslationRepository::Mo,
-        FastGettext::TranslationRepository::Po
-      ]
-
       def initialize(name, options={})
         clear
         super(name, options)
@@ -64,7 +58,7 @@ module FastGettext
       protected
 
       def repo_supported?(repo)
-        SUPPORTED_REPO_TYPES.find {|c| repo.is_a?(c) }
+        repo.send(:current_translations).respond_to?(:data)
       end
 
       def load_repo(r)

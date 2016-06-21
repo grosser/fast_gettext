@@ -72,8 +72,9 @@ describe 'FastGettext::TranslationRepository::Merge' do
       end
 
       it "raises exeption for other repositories" do
-        base_rep = FastGettext::TranslationRepository.build('test', path: File.join('spec', 'locale'), type: :base)
-        lambda { @rep.add_repo(base_rep) }.should raise_error(RuntimeError)
+        unsupported_rep = FastGettext::TranslationRepository.build('test', path: File.join('spec', 'locale'), type: :base)
+        unsupported_rep.should_receive(:current_translations).at_least(1).and_return(Object.new)
+        lambda { @rep.add_repo(unsupported_rep) }.should raise_error(RuntimeError)
       end
     end
 
