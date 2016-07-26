@@ -13,7 +13,7 @@ module FastGettext
       end
 
       def available_locales
-        @repositories.flat_map { |r| r.available_locales }.uniq
+        @repositories.flat_map(&:available_locales).uniq
       end
 
       def pluralisation_rule
@@ -34,6 +34,7 @@ module FastGettext
       def reload
         @data = {}
         @repositories.each do |r|
+          r.reload
           load_repo(r)
         end
         super
@@ -58,12 +59,11 @@ module FastGettext
       protected
 
       def repo_supported?(repo)
-        repo.send(:current_translations).respond_to?(:data)
+        repo.respond_to?(:all_translations)
       end
 
       def load_repo(r)
-        r.reload
-        @data = r.send(:current_translations).data.merge(@data)
+        @data = r.all_translations.merge(@data)
       end
     end
   end
