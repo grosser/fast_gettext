@@ -24,6 +24,10 @@ module FastGettext
         super
       end
 
+      def all_translations
+        current_translations.data
+      end
+
       protected
 
       def find_and_store_files(name,options)

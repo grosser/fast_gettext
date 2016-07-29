@@ -30,16 +30,16 @@ module FastGettext
       nil
     end
 
+    def data
+      load_data if @data.nil?
+      @data
+    end
+
     def self.empty
       MoFile.new(File.join(File.dirname(__FILE__),'vendor','empty.mo'))
     end
 
     private
-
-    def data
-      load_data if @data.nil?
-      @data
-    end
 
     def load_data
       @data = if @filename.is_a? FastGettext::GetText::MOFile
