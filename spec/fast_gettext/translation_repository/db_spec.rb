@@ -16,13 +16,13 @@ describe FastGettext::TranslationRepository::Db do
     ActiveRecord::Schema.define(:version => 1) do
       create_table :translation_keys do |t|
         t.string :key, :unique=>true, :null=>false
-        t.timestamps
+        t.timestamps null: false
       end
 
       create_table :translation_texts do |t|
         t.string :text, :locale
         t.integer :translation_key_id, :null=>false
-        t.timestamps
+        t.timestamps null: false
       end
     end
   end

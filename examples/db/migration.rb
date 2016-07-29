@@ -10,7 +10,7 @@ class CreateTranslationTables < ActiveRecord::Migration
       t.text :text
       t.string :locale
       t.integer :translation_key_id, :null=>false
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :translation_texts, :translation_key_id
   end
