@@ -170,6 +170,22 @@ the first cannot translate a given key, the next is asked and so forth.
     ]
     FastGettext.add_text_domain 'combined', :type=>:chain, :chain=>repos
 
+###Merge
+In some cases you can benefit from using merge repositories as an alternative to chains. They behave nearly the same. The difference is in the internal
+data structure. While chain repos iterate over the whole chain for each translation, merge repositories select and store the first translation at the time
+a subordinate repository is added. This puts the burden on the load phase and speeds up the translations.
+
+    repos = [
+      FastGettext::TranslationRepository.build('new', :path=>'....'),
+      FastGettext::TranslationRepository.build('old', :path=>'....')
+    ]
+    domain = FastGettext.add_text_domain 'combined', :type=>:merge, :chain=>repos
+
+Downside of this approach is that you have to reload the merge repo each time a language is changed.
+
+    FastGettext.locale = 'de'
+    domain.reload
+
 ###Logger
 When you want to know which keys could not be translated or were used, add a Logger to a Chain:
 
@@ -222,6 +238,8 @@ order (depends on the Ruby hash implementation):
 
     D_("string") # finds 'string' in any domain
     # etc.
+
+Alternatively you can use [merge repository](https://github.com/grosser/fast_gettext#merge) to achieve the same behaviour.
 
 FAQ
 ===
