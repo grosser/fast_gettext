@@ -1,4 +1,5 @@
 require "spec_helper"
+require 'fast_gettext/translation_repository/merge'
 
 describe 'FastGettext::TranslationRepository::Merge' do
   describe "empty repo" do
@@ -40,6 +41,14 @@ describe 'FastGettext::TranslationRepository::Merge' do
 
     it "builds correct repo" do
       @repo.is_a?(FastGettext::TranslationRepository::Merge).should == true
+    end
+
+    describe "#initialize" do
+      it "can init the repo chain" do
+        FastGettext::TranslationRepository::Merge.any_instance.should_receive(:add_repo).with(@one).and_return(true)
+        FastGettext::TranslationRepository::Merge.any_instance.should_receive(:add_repo).with(@two).and_return(true)
+        FastGettext::TranslationRepository.build('test', type: :merge, chain: [@one, @two])
+      end
     end
 
     describe "#available_locales" do
