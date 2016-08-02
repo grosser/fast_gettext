@@ -273,6 +273,7 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
  - [Fotos Georgiadis](https://github.com/fotos)
  - [Lukáš Zapletal](https://github.com/lzap)
  - [Dominic Cleal](https://github.com/domcleal)
+ - [Tomas Strachota](https://github.com/tstrachota)
 
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
