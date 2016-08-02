@@ -50,24 +50,24 @@ Setup
 
 From mo files (traditional/default)
 
-    FastGettext.add_text_domain('my_app',:path => 'locale')
+    FastGettext.add_text_domain('my_app', path: 'locale')
 
 Or po files (less maintenance than mo)
 
-    FastGettext.add_text_domain('my_app',:path => 'locale', :type => :po)
+    FastGettext.add_text_domain('my_app', path: 'locale', type: :po)
     # :ignore_fuzzy => true to not use fuzzy translations
     # :report_warning => false to hide warnings about obsolete/fuzzy translations
 
 Or yaml files (use I18n syntax/indentation)
 
-    FastGettext.add_text_domain('my_app', :path => 'config/locales', :type => :yaml)
+    FastGettext.add_text_domain('my_app', path: 'config/locales', type: :yaml)
 
 Or database (scaleable, good for many locales/translators)
 
     # db access is cached <-> only first lookup hits the db
     require "fast_gettext/translation_repository/db"
     FastGettext::TranslationRepository::Db.require_models #load and include default models
-    FastGettext.add_text_domain('my_app', :type => :db, :model => TranslationKey)
+    FastGettext.add_text_domain('my_app', type: :db, model: TranslationKey)
 
 ### 3. Choose text domain and locale for translation
 Do this once in every Thread. (e.g. Rails -> ApplicationController)
@@ -83,7 +83,7 @@ Do this once in every Thread. (e.g. Rails -> ApplicationController)
     _('not-found') == 'not-found'
     s_('Namespace|not-found') == 'not-found'
     n_('Axis','Axis',3) == 'Achsen' #German plural of Axis
-    _('Hello %{name}!') % {:name => "Pete"} == 'Hello Pete!'
+    _('Hello %{name}!') % {name: "Pete"} == 'Hello Pete!'
 
 
 Managing translations
@@ -93,7 +93,7 @@ Generate .po or .mo files using GetText parser (example tasks at [gettext_i18n_r
 
 Tell Gettext where your .mo or .po files lie, e.g. for locale/de/my_app.po and locale/de/LC_MESSAGES/my_app.mo
 
-    FastGettext.add_text_domain('my_app',:path=>'locale')
+    FastGettext.add_text_domain('my_app', path: 'locale')
 
 Use the [original GetText](http://github.com/mutoh/gettext) to create and manage po/mo-files.
 (Work on a po/mo parser & reader that is easier to use has started, contributions welcome @ [get_pomo](http://github.com/grosser/get_pomo) )
@@ -116,9 +116,9 @@ Setting `available_locales`,`text_domain` or `locale` will not work inside the `
 since it runs in a different thread then e.g. controllers, so set them inside your application_controller.
 
     #environment.rb after initializers
-    Object.send(:include,FastGettext::Translation)
-    FastGettext.add_text_domain('accounting',:path=>'locale')
-    FastGettext.add_text_domain('frontend',:path=>'locale')
+    Object.send(:include, FastGettext::Translation)
+    FastGettext.add_text_domain('accounting', path: 'locale')
+    FastGettext.add_text_domain('frontend', path: 'locale')
     ...
 
     #application_controller.rb
@@ -165,19 +165,35 @@ You can use any number of repositories to find a translation. Simply add them to
 the first cannot translate a given key, the next is asked and so forth.
 
     repos = [
-      FastGettext::TranslationRepository.build('new', :path=>'....'),
-      FastGettext::TranslationRepository.build('old', :path=>'....')
+      FastGettext::TranslationRepository.build('new', path: '....'),
+      FastGettext::TranslationRepository.build('old', path: '....')
     ]
-    FastGettext.add_text_domain 'combined', :type=>:chain, :chain=>repos
+    FastGettext.add_text_domain 'combined', type: :chain, :chain: repos
+
+###Merge
+In some cases you can benefit from using merge repositories as an alternative to chains. They behave nearly the same. The difference is in the internal
+data structure. While chain repos iterate over the whole chain for each translation, merge repositories select and store the first translation at the time
+a subordinate repository is added. This puts the burden on the load phase and speeds up the translations.
+
+    repos = [
+      FastGettext::TranslationRepository.build('new', :path: '....'),
+      FastGettext::TranslationRepository.build('old', :path: '....')
+    ]
+    domain = FastGettext.add_text_domain 'combined', type: :merge, chain: repos
+
+Downside of this approach is that you have to reload the merge repo each time a language is changed.
+
+    FastGettext.locale = 'de'
+    domain.reload
 
 ###Logger
 When you want to know which keys could not be translated or were used, add a Logger to a Chain:
 
     repos = [
-      FastGettext::TranslationRepository.build('app', :path=>'....')
-      FastGettext::TranslationRepository.build('logger', :type=>:logger, :callback=>lambda{|key_or_array_of_ids| ... }),
+      FastGettext::TranslationRepository.build('app', path: '....')
+      FastGettext::TranslationRepository.build('logger', type: :logger, callback: lambda{|key_or_array_of_ids| ... }),
     }
-    FastGettext.add_text_domain 'combined', :type=>:chain, :chain=>repos
+    FastGettext.add_text_domain 'combined', type: :chain, chain: repos
 
 If the Logger is in position #1 it will see all translations, if it is in position #2 it will only see the unfound.
 Unfound may not always mean missing, if you choose not to translate a word because the key is a good translation, it will appear nevertheless.
@@ -222,6 +238,8 @@ order (depends on the Ruby hash implementation):
 
     D_("string") # finds 'string' in any domain
     # etc.
+
+Alternatively you can use [merge repository](https://github.com/grosser/fast_gettext#merge) to achieve the same behaviour.
 
 FAQ
 ===

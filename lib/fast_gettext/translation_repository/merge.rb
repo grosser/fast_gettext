@@ -10,6 +10,9 @@ module FastGettext
       def initialize(name, options={})
         clear
         super(name, options)
+        options.fetch(:chain, []).each do |repo|
+          add_repo(repo)
+        end
       end
 
       def available_locales
