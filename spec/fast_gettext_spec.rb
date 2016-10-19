@@ -32,7 +32,7 @@ describe FastGettext do
     N_('XXXXX').should == 'XXXXX'
     Nn_('X','Y').should == ['X','Y']
   end
-  
+
   it "is extended to a class and included into a class" do
     IncludeTest.ext.should == 'Auto'
     IncludeTest.ext.should == 'Auto'
@@ -46,9 +46,11 @@ describe FastGettext do
   end
 
   it 'switches locale temporarily' do
+    FastGettext.locale.should == "de"
     FastGettext.with_locale 'gsw_CH' do
       FastGettext._('Car was successfully created.').should == "Z auto isch erfolgriich gspeicharat worda."
     end
+    FastGettext.locale.should == "de"
   end
 
   it "has a VERSION" do

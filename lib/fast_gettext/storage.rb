@@ -139,7 +139,8 @@ module FastGettext
     # temporarily switch locale for a block
     # FastGettext.with_locale 'xx' { _('cars') }
     def with_locale(temp_locale)
-      current_locale = set_locale temp_locale
+      current_locale = locale
+      set_locale temp_locale
       yield
     ensure
       set_locale current_locale
