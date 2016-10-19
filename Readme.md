@@ -160,6 +160,14 @@ If the simple rule of "first `availble_locale` or 'en'" is not suficcient for yo
 ###default_available_locales
 Fallback when no available_locales are set
 
+###with_locale
+If there is content from different locales that you wish to display, you should use the with_locale option as below:
+
+    FastGettext.with_locale 'gsw_CH' do
+      FastGettext._('Car was successfully created.')
+    end
+    # => "Z auto isch erfolgriich gspeicharat worda."
+
 ###Chains
 You can use any number of repositories to find a translation. Simply add them to a chain and when
 the first cannot translate a given key, the next is asked and so forth.
