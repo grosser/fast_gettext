@@ -136,6 +136,15 @@ module FastGettext
       return nil#nothing found im sorry :P
     end
 
+    # temporarily switch locale for a block
+    # FastGettext.with_locale 'xx' { _('cars') }
+    def with_locale(temp_locale)
+      current_locale = set_locale temp_locale
+      yield
+    ensure
+      set_locale current_locale
+    end
+
     #turn off translation if none was defined to disable all resulting errors
     def silence_errors
       require 'fast_gettext/translation_repository/base'
