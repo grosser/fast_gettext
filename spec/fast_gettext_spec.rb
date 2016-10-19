@@ -45,6 +45,12 @@ describe FastGettext do
     FastGettext._('Car was successfully created.').should == "Z auto isch erfolgriich gspeicharat worda."
   end
 
+  it 'switches locale temporarily' do
+    FastGettext.with_locale 'gsw_CH' do
+      FastGettext._('Car was successfully created.').should == "Z auto isch erfolgriich gspeicharat worda."
+    end
+  end
+
   it "has a VERSION" do
     FastGettext::VERSION.should =~ /^\d+\.\d+\.\d+$/
   end
