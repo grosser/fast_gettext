@@ -179,7 +179,11 @@ module FastGettext
 
     #de-de -> de_DE
     def format_locale(locale)
-      locale.sub(/^([a-zA-Z]{2,3})[-_]([a-zA-Z]{2,3})$/){$1.downcase+'_'+$2.upcase}
+      if locale =~ /^([a-zA-Z]{2})[-_]([a-zA-Z]{4})$/
+        locale.sub(/^([a-zA-Z]{2})[-_]([a-zA-Z]{4})$/) { $1.downcase+'_'+$2[0].upcase + $2[1..3] }
+      else
+        locale.sub(/^([a-zA-Z]{2,3})[-_]([a-zA-Z]{2,3})$/) { $1.downcase+'_'+$2.upcase }
+      end
     end
 
     def switch_cache
