@@ -17,5 +17,14 @@ describe FastGettext::TranslationRepository do
       repo.name.should == 'xx'
       repo.options.should == options
     end
+
+    it "exposes name and options for reading" do
+      options = { :type => 'base' }
+      repo = FastGettext::TranslationRepository.build('xx', options)
+      repo.should respond_to(:name)
+      repo.should_not respond_to(:name=)
+      repo.should respond_to(:options)
+      repo.should_not respond_to(:options=)
+    end
   end
 end
