@@ -4,6 +4,9 @@ module FastGettext
     #  - base for all repositories
     #  - fallback as empty repository, that cannot translate anything but does not crash
     class Base
+
+      attr_accessor :name, :options
+
       def initialize(name,options={})
         @name = name
         @options = options

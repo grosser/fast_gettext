@@ -1,17 +1,5 @@
 require "spec_helper"
 
-module FastGettext
-  module TranslationRepository
-    class Dummy
-      attr_accessor :name, :options
-      def initialize(name, options)
-        @name = name
-        @options = options
-      end
-    end
-  end
-end
-
 describe FastGettext::TranslationRepository do
   describe "build" do
     it "auto requires class by default" do
@@ -19,13 +7,13 @@ describe FastGettext::TranslationRepository do
     end
 
     it "can have auto-require disabled" do
-      FastGettext::TranslationRepository.build('xx', { :type => 'dummy' })
+      FastGettext::TranslationRepository.build('xx', { :type => 'base' })
     end
 
     it "makes a new repository" do
-      options = { :type => 'dummy', :external => true }
+      options = { :type => 'base', :external => true }
       repo = FastGettext::TranslationRepository.build('xx', options)
-      repo.class.should == FastGettext::TranslationRepository::Dummy
+      repo.class.should == FastGettext::TranslationRepository::Base
       repo.name.should == 'xx'
       repo.options.should == options
     end
