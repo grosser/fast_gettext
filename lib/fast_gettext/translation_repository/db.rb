@@ -47,6 +47,10 @@ module FastGettext
         end
       end
 
+      def reload
+        true
+      end
+
       def self.require_models
         folder = "fast_gettext/translation_repository/db_models"
         require "#{folder}/translation_key"

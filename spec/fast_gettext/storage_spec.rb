@@ -307,6 +307,13 @@ describe 'Storage' do
       FastGettext.reload!
     end
 
+    it "works with DB repository" do
+      db = FastGettext::TranslationRepository::Db.new('x', :model=>TranslationKey)
+      self.translation_repositories[:db] = db
+
+      FastGettext.reload!
+    end
+
     it "clears the cache" do
       FastGettext.cache.should_receive(:reload!)
 
