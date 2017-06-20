@@ -69,6 +69,10 @@ describe FastGettext::TranslationRepository::Db do
     @rep.plural('Axis','Axis').should == ['Achse','Achsen']
   end
 
+  it "can reload" do
+    @rep.reload.should == true
+  end
+
   it "can ignore newline format" do
     create_translation "good\r\nmorning", "guten\r\nMorgen"
     @rep["good\nmorning"].should == "guten\r\nMorgen"
