@@ -2,7 +2,7 @@ require 'fast_gettext/cache'
 
 module FastGettext
   # Responsibility:
-  #  - store data threadsave
+  #  - store data threadsafe
   #  - provide error messages when repositories are unconfigured
   #  - accept/reject locales that are set by the user
   module Storage
