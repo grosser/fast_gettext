@@ -32,7 +32,7 @@ module FastGettext
       parser.report_warning = options.fetch(:report_warning, true)
 
       mo_file = FastGettext::GetText::MOFile.new
-      parser.parse(File.read(file), mo_file)
+      parser.parse_file(file, mo_file)
       mo_file
     end
   end
