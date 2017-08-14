@@ -35,12 +35,12 @@ describe FastGettext::PoFile do
   end
 
   it "doesn't load the file when new instance is created" do
-    File.should_not_receive(:read).with(de_file)
+    File.should_not_receive(:open).with(de_file, "r:UTF-8")
     FastGettext::PoFile.new(de_file)
   end
 
   it "loads the file when a translation is touched for the first time" do
-    File.should_receive(:read).once.with(de_file).and_call_original
+    File.should_receive(:open).once.with(de_file, "r:UTF-8").and_call_original
 
     de['car']
     de['car']
@@ -50,13 +50,13 @@ describe FastGettext::PoFile do
     let(:de) { FastGettext::PoFile.new(de_file, :eager_load => true) }
 
     it "loads the file when new instance is created" do
-      File.should_receive(:read).once.with(de_file).and_call_original
+      File.should_receive(:open).once.with(de_file, "r:UTF-8").and_call_original
       FastGettext::PoFile.new(de_file, :eager_load => true)
     end
 
     it "doesn't load the file when a translation is touched" do
       de
-      File.should_not_receive(:read).with(de_file)
+      File.should_not_receive(:open).with(de_file, "r:UTF-8")
 
       de['car']
       de['car']
