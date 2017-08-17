@@ -138,8 +138,6 @@ describe 'FastGettext::TranslationRepository::Merge' do
   end
 
   it "can work in SAFE mode" do
-    pending_if RUBY_VERSION > "2.0" do
-      `ruby spec/cases/safe_mode_can_handle_locales.rb 2>&1`.should == 'true'
-    end
+    `ruby spec/cases/safe_mode_can_handle_locales.rb 2>&1`.should == 'true'
   end
 end

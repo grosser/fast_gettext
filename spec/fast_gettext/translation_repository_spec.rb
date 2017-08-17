@@ -3,7 +3,7 @@ require "spec_helper"
 describe FastGettext::TranslationRepository do
   describe "build" do
     it "auto requires class by default" do
-      lambda { FastGettext::TranslationRepository.build('xx', { :type => 'invalid'}) }.should raise_error(LoadError)
+      lambda { FastGettext::TranslationRepository.build('xx', { :type => 'invalid'}) }.should raise_error(ArgumentError)
     end
 
     it "can have auto-require disabled" do
