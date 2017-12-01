@@ -38,8 +38,8 @@ module FastGettext
       def find_and_store_files(options)
         @files = {}
         path = options[:path] || 'config/locales'
-        Dir["#{path}/??.yml"].each do |yaml_file|
-          locale = yaml_file.match(/([a-z]{2})\.yml$/)[1]
+        Dir["#{path}/*.yml"].each do |yaml_file|
+          locale = yaml_file.match(/([a-zA-Z_]*)\.yml$/)[1]
           @files[locale] = load_yaml(yaml_file, locale)
         end
       end
