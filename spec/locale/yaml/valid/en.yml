@@ -18,4 +18,4 @@ en:
       updated: "Car was successfully updated."
 
   test_log:
-    phrases: "this is a dynamic translation which was found thorugh gettext_test_log!"
+    phrases: "this is a dynamic translation which was found through gettext_test_log!"

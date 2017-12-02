@@ -1,0 +1,19 @@
+zh_CN:
+  pluralisation_rule: Ñ<3 N：0
+  simple: 简单
+  date:
+    relative: "％{relative_time}前"
+  cars:
+    axis:
+      one: 轴
+      other: 轴
+    model: 模型
+    wheel_count: 轮子数
+    created: 创建
+    month: 月
+    car: 汽车
+    messages:
+      created: 汽车成功创建。
+      updated: 汽车已成功更新。
+  test_log:
+    phrases: 这是一个通过gettext_test_log发现的动态翻译！
