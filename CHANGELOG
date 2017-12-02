@@ -1,3 +1,4 @@
+Unreleased -- Remove restrictions around yaml file names
 1.1.0 -- translations are no longer eager loaded for improved startup performance, pass `eager_load: true` to preload for example in preforked web server
 1.0.0 -- do not enforce attr_accessible unless ProtectedAttributes are loaded
 0.9.0 -- reworked internals of caching to be plugable

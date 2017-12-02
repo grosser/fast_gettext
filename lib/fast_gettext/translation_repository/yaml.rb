@@ -38,8 +38,8 @@ module FastGettext
       def find_and_store_files(options)
         @files = {}
         path = options[:path] || 'config/locales'
-        Dir["#{path}/??.yml"].each do |yaml_file|
-          locale = yaml_file.match(/([a-z]{2})\.yml$/)[1]
+        Dir["#{path}/*.yml"].each do |yaml_file|
+          locale = File.basename(yaml_file, '.yml')
           @files[locale] = load_yaml(yaml_file, locale)
         end
       end
@@ -51,7 +51,7 @@ module FastGettext
       # Given a yaml file return a hash of key -> translation
       def load_yaml(file, locale)
         yaml = YAML.load_file(file)
-        yaml_hash_to_dot_notation(yaml[locale])
+        yaml_hash_to_dot_notation(yaml.fetch(locale))
       end
 
       def yaml_hash_to_dot_notation(yaml_hash)

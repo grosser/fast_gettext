@@ -3,13 +3,13 @@ require "spec_helper"
 describe 'FastGettext::TranslationRepository::Yaml' do
   before do
     FastGettext.pluralisation_rule = nil
-    @rep = FastGettext::TranslationRepository.build('test', :path => File.join('spec', 'locale', 'yaml'), :type => :yaml)
+    @rep = FastGettext::TranslationRepository.build('test', :path => File.join('spec', 'locale', 'yaml', 'valid'), :type => :yaml)
     @rep.is_a?(FastGettext::TranslationRepository::Yaml).should == true
     FastGettext.locale = 'de'
   end
 
   it "can be built" do
-    @rep.available_locales.sort.should == ['de', 'en']
+    @rep.available_locales.sort.should == ['de', 'en', 'zh_CN']
   end
 
   it "translates nothing when locale is unsupported" do
@@ -35,10 +35,10 @@ describe 'FastGettext::TranslationRepository::Yaml' do
 
   describe :reload do
     before do
-      yaml = YAML.load_file('spec/locale/yaml/de2.yml')
+      yaml = YAML.load_file('spec/locale/yaml/invalid/de2.yml')
 
-      YAML.stub(:load_file).and_return('en' => {}, 'de' => {})
-      YAML.stub(:load_file).with('spec/locale/yaml/de.yml').and_return(yaml)
+      YAML.stub(:load_file).and_return('en' => {}, 'de' => {}, 'zh_CN' => {})
+      YAML.stub(:load_file).with('spec/locale/yaml/valid/de.yml').and_return(yaml)
     end
 
     it "can reload" do
@@ -79,6 +79,30 @@ describe 'FastGettext::TranslationRepository::Yaml' do
     FastGettext.locale = 'en'
     {0 => 0, 1 => 1, 2 => 2, 3 => 0}.each do |input, expected|
       @rep.pluralisation_rule.call(input).should == expected
+    end
+  end
+
+  context 'invalid yaml file' do
+    let(:invalid_yamls) do
+      -> { FastGettext::TranslationRepository.build('test', :path => File.join('spec', 'locale', 'yaml', 'invalid'), :type => :yaml) }
+    end
+
+    specify { invalid_yamls.should raise_error(KeyError) }
+  end
+
+  context 'yaml file is a country specific variant of a language' do
+    before { FastGettext.locale = 'zh_CN' }
+
+    it "can translate simple" do
+      @rep['simple'].should == '简单'
+    end
+
+    it "can translate nested" do
+      @rep['cars.car'].should == '汽车'
+    end
+
+    it "can pluralize" do
+      @rep.plural('cars.axis').should == ['轴', '轴', nil, nil]
     end
   end
 end
