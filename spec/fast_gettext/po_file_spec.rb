@@ -4,6 +4,14 @@ require 'fast_gettext/po_file'
 de_file = File.join('spec','locale','de','test.po')
 
 describe FastGettext::PoFile do
+  let(:open_args) {
+    if RUBY_VERSION < "1.9"
+      [ de_file]
+    else
+      [ de_file, "r:UTF-8" ]
+    end
+  }
+
   let(:de) { FastGettext::PoFile.new(de_file) }
 
   before :all do
@@ -35,12 +43,12 @@ describe FastGettext::PoFile do
   end
 
   it "doesn't load the file when new instance is created" do
-    File.should_not_receive(:open).with(de_file, "r:UTF-8")
+    File.should_not_receive(:open).with(*open_args)
     FastGettext::PoFile.new(de_file)
   end
 
   it "loads the file when a translation is touched for the first time" do
-    File.should_receive(:open).once.with(de_file, "r:UTF-8").and_call_original
+    File.should_receive(:open).once.with(*open_args).and_call_original
 
     de['car']
     de['car']
@@ -50,13 +58,13 @@ describe FastGettext::PoFile do
     let(:de) { FastGettext::PoFile.new(de_file, :eager_load => true) }
 
     it "loads the file when new instance is created" do
-      File.should_receive(:open).once.with(de_file, "r:UTF-8").and_call_original
+      File.should_receive(:open).once.with(*open_args).and_call_original
       FastGettext::PoFile.new(de_file, :eager_load => true)
     end
 
     it "doesn't load the file when a translation is touched" do
       de
-      File.should_not_receive(:open).with(de_file, "r:UTF-8")
+      File.should_not_receive(:open).with(*open_args)
 
       de['car']
       de['car']

@@ -132,9 +132,14 @@ module GetText
   end
 
   def parse_file(po_file, data)
+    args = [ po_file ]
+    # We should not try to detect the string encoding in Ruby 1.8
+    if String.instance_methods.include?(:encode)
+      encoding = detect_file_encoding(po_file)
+      args << "r:#{encoding}"
+    end
     @po_file = po_file
-    encoding = detect_file_encoding(po_file)
-    parse(File.open(po_file, "r:#{encoding}") {|io| io.read }, data)
+    parse(File.open(*args) {|io| io.read }, data)
   end
 
   def detect_file_encoding(po_file)
