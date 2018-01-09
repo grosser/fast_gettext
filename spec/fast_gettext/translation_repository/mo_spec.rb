@@ -53,7 +53,8 @@ describe 'FastGettext::TranslationRepository::Mo' do
 
   it "can work in SAFE mode" do
     pending_if RUBY_VERSION > "2.0" do
-      `ruby spec/cases/safe_mode_can_handle_locales.rb 2>&1`.should == 'true'
+      # On Ruby Enterprise Edition, this script emits some warnings along with 'true'
+      `ruby spec/cases/safe_mode_can_handle_locales.rb 2>&1`.should =~ /true/
     end
   end
 end
