@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fast_gettext (1.1.0)
+    fast_gettext (1.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -24,7 +24,7 @@ GEM
     bump (0.5.0)
     diff-lcs (1.2.5)
     i18n (0.6.9)
-    json (1.8.1)
+    json (1.8.6)
     minitest (5.4.0)
     rake (10.3.2)
     rspec (3.0.0)
@@ -59,4 +59,4 @@ DEPENDENCIES
   wwtd
 
 BUNDLED WITH
-   1.12.3
+   1.16.1
