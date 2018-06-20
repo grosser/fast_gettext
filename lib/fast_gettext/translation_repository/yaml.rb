@@ -39,7 +39,11 @@ module FastGettext
         @files = {}
         path = options[:path] || 'config/locales'
         Dir["#{path}/*.yml"].each do |yaml_file|
-          locale = File.basename(yaml_file, '.yml')
+          # only take into account the first dot separeted part of the file name
+          # which matches an authorized locale code
+          locale = (File.basename(yaml_file, '.yml').split('.') &
+            FastGettext.default_available_locales).first
+
           @files[locale] = load_yaml(yaml_file, locale)
         end
       end
