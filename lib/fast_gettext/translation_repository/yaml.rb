@@ -44,7 +44,8 @@ module FastGettext
           # that is, we suppose it to be named `qq.yml` or `foo.qq.yml` where
           # `qq` stands for a locale name
           locale = File.basename(yaml_file, '.yml').split('.').last
-          @files[locale] = load_yaml(yaml_file, locale)
+          @files[locale] ||= {}
+          @files[locale].merge! load_yaml(yaml_file, locale)
         end
       end
 
