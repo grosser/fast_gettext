@@ -67,6 +67,8 @@ FastGettext.add_text_domain('my_app', path: 'locale', type: :po)
 Or yaml files (use I18n syntax/indentation)
 
 ```Ruby
+# A single locale can be segmented in multiple yaml files but they all should be
+# named with a `qq.yml` suffix, where `qq` is the locale name.
 FastGettext.add_text_domain('my_app', path: 'config/locales', type: :yaml)
 ```
 

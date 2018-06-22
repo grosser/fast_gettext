@@ -39,8 +39,12 @@ module FastGettext
         @files = {}
         path = options[:path] || 'config/locales'
         Dir["#{path}/*.yml"].each do |yaml_file|
-          locale = File.basename(yaml_file, '.yml')
-          @files[locale] = load_yaml(yaml_file, locale)
+          # Only take into account the last dot separeted part of the file name,
+          # excluding the extension file name
+          # that is, we suppose it to be named `qq.yml` or `foo.qq.yml` where
+          # `qq` stands for a locale name
+          locale = File.basename(yaml_file, '.yml').split('.').last
+          (@files[locale] ||= {}).merge! load_yaml(yaml_file, locale)
         end
       end
 
