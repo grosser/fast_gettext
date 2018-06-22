@@ -12,6 +12,13 @@ describe 'FastGettext::TranslationRepository::Yaml' do
     @rep.available_locales.sort.should == ['de', 'en', 'zh_CN']
   end
 
+  it "accumulates segmented locales" do
+    FastGettext.locale = 'en'
+    locales = @rep.send(:current_translations)
+    locales['simple'].should == 'easy'
+    locales['additional'].should == 'validate'
+  end
+
   it "translates nothing when locale is unsupported" do
     FastGettext.locale = 'xx'
     @rep['simple'].should == nil
