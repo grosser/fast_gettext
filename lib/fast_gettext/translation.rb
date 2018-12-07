@@ -42,6 +42,14 @@ module FastGettext
       end
     end
 
+    #translate with namespace, use namespect to find key
+    # 'Car','Tire' -> Tire if no translation could be found
+    # p_('Car','Tire') <=> s_('Car|Tire')
+    def p_(namespace, key, separator=nil, &block)
+      msgid = "#{namespace}#{separator||NAMESPACE_SEPARATOR}#{key}"
+      FastGettext.cached_find(msgid) or (block ? block.call : key)
+    end
+
     #translate, but discard namespace if nothing was found
     # Car|Tire -> Tire if no translation could be found
     def s_(key, separator=nil, &block)

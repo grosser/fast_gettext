@@ -100,6 +100,16 @@ describe FastGettext::Translation do
     end
   end
 
+  describe :p_ do
+    it "returns key if a translation was not found" do
+      p_("XXX","not found").should == "not found"
+    end
+
+    it "returns block when specified" do
+      p_("XXX",'not found'){:block}.should == :block
+    end
+  end
+
   describe :s_ do
     it "translates simple text" do
       s_('car').should == 'Auto'
@@ -311,6 +321,7 @@ describe FastGettext::Translation do
       before do
         #singular cache keys
         FastGettext.cache['xxx'] = '1'
+        FastGettext.cache['zzz|qqq'] = '3'
 
         #plural cache keys
         FastGettext.cache['||||xxx'] = ['1','2']
@@ -319,6 +330,10 @@ describe FastGettext::Translation do
 
       it "uses the cache when translating with _" do
         _('xxx').should == '1'
+      end
+
+      it "uses the cache when translating with p_" do
+        p_('zzz','qqq').should == '3'
       end
 
       it "uses the cache when translating with s_" do
