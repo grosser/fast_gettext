@@ -151,6 +151,17 @@ describe FastGettext::Translation do
     end
   end
 
+  describe :np_ do
+    it "translates whith namespace" do
+      np_('Fruit','Apple','Apples',2).should == 'Apples'
+    end
+
+    it "returns block when specified" do
+      np_('not','found'){:block}.should == :block
+      np_('not','found'){nil}.should be_nil
+    end
+  end
+
   describe :multi_domain do
     before do
       setup_extra_domain

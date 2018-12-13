@@ -72,6 +72,12 @@ module FastGettext
       # block is called once again to compare result
       block && translation == block.call ? translation : translation.split(NAMESPACE_SEPARATOR).last
     end
+
+    def np_(context, key, *args, &block)
+      options = (args.last.is_a? Hash) ? args.pop : {}
+      nargs = ["#{context}#{options[:separator]||CONTEXT_SEPARATOR}#{key}"] + args
+      n_(*nargs){nil} or or (block ? block.call : key)
+    end
   end
 
   # this module should be included for multi-domain support
