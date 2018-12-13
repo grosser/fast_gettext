@@ -20,6 +20,7 @@ module FastGettext
     def _(key, &block)
       FastGettext.cached_find(key) or (block ? block.call : key)
     end
+    alias :gettext :_
 
     #translate pluralized
     # some languages have up to 4 plural forms...
@@ -27,6 +28,7 @@ module FastGettext
     # n_('apple','apples',3)
     def n_(*keys, &block)
       count = keys.pop
+      keys = keys.flatten if keys.count == 1 && keys.respond_to?(:flatten)
       translations = FastGettext.cached_plural_find(*keys)
 
       selected = FastGettext.pluralisation_rule.call(count)
@@ -41,14 +43,16 @@ module FastGettext
         block ? block.call : keys.last
       end
     end
+    alias :ngettext :n_
 
-    #translate with namespace, use namespect to find key
+    #translate with namespace, use namespace to find key
     # 'Car','Tire' -> Tire if no translation could be found
     # p_('Car','Tire') <=> s_('Car|Tire')
     def p_(namespace, key, separator=nil, &block)
-      msgid = "#{namespace}#{separator||NAMESPACE_SEPARATOR}#{key}"
+      msgid = "#{namespace}#{CONTEXT_SEPARATOR}#{key}"
       FastGettext.cached_find(msgid) or (block ? block.call : key)
     end
+    alias :pgettext :p_
 
     #translate, but discard namespace if nothing was found
     # Car|Tire -> Tire if no translation could be found
@@ -56,6 +60,7 @@ module FastGettext
       translation = FastGettext.cached_find(key) and return translation
       block ? block.call : key.split(separator||NAMESPACE_SEPARATOR).last
     end
+    alias :sgettext :s_
 
     #tell gettext: this string need translation (will be found during parsing)
     def N_(translate)
@@ -72,6 +77,14 @@ module FastGettext
       # block is called once again to compare result
       block && translation == block.call ? translation : translation.split(NAMESPACE_SEPARATOR).last
     end
+    alias :nsgettext :ns_
+
+    def np_(*args, &block)
+      context, key = args[0..1]
+      nargs = ["#{context}#{CONTEXT_SEPARATOR}#{key}"] + args[2..-1]
+      n_(*nargs, &block) or (block ? block.call : key)
+    end
+    alias :npgettext :np_
   end
 
   # this module should be included for multi-domain support

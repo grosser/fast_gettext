@@ -61,7 +61,12 @@ describe FastGettext::Translation do
     it "translates pluralized" do
       n_('Axis','Axis',1).should == 'Achse'
       n_('Axis','Axis',2).should == 'Achsen'
+      n_('Axis','Axis',3).should == 'Achsen'
       n_('Axis','Axis',0).should == 'Achsen'
+    end
+
+    it "works with an array of keys" do
+      n_('Axis','Axis',2).should == 'Achsen'      
     end
 
     describe "pluralisations rules" do
@@ -141,13 +146,33 @@ describe FastGettext::Translation do
   end
 
   describe :ns_ do
-    it "translates whith namespace" do
+    it "translates plural with namespace" do
+      ns_('Fruit|Apple','Apples',1).should == 'Apple'
+      ns_('Fruit|Apple','Apples',2).should == 'Apples'
+      ns_('Fruit|Apple','Apples',3).should == 'Apples'
+    end
+
+    it "translates pural with double namespace" do
+      # This behavior does not match gettext but
+      # let's make sure it continues to work as to not introduce
+      # a breaking change.
       ns_('Fruit|Apple','Fruit|Apples',2).should == 'Apples'
     end
 
     it "returns block when specified" do
       ns_('not found'){:block}.should == :block
       ns_('not found'){nil}.should be_nil
+    end
+  end
+
+  describe :np_ do
+    it "translates whith namespace" do
+      np_('Fruit','Apple','Apples',2).should == 'Apples'
+    end
+
+    it "returns block when specified" do
+      np_('not','found'){:block}.should == :block
+      np_('not','found'){nil}.should be_nil
     end
   end
 
@@ -321,7 +346,7 @@ describe FastGettext::Translation do
       before do
         #singular cache keys
         FastGettext.cache['xxx'] = '1'
-        FastGettext.cache['zzz|qqq'] = '3'
+        FastGettext.cache['zzz\000qqq'] = '3'
 
         #plural cache keys
         FastGettext.cache['||||xxx'] = ['1','2']
