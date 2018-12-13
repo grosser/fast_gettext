@@ -11,6 +11,7 @@ module FastGettext
 
   LOCALE_REX =  /^[a-z]{2,3}$|^[a-z]{2,3}_[A-Z]{2,3}$/
   NAMESPACE_SEPARATOR = '|'
+  CONTEXT_SEPARATOR = '\000'
 
   # users should not include FastGettext, since this would contaminate their namespace
   # rather use
