@@ -66,7 +66,7 @@ describe FastGettext::Translation do
     end
 
     it "works with an array of keys" do
-      n_('Axis','Axis',2).should == 'Achsen'      
+      n_(['Axis','Axis'],2).should == 'Achsen'      
     end
 
     describe "pluralisations rules" do
