@@ -76,7 +76,7 @@ module FastGettext
     def np_(context, key, *args, &block)
       options = (args.last.is_a? Hash) ? args.pop : {}
       nargs = ["#{context}#{options[:separator]||CONTEXT_SEPARATOR}#{key}"] + args
-      n_(*nargs){nil} or or (block ? block.call : key)
+      n_(*nargs){nil} or (block ? block.call : key)
     end
   end
 
