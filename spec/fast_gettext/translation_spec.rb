@@ -321,7 +321,7 @@ describe FastGettext::Translation do
       before do
         #singular cache keys
         FastGettext.cache['xxx'] = '1'
-        FastGettext.cache['zzz|qqq'] = '3'
+        FastGettext.cache["zzz\u0004qqq"] = '3'
 
         #plural cache keys
         FastGettext.cache['||||xxx'] = ['1','2']
