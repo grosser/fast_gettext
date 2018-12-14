@@ -141,7 +141,16 @@ describe FastGettext::Translation do
   end
 
   describe :ns_ do
-    it "translates whith namespace" do
+    it "translates plural with namespace" do
+      ns_('Fruit|Apple','Apples',1).should == 'Apple'
+      ns_('Fruit|Apple','Apples',2).should == 'Apples'
+      ns_('Fruit|Apple','Apples',3).should == 'Apples'
+    end
+
+    it "translates pural with double namespace" do
+      # This behavior does not match gettext but
+      # let's make sure it continues to work as to not introduce
+      # a breaking change.
       ns_('Fruit|Apple','Fruit|Apples',2).should == 'Apples'
     end
 

@@ -20,6 +20,7 @@ module FastGettext
     def _(key, &block)
       FastGettext.cached_find(key) or (block ? block.call : key)
     end
+    alias :gettext :_
 
     #translate pluralized
     # some languages have up to 4 plural forms...
@@ -41,6 +42,7 @@ module FastGettext
         block ? block.call : keys.last
       end
     end
+    alias :ngettext :n_
 
     #translate with namespace, use namespace to find key
     # 'Car','Tire' -> Tire if no translation could be found
@@ -49,6 +51,7 @@ module FastGettext
       msgid = "#{namespace}#{separator||CONTEXT_SEPARATOR}#{key}"
       FastGettext.cached_find(msgid) or (block ? block.call : key)
     end
+    alias :pgettext :p_
 
     #translate, but discard namespace if nothing was found
     # Car|Tire -> Tire if no translation could be found
@@ -56,6 +59,7 @@ module FastGettext
       translation = FastGettext.cached_find(key) and return translation
       block ? block.call : key.split(separator||NAMESPACE_SEPARATOR).last
     end
+    alias :sgettext :s_
 
     #tell gettext: this string need translation (will be found during parsing)
     def N_(translate)
@@ -72,12 +76,14 @@ module FastGettext
       # block is called once again to compare result
       block && translation == block.call ? translation : translation.split(NAMESPACE_SEPARATOR).last
     end
+    alias :nsgettext :ns_
 
     def np_(context, key, *args, &block)
       options = (args.last.is_a? Hash) ? args.pop : {}
       nargs = ["#{context}#{options[:separator]||CONTEXT_SEPARATOR}#{key}"] + args
       n_(*nargs){nil} or (block ? block.call : key)
     end
+    alias :npgettext :np_
   end
 
   # this module should be included for multi-domain support

@@ -92,14 +92,81 @@ FastGettext.locale = 'de'
 
 ### 4. Start translating
 
-```Ruby
+FastGetText supports all the translation methods of [ruby-gettext](http://github.com/ruby-gettext/gettext) with added support for block defaults.
+
+#### `_()` or `gettext()`: basic translation
+
+```ruby
 include FastGettext::Translation
-_('Car') == 'Auto'
-_('not-found') == 'not-found'
-s_('Namespace|not-found') == 'not-found'
-n_('Axis','Axis',3) == 'Achsen' #German plural of Axis
-_('Hello %{name}!') % {name: "Pete"} == 'Hello Pete!'
+_('Car') == 'Auto'             # found translation for 'Car'
+_('not-found') == 'not-found'  # The msgid is returned by default
 ```
+
+#### `n_()` or `ngettext()`: pluralization
+
+```ruby
+n_('Car','Cars',1) == 'Auto'
+n_('Car','Cars',2) == 'Autos' #German plural of Cars
+```
+
+You'll often want to interpolate the results of `n_()` using ruby builtin `%` operator.
+
+```ruby
+n_('Car','#{n} Cars',2) % { n: count } == '2 Autos'
+```
+
+
+#### `p_()` or `pgettext()`: context-aware
+
+```ruby
+p_('File','Open') == "öffnen"
+p_('Context','not-found') == 'not-found'
+```
+
+#### `s_()` or `sgetext()`: without context
+
+```ruby
+s_('File|Open') == "öffnen"
+s_('Context|not-found') == 'not-found'
+```
+
+The difference between `s_()` and `p_()` is largely based on how the translations
+are stored. Your preference will be based on your workflow and translation editing
+tools.
+
+#### `pn_()` or `pngettext()`: context-aware pluralized
+
+```ruby
+pn_('Fruit','Apple','Apples', 3) == 'Äpfel'
+pn_('Fruit','Apple','Apples', 1) == 'Apfel'
+```
+
+#### `sn_()` or `sngettext()`: without context pluralized
+
+```ruby
+sn_('Fruit|Apple','Apples', 3) == 'Äpfel'
+sn_('Fruit|Apple','Apples', 1) == 'Apfel'
+```
+
+#### `N_()` and `Nn_()`: make dynamic translations available to the parser.
+
+In many instances, your strings will not be found the by the ruby-parse. These methods
+allow for those strings to be discovered.
+
+```
+N_("active"); N_("inactive"); N_("paused") # possible value of status for parser to find.
+Nn_("active","inactive","paused")          # alternative method
+_("Your account is #{account_state}.") % { account_state: status }
+```
+
+#### Block defaults
+
+All the translation methods also support a block default, a feature not provided by ruby-gettext
+
+```ruby
+_('not-found'){ "alternative default" } == alternate default
+```
+
 
 
 Managing translations
@@ -113,12 +180,12 @@ Tell Gettext where your .mo or .po files lie, e.g. for locale/de/my_app.po and l
 FastGettext.add_text_domain('my_app', path: 'locale')
 ```
 
-Use the [original GetText](http://github.com/mutoh/gettext) to create and manage po/mo-files.
+Use the [original GetText](http://github.com/ruby-gettext/gettext) to create and manage po/mo-files.
 (Work on a po/mo parser & reader that is easier to use has started, contributions welcome @ [get_pomo](http://github.com/grosser/get_pomo) )
 
 ### Database
 [Example migration for ActiveRecord](http://github.com/grosser/fast_gettext/blob/master/examples/db/migration.rb)<br/>
-The default plural seperator is `||||` but you may overwrite it (or suggest a better one..).
+The default plural separator is `||||` but you may overwrite it (or suggest a better one..).
 
 This is usable with any model DataMapper/Sequel or any other(non-database) backend, the only thing you need to do is respond to the self.translation(key, locale) call.
 If you want to use your own models, have a look at the [default models](http://github.com/grosser/fast_gettext/tree/master/lib/fast_gettext/translation_repository/db_models) to see what you want/need to implement.
@@ -130,7 +197,7 @@ Rails
 Try the [gettext_i18n_rails plugin](http://github.com/grosser/gettext_i18n_rails), it simplifies the setup.<br/>
 Try the [translation_db_engine](http://github.com/grosser/translation_db_engine), to manage your translations in a db.
 
-Setting `available_locales`,`text_domain` or `locale` will not work inside the `evironment.rb`,
+Setting `available_locales`,`text_domain` or `locale` will not work inside the `environment.rb`,
 since it runs in a different thread then e.g. controllers, so set them inside your application_controller.
 
 ```Ruby
@@ -179,7 +246,7 @@ If you only use one text domain, setting `FastGettext.default_text_domain = 'app
 is sufficient and no more `text_domain=` is needed
 
 ### default_locale
-If the simple rule of "first `availble_locale` or 'en'" is not suficcient for you, set `FastGettext.default_locale = 'de'`.
+If the simple rule of "first `available_locale` or 'en'" is not sufficient for you, set `FastGettext.default_locale = 'de'`.
 
 ### default_available_locales
 Fallback when no available_locales are set
