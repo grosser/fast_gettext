@@ -185,7 +185,7 @@ Use the [original GetText](http://github.com/ruby-gettext/gettext) to create and
 
 ### Database
 [Example migration for ActiveRecord](http://github.com/grosser/fast_gettext/blob/master/examples/db/migration.rb)<br/>
-The default plural seperator is `||||` but you may overwrite it (or suggest a better one..).
+The default plural separator is `||||` but you may overwrite it (or suggest a better one..).
 
 This is usable with any model DataMapper/Sequel or any other(non-database) backend, the only thing you need to do is respond to the self.translation(key, locale) call.
 If you want to use your own models, have a look at the [default models](http://github.com/grosser/fast_gettext/tree/master/lib/fast_gettext/translation_repository/db_models) to see what you want/need to implement.
@@ -197,7 +197,7 @@ Rails
 Try the [gettext_i18n_rails plugin](http://github.com/grosser/gettext_i18n_rails), it simplifies the setup.<br/>
 Try the [translation_db_engine](http://github.com/grosser/translation_db_engine), to manage your translations in a db.
 
-Setting `available_locales`,`text_domain` or `locale` will not work inside the `evironment.rb`,
+Setting `available_locales`,`text_domain` or `locale` will not work inside the `environment.rb`,
 since it runs in a different thread then e.g. controllers, so set them inside your application_controller.
 
 ```Ruby
@@ -246,7 +246,7 @@ If you only use one text domain, setting `FastGettext.default_text_domain = 'app
 is sufficient and no more `text_domain=` is needed
 
 ### default_locale
-If the simple rule of "first `availble_locale` or 'en'" is not suficcient for you, set `FastGettext.default_locale = 'de'`.
+If the simple rule of "first `available_locale` or 'en'" is not sufficient for you, set `FastGettext.default_locale = 'de'`.
 
 ### default_available_locales
 Fallback when no available_locales are set

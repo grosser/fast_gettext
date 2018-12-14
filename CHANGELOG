@@ -1,11 +1,11 @@
 1.6.0 -- Remove restrictions around yaml file names
 1.1.0 -- translations are no longer eager loaded for improved startup performance, pass `eager_load: true` to preload for example in preforked web server
 1.0.0 -- do not enforce attr_accessible unless ProtectedAttributes are loaded
-0.9.0 -- reworked internals of caching to be plugable
+0.9.0 -- reworked internals of caching to be pluggable
 0.7.0 -- set_locale resets to default locale if none of the available locales was tried to set
-0.6.0 -- plurals use singular translations as fallack e.g. you translated 'Axis' then n_('Axis','Axis',1) would return the translation for 'Axis' if no plural translation was found
+0.6.0 -- plurals use singular translations as fallback e.g. you translated 'Axis' then n_('Axis','Axis',1) would return the translation for 'Axis' if no plural translation was found
 0.4.14 -- "" is translated as "", not as gettext meta information
-0.4.0 -- pluralisation_rules is no longer stored in each repository, only retrived. Added Chain and Logger repository.
+0.4.0 -- pluralisation_rules is no longer stored in each repository, only retrieved. Added Chain and Logger repository.
 0.3.6 -- FastGettext.default_locale=
 0.3.5 -- FastGettext.default_text_domain=
 0.3.4 -- Exceptions are thrown, not returned when translating without text domain
