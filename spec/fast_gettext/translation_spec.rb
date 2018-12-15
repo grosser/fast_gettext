@@ -246,6 +246,18 @@ describe FastGettext::Translation do
       end
     end
 
+    describe :dp_ do
+      it "translates simple text" do
+        dp_('test2', 'Fruit', 'Apple').should == 'Apfel 2'
+        dp_('test', 'Fruit', 'Apple').should == 'Apfel'
+      end
+
+      it "returns key if a translation was not found" do
+        dp_('test2', "Fruit","not found").should == "not found"
+        dp_('test2', "Fruit","not found"){:block}.should == :block
+      end
+    end
+
     describe :ds_ do
       it "translates simple text" do
         ds_('test2', 'car').should == 'Auto 2'

@@ -334,7 +334,7 @@ include FastGettext::TranslationMultidomain
 
 d_("domainname", "string") # finds 'string' in domain domainname
 dn_("domainname", "string", "strings", 1) # ditto
-# etc.
+dp_("domainname", "context", "key")
 ```
 
 These are helper methods so you don't need to write:
