@@ -1,3 +1,4 @@
+2.0.0 -- Changed p_ separator to \0004 https://github.com/grosser/fast_gettext/pull/107 add np and add gettext aliases
 1.6.0 -- Remove restrictions around yaml file names
 1.1.0 -- translations are no longer eager loaded for improved startup performance, pass `eager_load: true` to preload for example in preforked web server
 1.0.0 -- do not enforce attr_accessible unless ProtectedAttributes are loaded
