@@ -335,6 +335,17 @@ describe FastGettext::Translation do
       end
     end
 
+    describe :Dp_ do
+      it "translates simple text" do
+        Dp_('Fruit','Apple').should match('(Apfel|Apfel 2)')
+      end
+
+      it "returns key or block if a translation was not found" do
+        Dp_('Fruit',"not found").should == "not found"
+        Dp_('Fruit',"not found"){:block}.should == :block
+      end
+    end
+
     describe :Ds_ do
       it "translates simple text" do
         Ds_('car').should match('(Auto|Auto 2)')

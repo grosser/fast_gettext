@@ -354,7 +354,8 @@ order (depends on the Ruby hash implementation):
 include FastGettext::TranslationMultidomain
 
 D_("string") # finds 'string' in any domain
-# etc.
+Dn_("string", "strings", 1) # ditto
+Dp_("context", "key")
 ```
 
 Alternatively you can use [merge repository](https://github.com/grosser/fast_gettext#merge) to achieve the same behaviour.

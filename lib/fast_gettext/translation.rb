@@ -173,6 +173,14 @@ module FastGettext
       key.split(separator||NAMESPACE_SEPARATOR).last
     end
 
+    def Dp_(namespace, key, separator=nil, &block)
+      FastGettext.translation_repositories.each_key do |domain|
+        result = FastGettext::TranslationMultidomain.dp_(domain, namespace, key, separator) {nil}
+        return result unless result.nil?
+      end
+      block ? block.call : key
+    end
+
     def Dns_(*keys)
       FastGettext.translation_repositories.each_key do |domain|
         result = FastGettext::TranslationMultidomain.dns_(domain, *keys) {nil}
