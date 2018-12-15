@@ -128,6 +128,12 @@ module FastGettext
       end
     end
 
+    def dp_(domain, namespace, key, separator=nil, &block)
+      _in_domain domain do
+        FastGettext::Translation.p_(namespace, key, separator, &block)
+      end
+    end
+
     def dns_(domain, *keys, &block)
       _in_domain domain do
         FastGettext::Translation.ns_(*keys, &block)

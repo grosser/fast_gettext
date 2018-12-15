@@ -72,3 +72,7 @@ msgstr "Du solltest '\\' als '\\\\' escapen."
 
 msgid "Umläüte"
 msgstr "Umlaute"
+
+msgctxt "Fruit"
+msgid "Apple"
+msgstr "Apfel"
