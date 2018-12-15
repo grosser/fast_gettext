@@ -1,5 +1,5 @@
 name = "fast_gettext"
-require "./lib/#{name}/version"
+require_relative "lib/#{name}/version"
 
 Gem::Specification.new name, FastGettext::VERSION do |s|
   s.summary = "A simple, fast, memory-efficient and threadsafe implementation of GetText"
