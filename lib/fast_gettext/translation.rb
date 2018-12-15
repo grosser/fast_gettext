@@ -140,6 +140,13 @@ module FastGettext
       end
     end
 
+    def dnp_(domain, context, key, *args, &block)
+      _in_domain domain do
+        FastGettext::Translation.np_(context, key, *args, &block)
+      end
+    end
+
+
     # gettext functions to translate in the context of any domain
     # (note: if mutiple domains contains key, random translation is returned)
     def D_(key)

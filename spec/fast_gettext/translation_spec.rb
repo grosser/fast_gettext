@@ -274,11 +274,21 @@ describe FastGettext::Translation do
     end
 
     describe :dns_ do
-      it "translates whith namespace" do
+      it "translates with namespace" do
         dns_('test', 'Fruit|Apple','Fruit|Apples',2).should == 'Apples'
         dns_('test2', 'Fruit|Apple','Fruit|Apples',2).should == 'Apples'
       end
     end
+
+    describe :dnp_ do
+      it "translates with context" do
+        dnp_('test', 'Fruit', 'Banana','Bananas', 1).should == 'Banane'
+        dnp_('test', 'Fruit', 'Banana','Bananas', 2).should == 'Bananen'
+        dnp_('test2', 'Fruit', 'Banana','Bananas', 1).should == 'Banane 2'
+        dnp_('test2', 'Fruit', 'Banana','Bananas', 2).should == 'Bananen 2'
+      end
+    end
+
   end
 
   describe :multidomain_all do
