@@ -136,62 +136,62 @@ module FastGettext
       end
     end
 
-    def dnp_(domain, context, key, *args, &block)
+    def dnp_(domain, context, key, *args)
       _in_domain domain do
         result = FastGettext::Translation.np_(context, key, *args){nil}
-        result or (block ? block.call : key)
+        result or (block_given? ? yield : key)
       end
     end
 
 
     # gettext functions to translate in the context of any domain
     # (note: if mutiple domains contains key, random translation is returned)
-    def D_(key, &block)
+    def D_(key)
       FastGettext.translation_repositories.each_key do |domain|
         result = FastGettext::TranslationMultidomain.d_(domain, key) {nil}
         return result unless result.nil?
       end
-      block ? block.call : key
+      block_given? ? yield : key
     end
 
-    def Dn_(*keys, &block)
+    def Dn_(*keys)
       FastGettext.translation_repositories.each_key do |domain|
         result = FastGettext::TranslationMultidomain.dn_(domain, *keys){nil}
         return result unless result.nil?
       end
-      block ? block.call : FastGettext._(FastGettext::PluralizationHelper.fallback(*keys))
+      block_given? ? yield : FastGettext._(FastGettext::PluralizationHelper.fallback(*keys))
     end
 
-    def Ds_(key, separator=nil, &block)
+    def Ds_(key, separator=nil)
       FastGettext.translation_repositories.each_key do |domain|
         result = FastGettext::TranslationMultidomain.ds_(domain, key, separator) {nil}
         return result unless result.nil?
       end
-      block ? block.call : key.split(separator||NAMESPACE_SEPARATOR).last
+      block_given? ? yield : key.split(separator||NAMESPACE_SEPARATOR).last
     end
 
-    def Dp_(namespace, key, separator=nil, &block)
+    def Dp_(namespace, key, separator=nil)
       FastGettext.translation_repositories.each_key do |domain|
         result = FastGettext::TranslationMultidomain.dp_(domain, namespace, key, separator) {nil}
         return result unless result.nil?
       end
-      block ? block.call : key
+      block_given? ? yield : key
     end
 
-    def Dns_(*keys, &block)
+    def Dns_(*keys)
       FastGettext.translation_repositories.each_key do |domain|
         result = FastGettext::TranslationMultidomain.dns_(domain, *keys) {nil}
         return result unless result.nil?
       end
-      block ? block.call : FastGettext.s_(FastGettext::PluralizationHelper.fallback(*keys))
+      block_given? ? yield : FastGettext.s_(FastGettext::PluralizationHelper.fallback(*keys))
     end
 
-    def Dnp_(context, *keys, &block)
+    def Dnp_(context, *keys)
       FastGettext.translation_repositories.each_key do |domain|
         result = FastGettext::TranslationMultidomain.dnp_(domain, context, *keys){ nil }
         return result unless result.nil?
       end
-      block ? block.call : FastGettext.p_(context, FastGettext::PluralizationHelper.fallback(*keys))
+      block_given? ? yield : FastGettext.p_(context, FastGettext::PluralizationHelper.fallback(*keys))
     end
   end
 
@@ -203,7 +203,7 @@ module FastGettext
       pluralize(count, keys, [])
     end
 
-    def pluralize(count, keys, translations, &block)
+    def pluralize(count, keys, translations)
       selected = FastGettext.pluralisation_rule.call(count)
       selected = (selected ? 1 : 0) unless selected.is_a? Numeric #convert booleans to numbers
 
