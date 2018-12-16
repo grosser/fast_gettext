@@ -70,9 +70,8 @@ module FastGettext
     end
     alias :nsgettext :ns_
 
-    def np_(context, *keys)
-      options = (keys.last.is_a? Hash) ? keys.pop : {}
-      nargs = ["#{context}#{options[:separator]||CONTEXT_SEPARATOR}#{keys[0]}"] + keys[1..-1]
+    def np_(context, *keys, separator: nil)
+      nargs = ["#{context}#{separator||CONTEXT_SEPARATOR}#{keys[0]}"] + keys[1..-1]
       result = n_(*nargs){nil}
       return result if result
       return yield if block_given?
@@ -134,10 +133,9 @@ module FastGettext
       end
     end
 
-    def dnp_(domain, context, key, *args)
+    def dnp_(domain, context, key, *args, &block)
       _in_domain domain do
-        result = FastGettext::Translation.np_(context, key, *args){nil}
-        result or (block_given? ? yield : key)
+        result = FastGettext::Translation.np_(context, key, *args, &block)
       end
     end
 
