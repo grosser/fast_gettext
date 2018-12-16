@@ -399,6 +399,53 @@ describe FastGettext::Translation do
     end
   end
 
+  describe :pluralization_helper do
+    include FastGettext::PluralizationHelper
+
+    describe :pluralize do
+      before do
+        FastGettext.pluralisation_rule = nil
+      end
+
+      context "translations found" do
+        let(:translations){ ['Achse', 'Achsen'] }
+        it "translates pluralized" do
+          pluralize(1, ['Axis','Axis'], translations).should == 'Achse'
+          pluralize(2, ['Axis','Axis'], translations).should == 'Achsen'
+          pluralize(0, ['Axis','Axis'], translations).should == 'Achsen'
+        end
+
+        it "returns a simple translation when no combined was found" do
+          pluralize(1, ['Axis','NOTFOUNDs'], ['Achse']).should == 'Achse'
+        end
+      end
+
+      context "no translations" do
+        let(:translations){ [] }
+        it "returns the appropriate key if no translation was found" do
+          pluralize(1, ['Apple','Apples'], translations).should == 'Apple'
+          pluralize(2, ['Apple','Apples'], translations).should == 'Apples'
+        end
+
+        it "returns the last key when no translation was found and keys where to short" do
+          FastGettext.pluralisation_rule = lambda{|x|4}
+          pluralize(2, ['Apple','Apples'], translations).should == 'Apples'
+        end
+
+        it "returns block when specified" do
+          pluralize(2, ['Apple','Apples'], translations){:block}.should == :block
+        end
+      end
+    end
+
+    describe :fallback do
+      it "returns the appropriate key if no translation was found" do
+        fallback('Apple','Apples', 1).should == 'Apple'
+        fallback('Apple','Apples', 2).should == 'Apples'
+      end
+    end
+  end
+
   describe :caching do
     describe :cache_hit do
       before do

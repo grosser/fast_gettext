@@ -26,26 +26,10 @@ module FastGettext
     # some languages have up to 4 plural forms...
     # n_(singular, plural, plural form 2, ..., count)
     # n_('apple','apples',3)
-    def n_(*keys)
+    def n_(*keys, &block)
       count = keys.pop
       translations = FastGettext.cached_plural_find(*keys)
-
-      selected = FastGettext.pluralisation_rule.call(count)
-      selected = (selected ? 1 : 0) unless selected.is_a? Numeric #convert booleans to numbers
-
-      # If we have a translation return it
-      result = translations[selected]
-      return result if result
-
-      # If we have a block always use it in place of a translation
-      return yeild if block_given?
-
-      # Fall back to the translated key if it's there
-      result = _(keys[selected]){nil} if keys[selected]
-      return result if result
-
-      # Lastly fall back to the best fit untranslated key
-      keys[selected] || keys.last
+      FastGettext::PluralizationHelper.pluralize(count, keys, translations, &block)
     end
     alias :ngettext :n_
 
@@ -175,13 +159,7 @@ module FastGettext
         result = FastGettext::TranslationMultidomain.dn_(domain, *keys){nil}
         return result unless result.nil?
       end
-      return block.call if block
-
-      count = keys.pop
-      selected = FastGettext.pluralisation_rule.call(count)
-      selected = (selected ? 1 : 0) unless selected.is_a? Numeric #convert booleans to numbers
-
-      s_(keys[selected] || keys.last)
+      block ? block.call : FastGettext._(FastGettext::PluralizationHelper.fallback(*keys))
     end
 
     def Ds_(key, separator=nil, &block)
@@ -205,13 +183,7 @@ module FastGettext
         result = FastGettext::TranslationMultidomain.dns_(domain, *keys) {nil}
         return result unless result.nil?
       end
-      return block.call if block
-
-      count = keys.pop
-      selected = FastGettext.pluralisation_rule.call(count)
-      selected = (selected ? 1 : 0) unless selected.is_a? Numeric #convert booleans to numbers
-
-      s_(keys[selected] || keys.last)
+      block ? block.call : FastGettext.s_(FastGettext::PluralizationHelper.fallback(*keys))
     end
 
     def Dnp_(context, *keys, &block)
@@ -219,12 +191,31 @@ module FastGettext
         result = FastGettext::TranslationMultidomain.dnp_(domain, context, *keys){ nil }
         return result unless result.nil?
       end
-      return block.call if block
+      block ? block.call : FastGettext.p_(context, FastGettext::PluralizationHelper.fallback(*keys))
+    end
+  end
 
+  module PluralizationHelper
+    extend self
+
+    def fallback(*keys)
       count = keys.pop
+      pluralize(count, keys, [])
+    end
+
+    def pluralize(count, keys, translations, &block)
       selected = FastGettext.pluralisation_rule.call(count)
       selected = (selected ? 1 : 0) unless selected.is_a? Numeric #convert booleans to numbers
-      p_(context, keys[selected] || keys.last)
+
+      # If we have a translation return it
+      result = translations[selected]
+      return result if result
+
+      # If we have a block always use it in place of a translation
+      return yield if block_given?
+
+      # Fall back to the best fit translated key if it's there
+      FastGettext._(keys[selected] || keys.last)
     end
   end
 end
