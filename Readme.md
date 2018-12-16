@@ -335,7 +335,9 @@ include FastGettext::TranslationMultidomain
 d_("domainname", "string") # finds 'string' in domain domainname
 dn_("domainname", "string", "strings", 1) # ditto
 dp_("domainname", "context", "key")
+ds_("domainname", "context|key")
 dnp_("domainname", "context", "string", "strings")
+dns_("domainname", "context|string", "strings")
 ```
 
 These are helper methods so you don't need to write:
@@ -348,7 +350,7 @@ _("string")
 It is useful in Rails plugins in the views for example. The second set of
 functions are D functions which search for string in _all_ domains. If there
 are multiple translations in different domains, it returns them in random
-order (depends on the Ruby hash implementation):
+order (depends on the Ruby hash implementation).
 
 ```Ruby
 include FastGettext::TranslationMultidomain
@@ -356,10 +358,12 @@ include FastGettext::TranslationMultidomain
 D_("string") # finds 'string' in any domain
 Dn_("string", "strings", 1) # ditto
 Dp_("context", "key")
+Ds_("context|key")
 Dnp_("context", "string", "strings")
+Dns_("context|string", "strings")
 ```
 
-Alternatively you can use [merge repository](https://github.com/grosser/fast_gettext#merge) to achieve the same behaviour.
+Alternatively you can use [merge repository](https://github.com/grosser/fast_gettext#merge) to achieve the same behavior.
 
 FAQ
 ===
