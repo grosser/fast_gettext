@@ -194,14 +194,12 @@ module FastGettext
   end
 
   module PluralizationHelper
-    extend self
-
-    def fallback(*keys)
+    def self.fallback(*keys)
       count = keys.pop
       pluralize(count, keys, [])
     end
 
-    def pluralize(count, keys, translations)
+    def self.pluralize(count, keys, translations)
       selected = FastGettext.pluralisation_rule.call(count)
       selected = (selected ? 1 : 0) unless selected.is_a? Numeric #convert booleans to numbers
 
