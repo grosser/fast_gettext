@@ -17,8 +17,10 @@ module FastGettext
         @model = options[:model]
       end
 
-      @seperator = '||||' # string that separates multiple plurals
-      (class << self; self; end).attr_accessor :seperator
+      @separator = '||||' # string that separates multiple plurals
+      class << self
+        attr_accessor :separator
+      end
 
       def available_locales
         if @model.respond_to? :available_locales
@@ -37,8 +39,8 @@ module FastGettext
       end
 
       def plural(*args)
-        if translation = @model.translation(args * self.class.seperator, FastGettext.locale)
-          translation.to_s.split(self.class.seperator)
+        if translation = @model.translation(args * self.class.separator, FastGettext.locale)
+          translation.to_s.split(self.class.separator)
         else
           []
         end

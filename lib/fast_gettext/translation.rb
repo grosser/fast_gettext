@@ -88,7 +88,7 @@ module FastGettext
 
   # this module should be included for multi-domain support
   module TranslationMultidomain
-    module_function
+    extend self # rubocop:disable Style/ModuleFunction
 
     # make it usable in class definition, e.g.
     # class Y

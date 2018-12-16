@@ -5,7 +5,7 @@ module FastGettext
   # Responsibility:
   #  - abstract mo files for Mo Repository
   class MoFile
-    PLURAL_SEPERATOR = "\000"
+    PLURAL_SEPARATOR = "\000"
 
     # file => path or FastGettext::GetText::MOFile
     def initialize(file, options = {})
@@ -20,7 +20,7 @@ module FastGettext
     # returns the plural forms or all singular translations that where found
     # Car, Cars => [Auto,Autos] or []
     def plural(*msgids)
-      split_plurals(self[msgids * PLURAL_SEPERATOR].to_s)
+      split_plurals(self[msgids * PLURAL_SEPARATOR].to_s)
     end
 
     def pluralisation_rule
@@ -61,7 +61,7 @@ module FastGettext
     def make_singular_and_plural_available
       data = {}
       @data.each do |key, translation|
-        next unless key.include? PLURAL_SEPERATOR
+        next unless key.include? PLURAL_SEPARATOR
 
         singular, plural = split_plurals(key)
         translation = split_plurals(translation)
@@ -72,7 +72,7 @@ module FastGettext
     end
 
     def split_plurals(singular_plural)
-      singular_plural.split(PLURAL_SEPERATOR)
+      singular_plural.split(PLURAL_SEPARATOR)
     end
   end
 end
