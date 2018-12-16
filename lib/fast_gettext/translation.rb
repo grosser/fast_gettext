@@ -17,8 +17,8 @@ module FastGettext
       klas.extend self
     end
 
-    def _(key, &block)
-      FastGettext.cached_find(key) or (block ? block.call : key)
+    def _(key)
+      FastGettext.cached_find(key) or (block_given? ? yield : key)
     end
     alias :gettext :_
 
@@ -26,7 +26,7 @@ module FastGettext
     # some languages have up to 4 plural forms...
     # n_(singular, plural, plural form 2, ..., count)
     # n_('apple','apples',3)
-    def n_(*keys, &block)
+    def n_(*keys)
       count = keys.pop
       translations = FastGettext.cached_plural_find(*keys)
 
@@ -39,7 +39,7 @@ module FastGettext
       elsif keys[selected]
         _(keys[selected])
       else
-        block ? block.call : keys.last
+        block_given? ? yield : keys.last
       end
     end
     alias :ngettext :n_
@@ -47,17 +47,17 @@ module FastGettext
     #translate with namespace, use namespace to find key
     # 'Car','Tire' -> Tire if no translation could be found
     # p_('Car','Tire') <=> s_('Car|Tire')
-    def p_(namespace, key, separator=nil, &block)
+    def p_(namespace, key, separator=nil)
       msgid = "#{namespace}#{separator||CONTEXT_SEPARATOR}#{key}"
-      FastGettext.cached_find(msgid) or (block ? block.call : key)
+      FastGettext.cached_find(msgid) or (block_given? ? yield : key)
     end
     alias :pgettext :p_
 
     #translate, but discard namespace if nothing was found
     # Car|Tire -> Tire if no translation could be found
-    def s_(key, separator=nil, &block)
+    def s_(key, separator=nil)
       translation = FastGettext.cached_find(key) and return translation
-      block ? block.call : key.split(separator||NAMESPACE_SEPARATOR).last
+      block_given? ? yield : key.split(separator||NAMESPACE_SEPARATOR).last
     end
     alias :sgettext :s_
 
@@ -73,15 +73,16 @@ module FastGettext
 
     def ns_(*args, &block)
       translation = n_(*args, &block)
-      # block is called once again to compare result
+
+      # block is called once again to compare result TODO: this is bad
       block && translation == block.call ? translation : translation.split(NAMESPACE_SEPARATOR).last
     end
     alias :nsgettext :ns_
 
-    def np_(context, key, *args, &block)
+    def np_(context, key, *args)
       options = (args.last.is_a? Hash) ? args.pop : {}
       nargs = ["#{context}#{options[:separator]||CONTEXT_SEPARATOR}#{key}"] + args
-      n_(*nargs){nil} or (block ? block.call : key)
+      n_(*nargs){nil} or (block_given? ? yield : key)
     end
     alias :npgettext :np_
   end
@@ -100,7 +101,7 @@ module FastGettext
     end
 
     # helper block for changing domains
-    def _in_domain domain
+    def _in_domain(domain)
       old_domain = FastGettext.text_domain
       FastGettext.text_domain = domain
       yield if block_given?
