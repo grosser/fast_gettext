@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FastGettext
   class Cache
     def initialize
@@ -8,13 +10,13 @@ module FastGettext
     def fetch(key)
       translation = @current[key]
       if translation.nil? # uncached
-        @current[key] = yield || false # TODO get rid of this false hack and cache :missing
+        @current[key] = yield || false # TODO: get rid of this false hack and cache :missing
       else
         translation
       end
     end
 
-    # TODO only used for tests, maybe if-else around it ...
+    # TODO: only used for tests, maybe if-else around it ...
     def []=(key, value)
       @current[key] = value
     end

@@ -2,7 +2,6 @@ bundler_args: ""
 script: "bundle exec rake spec"
 sudo: false
 rvm:
-  - 2.2.10
   - 2.3.7
   - 2.4.5
   - 2.5.3
@@ -11,3 +10,7 @@ gemfile:
   - gemfiles/rails52.gemfile
 branches:
   only: master
+maxtrix:
+  include:
+    - rvm: 2.3.7
+      script: bundle exec rubocop

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fast_gettext/translation_repository/base'
 
 module FastGettext
@@ -8,7 +10,7 @@ module FastGettext
     class Logger < Base
       attr_accessor :callback
 
-      def initialize(name,options={})
+      def initialize(name, options = {})
         super
         self.callback = options[:callback]
       end

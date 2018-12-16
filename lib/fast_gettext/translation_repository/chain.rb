@@ -1,32 +1,38 @@
+# frozen_string_literal: true
+
 require 'fast_gettext/translation_repository/base'
 
 module FastGettext
   module TranslationRepository
     # Responsibility:
     #  - delegate calls to members of the chain in turn
-    #TODO cache should be expired after a repo was added
+    # TODO cache should be expired after a repo was added
     class Chain < Base
       attr_accessor :chain
 
-      def initialize(name,options={})
+      def initialize(name, options = {})
         super
         self.chain = options[:chain]
       end
 
       def available_locales
-        chain.map{|c|c.available_locales}.flatten.uniq
+        chain.map(&:available_locales).flatten.uniq
       end
 
       def pluralisation_rule
         chain.each do |c|
-          result = c.pluralisation_rule and return result
+          if result = c.pluralisation_rule
+            return result
+          end
         end
         nil
       end
 
       def [](key)
         chain.each do |c|
-          result = c[key] and return result
+          if result = c[key]
+            return result
+          end
         end
         nil
       end

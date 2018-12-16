@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name = "fast_gettext"
 require_relative "lib/#{name}/version"
 
@@ -8,7 +10,7 @@ Gem::Specification.new name, FastGettext::VERSION do |s|
   s.homepage = "https://github.com/grosser/#{name}"
   s.files = Dir["{lib/**/*.{rb,mo,rdoc},Readme.md,CHANGELOG}"]
   s.licenses = ["MIT", "Ruby"]
-  s.required_ruby_version = '>= 2.1.0'
+  s.required_ruby_version = '>= 2.3.0'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'sqlite3'
@@ -17,4 +19,5 @@ Gem::Specification.new name, FastGettext::VERSION do |s|
   s.add_development_dependency 'i18n'
   s.add_development_dependency 'bump'
   s.add_development_dependency 'wwtd'
+  s.add_development_dependency 'rubocop'
 end

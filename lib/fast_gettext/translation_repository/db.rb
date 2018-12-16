@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_record'
 module FastGettext
   module TranslationRepository
@@ -11,13 +13,12 @@ module FastGettext
     #     key: find_by_key, translations
     #     translation: text, locale
     class Db
-      def initialize(name,options={})
+      def initialize(_name, options = {})
         @model = options[:model]
       end
 
-      @@seperator = '||||' # string that seperates multiple plurals
-      def self.seperator=(sep);@@seperator = sep;end
-      def self.seperator;@@seperator;end
+      @seperator = '||||' # string that separates multiple plurals
+      (class << self; self; end).attr_accessor :seperator
 
       def available_locales
         if @model.respond_to? :available_locales
@@ -28,11 +29,7 @@ module FastGettext
       end
 
       def pluralisation_rule
-        if @model.respond_to? :pluralsation_rule
-          @model.pluralsation_rule
-        else
-          nil
-        end
+        @model.pluralsation_rule if @model.respond_to? :pluralsation_rule
       end
 
       def [](key)
@@ -40,7 +37,7 @@ module FastGettext
       end
 
       def plural(*args)
-        if translation = @model.translation(args*self.class.seperator, FastGettext.locale)
+        if translation = @model.translation(args * self.class.seperator, FastGettext.locale)
           translation.to_s.split(self.class.seperator)
         else
           []
@@ -56,7 +53,7 @@ module FastGettext
         require "#{folder}/translation_key"
         require "#{folder}/translation_text"
         Module.new do
-          def self.included(base)
+          def self.included(_base)
             puts "you no longer need to include the result of require_models"
           end
         end

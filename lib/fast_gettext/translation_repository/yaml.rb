@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fast_gettext/translation_repository/base'
 require 'yaml'
 
@@ -7,7 +9,7 @@ module FastGettext
     #  - find and store yaml files
     #  - provide access to translations in yaml files
     class Yaml < Base
-      def initialize(name,options={})
+      def initialize(name, options = {})
         super
         reload
       end
@@ -23,7 +25,11 @@ module FastGettext
       end
 
       def pluralisation_rule
-        self['pluralisation_rule'] ? lambda{|n| eval(self['pluralisation_rule']) } : nil
+        return unless rule = self['pluralisation_rule']
+
+        ->(n) do # rubocop:disable Lint/UnusedBlockArgument n can be used from pluralisation_rule code
+          eval(rule) # rubocop:disable Security/Eval TODO remove eval
+        end
       end
 
       def reload
@@ -64,7 +70,7 @@ module FastGettext
 
       def add_yaml_key(result, prefix, hash)
         hash.each_pair do |key, value|
-          if value.kind_of?(Hash)
+          if value.is_a?(Hash)
             add_yaml_key(result, yaml_dot_notation(prefix, key), value)
           else
             result[yaml_dot_notation(prefix, key)] = value
@@ -73,7 +79,7 @@ module FastGettext
         result
       end
 
-      def yaml_dot_notation(a,b)
+      def yaml_dot_notation(a, b) # rubocop:disable Naming/UncommunicativeMethodParamName
         a ? "#{a}.#{b}" : b
       end
     end
