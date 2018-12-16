@@ -162,28 +162,34 @@ module FastGettext
 
     # gettext functions to translate in the context of any domain
     # (note: if mutiple domains contains key, random translation is returned)
-    def D_(key)
+    def D_(key, &block)
       FastGettext.translation_repositories.each_key do |domain|
         result = FastGettext::TranslationMultidomain.d_(domain, key) {nil}
         return result unless result.nil?
       end
-      key
+      block ? block.call : key
     end
 
-    def Dn_(*keys)
+    def Dn_(*keys, &block)
       FastGettext.translation_repositories.each_key do |domain|
-        result = FastGettext::TranslationMultidomain.dn_(domain, *keys) {nil}
+        result = FastGettext::TranslationMultidomain.dn_(domain, *keys){nil}
         return result unless result.nil?
       end
-      keys[-3].split(keys[-2]||NAMESPACE_SEPARATOR).last
+      return block.call if block
+
+      count = keys.pop
+      selected = FastGettext.pluralisation_rule.call(count)
+      selected = (selected ? 1 : 0) unless selected.is_a? Numeric #convert booleans to numbers
+
+      s_(keys[selected] || keys.last)
     end
 
-    def Ds_(key, separator=nil)
+    def Ds_(key, separator=nil, &block)
       FastGettext.translation_repositories.each_key do |domain|
         result = FastGettext::TranslationMultidomain.ds_(domain, key, separator) {nil}
         return result unless result.nil?
       end
-      key.split(separator||NAMESPACE_SEPARATOR).last
+      block ? block.call : key.split(separator||NAMESPACE_SEPARATOR).last
     end
 
     def Dp_(namespace, key, separator=nil, &block)

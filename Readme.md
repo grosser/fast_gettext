@@ -159,16 +159,6 @@ Nn_("active","inactive","paused")          # alternative method
 _("Your account is #{account_state}.") % { account_state: status }
 ```
 
-#### Block defaults
-
-All the translation methods also support a block default, a feature not provided by ruby-gettext
-
-```ruby
-_('not-found'){ "alternative default" } == alternate default
-```
-
-
-
 Managing translations
 ============
 ### mo/po-files
@@ -222,6 +212,7 @@ class ApplicationController ...
 
 Advanced features
 =================
+
 ### Abnormal pluralisation
 Plurals are selected by index, think of it as `['car', 'cars'][index]`<br/>
 A pluralisation rule decides which form to use e.g. in english its `count == 1 ? 0 : 1`.<br/>
@@ -364,6 +355,31 @@ Dns_("context|string", "strings")
 ```
 
 Alternatively you can use [merge repository](https://github.com/grosser/fast_gettext#merge) to achieve the same behavior.
+
+#### Block defaults
+
+All the translation methods (includ MultiDomain) support a block default, a feature not provided by ruby-gettext.  When a translation is
+not found, if a block is provided the block is always returned. Otherwise, a key is returned. Methods doing pluralization will attempt a simple translation of alternate keys.
+
+```ruby
+_('not-found'){ "alternative default" } == alternate default
+```
+
+This block default is useful when the default is a very long passage of text that wouldn't make a useful key. You can also instrument logging not found keys.
+
+```ruby
+_('terms-and-conditions'){
+  load_terms_and_conditions
+  request_terms_and_conditions_translation_from_legal
+}
+
+# Override _ with logging
+def _(key, &block)
+  result = gettext(key){ nil } # nil returned when not found
+  log_missing_translation_key(key) if result.nil?
+  result || (block ? block.call : key)
+end
+```
 
 FAQ
 ===

@@ -298,7 +298,6 @@ describe FastGettext::Translation do
 
     describe :D_ do
       it "translates simple text" do
-        D_('not found').should == 'not found'
         D_('only in test2 domain').should == 'nur in test2 Domain'
       end
 
@@ -311,6 +310,11 @@ describe FastGettext::Translation do
         D_('car').should match('(Auto|Auto 2)')
         FastGettext.text_domain.should == old_domain
       end
+
+      it "returns key or block on not found" do
+        D_('not found').should == 'not found'
+        D_('not found'){:block}.should == :block
+      end
     end
 
     describe :Dn_ do
@@ -322,16 +326,19 @@ describe FastGettext::Translation do
         Dn_('Axis','Axis',1).should match('(Achse|Achse 2)')
       end
 
-      it "returns a simple translation when no combined was found" do
+      it "returns a simple translation (or block) when no combined was found" do
         Dn_('Axis','NOTFOUNDs',1).should match('(Achse|Achse 2)')
+        Dn_('Axis','NOTFOUNDs',1){:block}.should == :block
       end
 
-      it "returns the appropriate key if no translation was found" do
+      it "returns the appropriate key (or block) if no translation was found" do
         Dn_('NOTFOUND','NOTFOUNDs',1).should == 'NOTFOUND'
+        Dn_('NOTFOUND','NOTFOUNDs',1){:block}.should == :block
       end
 
       it "returns the last key when no translation was found and keys where to short" do
         Dn_('Apple','Apples',2).should == 'Apples'
+        Dn_('Apple','Apples',2){:block}.should == :block
       end
     end
 
@@ -351,12 +358,14 @@ describe FastGettext::Translation do
         Ds_('car').should match('(Auto|Auto 2)')
       end
 
-      it "returns cleaned key if a translation was not found" do
+      it "returns cleaned key (or block) if a translation was not found" do
         Ds_("XXX|not found").should == "not found"
+        Ds_("XXX|not found"){:block}.should == :block
       end
 
       it "can use a custom seperator" do
         Ds_("XXX/not found",'/').should == "not found"
+        Ds_("XXX/not found",'/'){:block}.should == :block
       end
     end
 
@@ -366,7 +375,7 @@ describe FastGettext::Translation do
         Dnp_('Fruit','Apple','Apples',2).should == 'Apples'
       end
 
-      it "returns cleaned key if a translation was not found" do
+      it "returns cleaned key (or block) if a translation was not found" do
         Dnp_("XXX","not found", "not found", 1).should == "not found"
         Dnp_("XXX","not found", "not found", 2).should == "not found"
         Dnp_("XXX","not found", "not found", 2){:block}.should == :block
@@ -377,11 +386,15 @@ describe FastGettext::Translation do
       it "translates with namespace" do
         Dns_('Fruit|Apple','Fruit|Apples',1).should == 'Apple'
         Dns_('Fruit|Apple','Fruit|Apples',2).should == 'Apples'
+        Dns_('Fruit|Apple','Fruit|Apples',4).should == 'Apples'
+        Dns_('Fruit|Apple','Apples',2).should == 'Apples'
       end
 
       it "returns cleaned key if a translation was not found" do
         Dns_("XXX|not found", "YYY|not found", 1).should == "not found"
         Dns_("XXX|not found", "YYY|not found", 2).should == "not found"
+        Dns_("XXX|not found", "not found", 2).should == "not found"
+        Dns_("XXX|not found", "not found", 2){:block} == :block
       end
     end
   end
