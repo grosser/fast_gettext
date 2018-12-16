@@ -74,11 +74,7 @@ module FastGettext
       result = n_(*nargs){nil}
       return result if result
       return yield if block_given?
-
-      count = keys.pop
-      selected = FastGettext.pluralisation_rule.call(count)
-      selected = (selected ? 1 : 0) unless selected.is_a? Numeric #convert booleans to numbers
-      return keys[selected] || keys.last
+      FastGettext::PluralizationHelper.fallback(*keys)
     end
     alias :npgettext :np_
   end
