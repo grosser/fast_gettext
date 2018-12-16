@@ -166,12 +166,12 @@ describe FastGettext::Translation do
     end
 
     it "return key when not found" do
-      np_('fruit','not-found').should == 'not-found'
+      np_('fruit','not-found',2).should == 'not-found'
     end
 
     it "returns block when specified" do
-      np_('fruit','not-found'){:block}.should == :block
-      np_('fruit','not-found'){nil}.should be_nil
+      np_('fruit','not-found', 2){:block}.should == :block
+      np_('fruit','not-found', 2){nil}.should be_nil
     end
   end
 
@@ -360,8 +360,21 @@ describe FastGettext::Translation do
       end
     end
 
+    describe :Dnp_ do
+      it "translates with context" do
+        Dnp_('Fruit','Apple','Apples',1).should == 'Apfel'
+        Dnp_('Fruit','Apple','Apples',2).should == 'Apples'
+      end
+
+      it "returns cleaned key if a translation was not found" do
+        Dnp_("XXX","not found", "not found", 1).should == "not found"
+        Dnp_("XXX","not found", "not found", 2).should == "not found"
+        Dnp_("XXX","not found", "not found", 2){:block}.should == :block
+      end
+    end
+
     describe :Dns_ do
-      it "translates whith namespace" do
+      it "translates with namespace" do
         Dns_('Fruit|Apple','Fruit|Apples',1).should == 'Apple'
         Dns_('Fruit|Apple','Fruit|Apples',2).should == 'Apples'
       end

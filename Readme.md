@@ -356,6 +356,7 @@ include FastGettext::TranslationMultidomain
 D_("string") # finds 'string' in any domain
 Dn_("string", "strings", 1) # ditto
 Dp_("context", "key")
+Dnp_("context", "string", "strings")
 ```
 
 Alternatively you can use [merge repository](https://github.com/grosser/fast_gettext#merge) to achieve the same behaviour.
