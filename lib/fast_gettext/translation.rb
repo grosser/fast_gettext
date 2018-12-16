@@ -60,11 +60,13 @@ module FastGettext
       keys
     end
 
-    def ns_(*args, &block)
-      translation = n_(*args, &block)
+    def ns_(*keys)
+      translation = n_(*keys){ nil }
+      return translation.split(NAMESPACE_SEPARATOR).last if translation
 
-      # block is called once again to compare result TODO: this is bad
-      block && translation == block.call ? translation : translation.split(NAMESPACE_SEPARATOR).last
+      return yield if block_given?
+
+      FastGettext::PluralizationHelper.fallback(*keys).split(NAMESPACE_SEPARATOR).last
     end
     alias :nsgettext :ns_
 
