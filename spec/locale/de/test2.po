@@ -62,3 +62,13 @@ msgstr "Umlaute 2"
 
 msgid "only in test2 domain"
 msgstr "nur in test2 Domain"
+
+msgctxt "Fruit"
+msgid "Apple"
+msgstr "Apfel 2"
+
+msgctxt "Fruit"
+msgid "Banana"
+msgid_plural "Bananas"
+msgstr[0] "Banane 2"
+msgstr[1] "Bananen 2"

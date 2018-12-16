@@ -166,12 +166,12 @@ describe FastGettext::Translation do
     end
 
     it "return key when not found" do
-      np_('fruit','not-found').should == 'not-found'
+      np_('fruit','not-found',2).should == 'not-found'
     end
 
     it "returns block when specified" do
-      np_('fruit','not-found'){:block}.should == :block
-      np_('fruit','not-found'){nil}.should be_nil
+      np_('fruit','not-found', 2){:block}.should == :block
+      np_('fruit','not-found', 2){nil}.should be_nil
     end
   end
 
@@ -246,6 +246,18 @@ describe FastGettext::Translation do
       end
     end
 
+    describe :dp_ do
+      it "translates simple text" do
+        dp_('test2', 'Fruit', 'Apple').should == 'Apfel 2'
+        dp_('test', 'Fruit', 'Apple').should == 'Apfel'
+      end
+
+      it "returns key if a translation was not found" do
+        dp_('test2', "Fruit","not found").should == "not found"
+        dp_('test2', "Fruit","not found"){:block}.should == :block
+      end
+    end
+
     describe :ds_ do
       it "translates simple text" do
         ds_('test2', 'car').should == 'Auto 2'
@@ -262,11 +274,21 @@ describe FastGettext::Translation do
     end
 
     describe :dns_ do
-      it "translates whith namespace" do
+      it "translates with namespace" do
         dns_('test', 'Fruit|Apple','Fruit|Apples',2).should == 'Apples'
         dns_('test2', 'Fruit|Apple','Fruit|Apples',2).should == 'Apples'
       end
     end
+
+    describe :dnp_ do
+      it "translates with context" do
+        dnp_('test', 'Fruit', 'Banana','Bananas', 1).should == 'Banane'
+        dnp_('test', 'Fruit', 'Banana','Bananas', 2).should == 'Bananen'
+        dnp_('test2', 'Fruit', 'Banana','Bananas', 1).should == 'Banane 2'
+        dnp_('test2', 'Fruit', 'Banana','Bananas', 2).should == 'Bananen 2'
+      end
+    end
+
   end
 
   describe :multidomain_all do
@@ -276,7 +298,6 @@ describe FastGettext::Translation do
 
     describe :D_ do
       it "translates simple text" do
-        D_('not found').should == 'not found'
         D_('only in test2 domain').should == 'nur in test2 Domain'
       end
 
@@ -289,6 +310,11 @@ describe FastGettext::Translation do
         D_('car').should match('(Auto|Auto 2)')
         FastGettext.text_domain.should == old_domain
       end
+
+      it "returns key or block on not found" do
+        D_('not found').should == 'not found'
+        D_('not found'){:block}.should == :block
+      end
     end
 
     describe :Dn_ do
@@ -300,16 +326,30 @@ describe FastGettext::Translation do
         Dn_('Axis','Axis',1).should match('(Achse|Achse 2)')
       end
 
-      it "returns a simple translation when no combined was found" do
+      it "returns a simple translation (or block) when no combined was found" do
         Dn_('Axis','NOTFOUNDs',1).should match('(Achse|Achse 2)')
+        Dn_('Axis','NOTFOUNDs',1){:block}.should == :block
       end
 
-      it "returns the appropriate key if no translation was found" do
+      it "returns the appropriate key (or block) if no translation was found" do
         Dn_('NOTFOUND','NOTFOUNDs',1).should == 'NOTFOUND'
+        Dn_('NOTFOUND','NOTFOUNDs',1){:block}.should == :block
       end
 
       it "returns the last key when no translation was found and keys where to short" do
         Dn_('Apple','Apples',2).should == 'Apples'
+        Dn_('Apple','Apples',2){:block}.should == :block
+      end
+    end
+
+    describe :Dp_ do
+      it "translates simple text" do
+        Dp_('Fruit','Apple').should match('(Apfel|Apfel 2)')
+      end
+
+      it "returns key or block if a translation was not found" do
+        Dp_('Fruit',"not found").should == "not found"
+        Dp_('Fruit',"not found"){:block}.should == :block
       end
     end
 
@@ -318,24 +358,88 @@ describe FastGettext::Translation do
         Ds_('car').should match('(Auto|Auto 2)')
       end
 
-      it "returns cleaned key if a translation was not found" do
+      it "returns cleaned key (or block) if a translation was not found" do
         Ds_("XXX|not found").should == "not found"
+        Ds_("XXX|not found"){:block}.should == :block
       end
 
       it "can use a custom seperator" do
         Ds_("XXX/not found",'/').should == "not found"
+        Ds_("XXX/not found",'/'){:block}.should == :block
+      end
+    end
+
+    describe :Dnp_ do
+      it "translates with context" do
+        Dnp_('Fruit','Apple','Apples',1).should == 'Apfel'
+        Dnp_('Fruit','Apple','Apples',2).should == 'Apples'
+      end
+
+      it "returns cleaned key (or block) if a translation was not found" do
+        Dnp_("XXX","not found", "not found", 1).should == "not found"
+        Dnp_("XXX","not found", "not found", 2).should == "not found"
+        Dnp_("XXX","not found", "not found", 2){:block}.should == :block
       end
     end
 
     describe :Dns_ do
-      it "translates whith namespace" do
+      it "translates with namespace" do
         Dns_('Fruit|Apple','Fruit|Apples',1).should == 'Apple'
         Dns_('Fruit|Apple','Fruit|Apples',2).should == 'Apples'
+        Dns_('Fruit|Apple','Fruit|Apples',4).should == 'Apples'
+        Dns_('Fruit|Apple','Apples',2).should == 'Apples'
       end
 
       it "returns cleaned key if a translation was not found" do
         Dns_("XXX|not found", "YYY|not found", 1).should == "not found"
         Dns_("XXX|not found", "YYY|not found", 2).should == "not found"
+        Dns_("XXX|not found", "not found", 2).should == "not found"
+        Dns_("XXX|not found", "not found", 2){:block} == :block
+      end
+    end
+  end
+
+  describe :pluralization_helper do
+    describe :pluralize do
+      before do
+        FastGettext.pluralisation_rule = nil
+      end
+
+      context "translations found" do
+        let(:translations){ ['Achse', 'Achsen'] }
+        it "translates pluralized" do
+          FastGettext::PluralizationHelper.pluralize(1, ['Axis','Axis'], translations).should == 'Achse'
+          FastGettext::PluralizationHelper.pluralize(2, ['Axis','Axis'], translations).should == 'Achsen'
+          FastGettext::PluralizationHelper.pluralize(0, ['Axis','Axis'], translations).should == 'Achsen'
+        end
+
+        it "returns a simple translation when no combined was found" do
+          FastGettext::PluralizationHelper.pluralize(1, ['Axis','NOTFOUNDs'], ['Achse']).should == 'Achse'
+        end
+      end
+
+      context "no translations" do
+        let(:translations){ [] }
+        it "returns the appropriate key if no translation was found" do
+          FastGettext::PluralizationHelper.pluralize(1, ['Apple','Apples'], translations).should == 'Apple'
+          FastGettext::PluralizationHelper.pluralize(2, ['Apple','Apples'], translations).should == 'Apples'
+        end
+
+        it "returns the last key when no translation was found and keys where to short" do
+          FastGettext.pluralisation_rule = lambda{|x|4}
+          FastGettext::PluralizationHelper.pluralize(2, ['Apple','Apples'], translations).should == 'Apples'
+        end
+
+        it "returns block when specified" do
+          FastGettext::PluralizationHelper.pluralize(2, ['Apple','Apples'], translations){:block}.should == :block
+        end
+      end
+    end
+
+    describe :fallback do
+      it "returns the appropriate key if no translation was found" do
+        FastGettext::PluralizationHelper.fallback('Apple','Apples', 1).should == 'Apple'
+        FastGettext::PluralizationHelper.fallback('Apple','Apples', 2).should == 'Apples'
       end
     end
   end
