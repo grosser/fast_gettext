@@ -1,0 +1,45 @@
+AllCops:
+  TargetRubyVersion: 2.3 # keep in sync with minimum version
+  Exclude:
+  - vendor/**/*
+  - gemfiles/vendor/**/*
+  - lib/fast_gettext/vendor/**/*
+  - spec/**/* # TODO
+  - benchmark/**/* # TODO
+  - gemfiles/**/* # TODO
+
+Metrics:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Gemspec/OrderedDependencies:
+  Enabled: false
+
+Style/WordArray:
+  EnforcedStyle: brackets
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/Lambda:
+  EnforcedStyle: literal
+
+Naming/MethodName:
+  Enabled: false
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/PerlBackrefs:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false

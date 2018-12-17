@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fast_gettext/cache'
 
 module FastGettext
@@ -15,7 +17,7 @@ module FastGettext
     [:available_locales, :_locale, :text_domain, :pluralisation_rule].each do |method_name|
       key = "fast_gettext_#{method_name}".to_sym
       define_method "#{method_name}=" do |value|
-        switch_cache if Thread.current[key] != Thread.current[key]=value
+        switch_cache if Thread.current[key] != Thread.current[key] = value
       end
     end
 
@@ -24,11 +26,11 @@ module FastGettext
     end
     private :_locale, :_locale=
 
-
     def available_locales
       locales = Thread.current[:fast_gettext_available_locales] || default_available_locales
       return unless locales
-      locales.map{|s|s.to_s}
+
+      locales.map(&:to_s)
     end
 
     # cattr_accessor with defaults
@@ -37,7 +39,7 @@ module FastGettext
       [:default_text_domain, "nil"],
       [:cache_class, "FastGettext::Cache"]
     ].each do |name, default|
-      eval <<-Ruby
+      eval <<-RUBY, nil, __FILE__, __LINE__ + 1 # rubocop:disable Security/Eval
         @@#{name} = #{default}
         def #{name}=(value)
           @@#{name} = value
@@ -47,7 +49,7 @@ module FastGettext
         def #{name}
           @@#{name}
         end
-      Ruby
+      RUBY
     end
 
     def text_domain
@@ -57,7 +59,7 @@ module FastGettext
     # if overwritten by user( FastGettext.pluralisation_rule = xxx) use it,
     # otherwise fall back to repo or to default lambda
     def pluralisation_rule
-      Thread.current[:fast_gettext_pluralisation_rule] ||  current_repository.pluralisation_rule || lambda{|i| i!=1}
+      Thread.current[:fast_gettext_pluralisation_rule] || current_repository.pluralisation_rule || ->(i) { i != 1 }
     end
 
     def cache
@@ -69,8 +71,8 @@ module FastGettext
       translation_repositories.values.each(&:reload)
     end
 
-    #global, since re-parsing whole folders takes too much time...
-    @@translation_repositories={}
+    # global, since re-parsing whole folders takes too much time...
+    @@translation_repositories = {} # rubocop:disable Style/ClassVars
     def translation_repositories
       @@translation_repositories
     end
@@ -97,7 +99,7 @@ module FastGettext
     end
 
     def locale
-      _locale || ( default_locale || (available_locales||[]).first || 'en' )
+      _locale || (default_locale || (available_locales || []).first || 'en')
     end
 
     def locale=(new_locale)
@@ -107,15 +109,15 @@ module FastGettext
     # for chaining: puts set_locale('xx') == 'xx' ? 'applied' : 'rejected'
     # returns the current locale, not the one that was supplied
     # like locale=(), whoes behavior cannot be changed
-    def set_locale(new_locale)
+    def set_locale(new_locale) # rubocop:disable Naming/AccessorMethodName
       new_locale = best_locale_in(new_locale)
       self._locale = new_locale
       locale
     end
 
-    @@default_locale = nil
+    @@default_locale = nil # rubocop:disable Style/ClassVars
     def default_locale=(new_locale)
-      @@default_locale = best_locale_in(new_locale)
+      @@default_locale = best_locale_in(new_locale) # rubocop:disable Style/ClassVars
       switch_cache
     end
 
@@ -123,17 +125,17 @@ module FastGettext
       @@default_locale
     end
 
-    #Opera: de-DE,de;q=0.9,en;q=0.8
-    #Firefox de-de,de;q=0.8,en-us;q=0.5,en;q=0.3
-    #IE6/7 de
-    #nil if nothing matches
+    # Opera: de-DE,de;q=0.9,en;q=0.8
+    # Firefox de-de,de;q=0.8,en-us;q=0.5,en;q=0.3
+    # IE6/7 de
+    # nil if nothing matches
     def best_locale_in(locales)
       formatted_sorted_locales(locales).each do |candidate|
-        return candidate if not available_locales
+        return candidate unless available_locales
         return candidate if available_locales.include?(candidate)
-        return candidate[0..1] if available_locales.include?(candidate[0..1])#available locales include a langauge
+        return candidate[0..1] if available_locales.include?(candidate[0..1]) # available locales include a langauge
       end
-      return nil#nothing found im sorry :P
+      nil # nothing found im sorry :P
     end
 
     # temporarily switch locale for a block
@@ -146,27 +148,27 @@ module FastGettext
       set_locale current_locale
     end
 
-    #turn off translation if none was defined to disable all resulting errors
+    # turn off translation if none was defined to disable all resulting errors
     def silence_errors
       require 'fast_gettext/translation_repository/base'
-      translation_repositories[text_domain] ||= TranslationRepository::Base.new('x', :path => 'locale')
+      translation_repositories[text_domain] ||= TranslationRepository::Base.new('x', path: 'locale')
     end
 
     private
 
     # de-de,DE-CH;q=0.9 -> ['de_DE','de_CH']
     def formatted_sorted_locales(locales)
-      found = weighted_locales(locales).reject{|x|x.empty?}.sort_by{|l|l.last}.reverse #sort them by weight which is the last entry
-      found.flatten.map{|l| format_locale(l)}
+      found = weighted_locales(locales).reject(&:empty?).sort_by(&:last).reverse # sort them by weight which is the last entry
+      found.flatten.map { |l| format_locale(l) }
     end
 
-    #split the locale and seperate it into different languages
-    #de-de,de;q=0.9,en;q=0.8 => [['de-de','de','0.5'], ['en','0.8']]
+    # split the locale and seperate it into different languages
+    # de-de,de;q=0.9,en;q=0.8 => [['de-de','de','0.5'], ['en','0.8']]
     def weighted_locales(locales)
-      locales = locales.to_s.gsub(/\s/,'')
+      locales = locales.to_s.gsub(/\s/, '')
       found = [[]]
       locales.split(',').each do |part|
-        if part =~ /;q=/ #contains language and weight ?
+        if part =~ /;q=/ # contains language and weight ?
           found.last << part.split(/;q=/)
           found.last.flatten!
           found << []
@@ -177,9 +179,9 @@ module FastGettext
       found
     end
 
-    #de-de -> de_DE
+    # de-de -> de_DE
     def format_locale(locale)
-      locale.sub(/^([a-zA-Z]{2,3})[-_]([a-zA-Z]{2,3})$/){$1.downcase+'_'+$2.upcase}
+      locale.sub(/^([a-zA-Z]{2,3})[-_]([a-zA-Z]{2,3})$/) { $1.downcase + '_' + $2.upcase }
     end
 
     def switch_cache

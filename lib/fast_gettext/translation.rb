@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FastGettext
   # this module should be included
   # Responsibility:
@@ -6,23 +8,23 @@ module FastGettext
   #  - understand / enforce namespaces
   #  - decide which plural form is used
   module Translation
-    extend self
+    extend self # rubocop:disable Style/ModuleFunction
 
-    #make it usable in class definition, e.g.
+    # make it usable in class definition, e.g.
     # class Y
     #   include FastGettext::Translation
     #   @@x = _('y')
     # end
-    def self.included(klas)  #:nodoc:
+    def self.included(klas)
       klas.extend self
     end
 
     def _(key)
-      FastGettext.cached_find(key) or (block_given? ? yield : key)
+      FastGettext.cached_find(key) || (block_given? ? yield : key)
     end
-    alias :gettext :_
+    alias gettext _
 
-    #translate pluralized
+    # translate pluralized
     # some languages have up to 4 plural forms...
     # n_(singular, plural, plural form 2, ..., count)
     # n_('apple','apples',3)
@@ -31,65 +33,69 @@ module FastGettext
       translations = FastGettext.cached_plural_find(*keys)
       FastGettext::PluralizationHelper.pluralize(count, keys, translations, &block)
     end
-    alias :ngettext :n_
+    alias ngettext n_
 
-    #translate with namespace, use namespace to find key
+    # translate with namespace, use namespace to find key
     # 'Car','Tire' -> Tire if no translation could be found
     # p_('Car','Tire') <=> s_('Car|Tire')
-    def p_(namespace, key, separator=nil)
-      msgid = "#{namespace}#{separator||CONTEXT_SEPARATOR}#{key}"
-      FastGettext.cached_find(msgid) or (block_given? ? yield : key)
+    def p_(namespace, key, separator = nil)
+      msgid = "#{namespace}#{separator || CONTEXT_SEPARATOR}#{key}"
+      FastGettext.cached_find(msgid) || (block_given? ? yield : key)
     end
-    alias :pgettext :p_
+    alias pgettext p_
 
-    #translate, but discard namespace if nothing was found
+    # translate, but discard namespace if nothing was found
     # Car|Tire -> Tire if no translation could be found
-    def s_(key, separator=nil)
-      translation = FastGettext.cached_find(key) and return translation
-      block_given? ? yield : key.split(separator||NAMESPACE_SEPARATOR).last
-    end
-    alias :sgettext :s_
+    def s_(key, separator = nil)
+      if translation = FastGettext.cached_find(key)
+        return translation
+      end
 
-    #tell gettext: this string need translation (will be found during parsing)
+      block_given? ? yield : key.split(separator || NAMESPACE_SEPARATOR).last
+    end
+    alias sgettext s_
+
+    # tell gettext: this string need translation (will be found during parsing)
     def N_(translate)
       translate
     end
 
-    #tell gettext: this string need translation (will be found during parsing)
+    # tell gettext: this string need translation (will be found during parsing)
     def Nn_(*keys)
       keys
     end
 
     def ns_(*keys)
-      translation = n_(*keys){ nil }
+      translation = n_(*keys) { nil }
       return translation.split(NAMESPACE_SEPARATOR).last if translation
 
       return yield if block_given?
 
       FastGettext::PluralizationHelper.fallback(*keys).split(NAMESPACE_SEPARATOR).last
     end
-    alias :nsgettext :ns_
+    alias nsgettext ns_
 
     def np_(context, *keys, separator: nil)
-      nargs = ["#{context}#{separator||CONTEXT_SEPARATOR}#{keys[0]}"] + keys[1..-1]
-      result = n_(*nargs){nil}
+      nargs = ["#{context}#{separator || CONTEXT_SEPARATOR}#{keys[0]}"] + keys[1..-1]
+      result = n_(*nargs) { nil }
       return result if result
       return yield if block_given?
+
       FastGettext::PluralizationHelper.fallback(*keys)
     end
-    alias :npgettext :np_
+    alias npgettext np_
   end
 
   # this module should be included for multi-domain support
   module TranslationMultidomain
-    extend self
+    extend self # rubocop:disable Style/ModuleFunction
 
-    #make it usable in class definition, e.g.
+    # make it usable in class definition, e.g.
     # class Y
     #   include FastGettext::TranslationMultidomain
     #   @@x = d_('domain', 'y')
     # end
-    def self.included(klas)  #:nodoc:
+    def self.included(klas) #:nodoc:
       klas.extend self
     end
 
@@ -115,13 +121,13 @@ module FastGettext
       end
     end
 
-    def ds_(domain, key, separator=nil, &block)
+    def ds_(domain, key, separator = nil, &block)
       _in_domain domain do
         FastGettext::Translation.s_(key, separator, &block)
       end
     end
 
-    def dp_(domain, namespace, key, separator=nil, &block)
+    def dp_(domain, namespace, key, separator = nil, &block)
       _in_domain domain do
         FastGettext::Translation.p_(namespace, key, separator, &block)
       end
@@ -135,16 +141,15 @@ module FastGettext
 
     def dnp_(domain, context, key, *args, &block)
       _in_domain domain do
-        result = FastGettext::Translation.np_(context, key, *args, &block)
+        FastGettext::Translation.np_(context, key, *args, &block)
       end
     end
-
 
     # gettext functions to translate in the context of any domain
     # (note: if mutiple domains contains key, random translation is returned)
     def D_(key)
       FastGettext.translation_repositories.each_key do |domain|
-        result = FastGettext::TranslationMultidomain.d_(domain, key) {nil}
+        result = FastGettext::TranslationMultidomain.d_(domain, key) { nil }
         return result unless result.nil?
       end
       block_given? ? yield : key
@@ -152,23 +157,23 @@ module FastGettext
 
     def Dn_(*keys)
       FastGettext.translation_repositories.each_key do |domain|
-        result = FastGettext::TranslationMultidomain.dn_(domain, *keys){nil}
+        result = FastGettext::TranslationMultidomain.dn_(domain, *keys) { nil }
         return result unless result.nil?
       end
       block_given? ? yield : FastGettext._(FastGettext::PluralizationHelper.fallback(*keys))
     end
 
-    def Ds_(key, separator=nil)
+    def Ds_(key, separator = nil)
       FastGettext.translation_repositories.each_key do |domain|
-        result = FastGettext::TranslationMultidomain.ds_(domain, key, separator) {nil}
+        result = FastGettext::TranslationMultidomain.ds_(domain, key, separator) { nil }
         return result unless result.nil?
       end
-      block_given? ? yield : key.split(separator||NAMESPACE_SEPARATOR).last
+      block_given? ? yield : key.split(separator || NAMESPACE_SEPARATOR).last
     end
 
-    def Dp_(namespace, key, separator=nil)
+    def Dp_(namespace, key, separator = nil)
       FastGettext.translation_repositories.each_key do |domain|
-        result = FastGettext::TranslationMultidomain.dp_(domain, namespace, key, separator) {nil}
+        result = FastGettext::TranslationMultidomain.dp_(domain, namespace, key, separator) { nil }
         return result unless result.nil?
       end
       block_given? ? yield : key
@@ -176,7 +181,7 @@ module FastGettext
 
     def Dns_(*keys)
       FastGettext.translation_repositories.each_key do |domain|
-        result = FastGettext::TranslationMultidomain.dns_(domain, *keys) {nil}
+        result = FastGettext::TranslationMultidomain.dns_(domain, *keys) { nil }
         return result unless result.nil?
       end
       block_given? ? yield : FastGettext.s_(FastGettext::PluralizationHelper.fallback(*keys))
@@ -184,7 +189,7 @@ module FastGettext
 
     def Dnp_(context, *keys)
       FastGettext.translation_repositories.each_key do |domain|
-        result = FastGettext::TranslationMultidomain.dnp_(domain, context, *keys){ nil }
+        result = FastGettext::TranslationMultidomain.dnp_(domain, context, *keys) { nil }
         return result unless result.nil?
       end
       block_given? ? yield : FastGettext.p_(context, FastGettext::PluralizationHelper.fallback(*keys))
@@ -199,7 +204,7 @@ module FastGettext
 
     def self.pluralize(count, keys, translations)
       selected = FastGettext.pluralisation_rule.call(count)
-      selected = (selected ? 1 : 0) unless selected.is_a? Numeric #convert booleans to numbers
+      selected = (selected ? 1 : 0) unless selected.is_a? Numeric # convert booleans to numbers
 
       # If we have a translation return it
       result = translations[selected]

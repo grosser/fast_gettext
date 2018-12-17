@@ -1,13 +1,14 @@
+# frozen_string_literal: true
+
 module FastGettext
   module TranslationRepository
     # Responsibility:
     #  - base for all repositories
     #  - fallback as empty repository, that cannot translate anything but does not crash
     class Base
-
       attr_reader :name, :options
 
-      def initialize(name,options={})
+      def initialize(name, options = {})
         @name = name
         @options = options
       end
@@ -38,17 +39,19 @@ module FastGettext
         MoFile.empty
       end
 
-      def find_files_in_locale_folders(relative_file_path,path)
+      def find_files_in_locale_folders(relative_file_path, path)
         path ||= "locale"
         raise "path #{path} could not be found!" unless File.exist?(path)
 
         @files = {}
-        Dir[File.join(path,'*')].each do |locale_folder|
+        Dir[File.join(path, '*')].each do |locale_folder|
           next unless File.basename(locale_folder) =~ LOCALE_REX
-          file = File.join(locale_folder,relative_file_path).untaint
+
+          file = File.join(locale_folder, relative_file_path).untaint
           next unless File.exist? file
+
           locale = File.basename(locale_folder)
-          @files[locale] = yield(locale,file)
+          @files[locale] = yield(locale, file)
         end
       end
     end

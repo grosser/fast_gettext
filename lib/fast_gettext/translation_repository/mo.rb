@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'fast_gettext/translation_repository/base'
 module FastGettext
   module TranslationRepository
-     # Responsibility:
+    # Responsibility:
     #  - find and store mo files
     #  - provide access to translations in mo files
     class Mo < Base
-      def initialize(name,options={})
+      def initialize(name, options = {})
         super
         @eager_load = options.fetch(:eager_load, false)
         reload
@@ -30,9 +32,9 @@ module FastGettext
 
       protected
 
-      def find_and_store_files(name,options)
+      def find_and_store_files(name, options)
         # parse all .mo files with the right name, that sit in locale/LC_MESSAGES folders
-        find_files_in_locale_folders(File.join('LC_MESSAGES',"#{name}.mo"), options[:path]) do |locale,file|
+        find_files_in_locale_folders(File.join('LC_MESSAGES', "#{name}.mo"), options[:path]) do |_locale, file|
           MoFile.new(file, eager_load: @eager_load)
         end
       end

@@ -119,7 +119,7 @@ describe FastGettext::Translation do
       s_("XXX|not found").should == "not found"
     end
 
-    it "can use a custom seperator" do
+    it "can use a custom separator" do
       s_("XXX/not found",'/').should == "not found"
     end
 
@@ -268,7 +268,7 @@ describe FastGettext::Translation do
         ds_('test2', "XXX|not found").should == "not found"
       end
 
-      it "can use a custom seperator" do
+      it "can use a custom separator" do
         ds_('test2', "XXX/not found",'/').should == "not found"
       end
     end
@@ -363,7 +363,7 @@ describe FastGettext::Translation do
         Ds_("XXX|not found"){:block}.should == :block
       end
 
-      it "can use a custom seperator" do
+      it "can use a custom separator" do
         Ds_("XXX/not found",'/').should == "not found"
         Ds_("XXX/not found",'/'){:block}.should == :block
       end

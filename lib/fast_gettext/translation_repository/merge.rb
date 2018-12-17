@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fast_gettext/translation_repository/po'
 
 module FastGettext
@@ -7,7 +9,7 @@ module FastGettext
     #  - can be used instead of searching for translations in multiple domains
     #  - requires reload when current locale is changed
     class Merge < Base
-      def initialize(name, options={})
+      def initialize(name, options = {})
         clear
         super(name, options)
         options.fetch(:chain, []).each do |repo|
@@ -21,7 +23,9 @@ module FastGettext
 
       def pluralisation_rule
         @repositories.each do |r|
-          result = r.pluralisation_rule and return result
+          if result = r.pluralisation_rule
+            return result
+          end
         end
         nil
       end
@@ -45,6 +49,7 @@ module FastGettext
 
       def add_repo(repo)
         raise "Unsupported repository" unless repo_supported?(repo)
+
         @repositories << repo
         load_repo(repo)
         true
@@ -65,8 +70,8 @@ module FastGettext
         repo.respond_to?(:all_translations)
       end
 
-      def load_repo(r)
-        @data = r.all_translations.merge(@data)
+      def load_repo(repo)
+        @data = repo.all_translations.merge(@data)
       end
     end
   end
