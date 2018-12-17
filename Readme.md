@@ -1,10 +1,11 @@
 FastGettext
 ===========
-GetText but 3.5 x faster, 560 x less memory, simple, clean namespace (7 vs 34) and threadsafe!
+GetText but 3.5 x faster, 560 x less memory, simple and threadsafe!
 
 It supports multiple backends (.mo, .po, .yml files, Database(ActiveRecord + any other), Chain, Loggers) and can easily be extended.
 
 [Example Rails application](https://github.com/grosser/gettext_i18n_rails_example)
+
 
 Comparison
 ==========
@@ -40,8 +41,10 @@ Comparison
 </table>
 <small>*50.000 translations with ruby enterprise 1.8.6 through `rake benchmark`</small>
 
+
 Setup
 =====
+
 ### 1. Install
 
 ```Bash
@@ -60,8 +63,8 @@ Or po files (less maintenance than mo)
 
 ```Ruby
 FastGettext.add_text_domain('my_app', path: 'locale', type: :po)
-# :ignore_fuzzy => true to not use fuzzy translations
-# :report_warning => false to hide warnings about obsolete/fuzzy translations
+# ignore_fuzzy: true to not use fuzzy translations
+# report_warning: false to hide warnings about obsolete/fuzzy translations
 ```
 
 Or yaml files (use I18n syntax/indentation)
@@ -159,8 +162,10 @@ Nn_("active","inactive","paused")          # alternative method
 _("Your account is #{account_state}.") % { account_state: status }
 ```
 
+
 Managing translations
-============
+=====================
+
 ### mo/po-files
 Generate .po or .mo files using GetText parser (example tasks at [gettext_i18n_rails](http://github.com/grosser/gettext_i18n_rails))
 
@@ -381,19 +386,15 @@ def _(key, &block)
 end
 ```
 
+
 FAQ
 ===
  - [Problems with ActiveRecord messages?](http://wiki.github.com/grosser/fast_gettext/activerecord)
  - [Iconv require error in 1.9.2](http://exceptionz.wordpress.com/2010/02/03/how-to-fix-the-iconv-require-error-in-ruby-1-9)
 
 
-TODO
-====
- - Add a fallback for Iconv.conv in ruby 1.9.4 -> lib/fast_gettext/vendor/iconv
- - YML backend that reads ActiveSupport::I18n files
-
-Author
-======
+Authors
+=======
 Mo/Po-file parsing from Masao Mutoh, see vendor/README
 
 ### [Contributors](http://github.com/grosser/fast_gettext/contributors)
