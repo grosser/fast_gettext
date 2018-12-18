@@ -1,4 +1,11 @@
 require_relative 'base'
+
+begin
+  gem 'activesupport', '>=5.2.0'
+rescue LoadError => e
+  abort "Install the activesupport gem -- #{e}"
+end
+
 require 'active_support'
 
 I18n.backend = I18n::Backend::Simple.new

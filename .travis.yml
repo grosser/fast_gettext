@@ -12,5 +12,9 @@ branches:
   only: master
 maxtrix:
   include:
-    - rvm: 2.3.7
+    - rvm: 2.3.7 # keep in sync with oldest ruby
       script: bundle exec rubocop
+    - rvm: 2.5.3 # keep in sync with newest ruby
+      script: gem i gettext && gem i activesupport && bundle exec rake benchmark
+    - rvm: 2.5.3 # keep in sync with newest ruby
+      script: bundle exec rake namespaces

@@ -5,8 +5,7 @@ raise "Do not use bundler" if defined?(Bundler)
 begin
   gem 'gettext', '>=2.0.0'
 rescue LoadError => e
-  puts "To run this benchmark, please install the gettext gem -- #{e}"
-  exit 1
+  abort "Install the gettext gem -- #{e}"
 end
 
 require 'gettext'
