@@ -5,7 +5,6 @@ AllCops:
   - gemfiles/vendor/**/*
   - lib/fast_gettext/vendor/**/*
   - spec/**/* # TODO
-  - benchmark/**/* # TODO
   - gemfiles/**/* # TODO
 
 Metrics:

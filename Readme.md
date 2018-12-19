@@ -19,17 +19,17 @@ Comparison
   </tr>
   <tr>
     <td>Speed*</td>
-    <td>0.82s</td>
-    <td>1.36s</td>
-    <td>4.88s</td>
-    <td>21.77s</td>
+    <td>0.08s</td>
+    <td>0.14s</td>
+    <td>1.75s</td>
+    <td>3.75s</td>
   </tr>
   <tr>
-    <td>RAM*</td>
-    <td>4K</td>
-    <td>8K</td>
-    <td>4480K</td>
-    <td>10100K</td>
+    <td>Objects*</td>
+    <td>11K</td>
+    <td>15K</td>
+    <td>8017K</td>
+    <td>7107K</td>
   </tr>
   <tr>
     <td>Included backends</td>
@@ -39,7 +39,7 @@ Comparison
     <td>yml (db/key-value/po/chain in other I18n backends)</td>
   </tr>
 </table>
-<small>*50.000 translations with ruby enterprise 1.8.6 through `rake benchmark`</small>
+<small>*500.000 translations with ruby 2.5.3 through `bundle exec rake benchmark`</small>
 
 
 Setup

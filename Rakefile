@@ -19,6 +19,7 @@ task :benchmark do
   Bundler.with_original_env do
     ["baseline", "ideal", "fast_gettext", "original", "i18n_simple"].each do |bench|
       sh "ruby ./benchmark/#{bench}.rb"
+      puts
     end
   end
 end

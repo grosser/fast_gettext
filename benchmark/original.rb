@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'base'
 
 raise "Do not use bundler" if defined?(Bundler)
@@ -9,14 +11,14 @@ rescue LoadError => e
 end
 
 require 'gettext'
-include GetText
+include GetText # rubocop:disable Style/MixinUsage
 
 self.locale = 'de'
 
 puts "GetText #{GetText::VERSION}:"
-bindtextdomain('test',:path=>locale_folder('test'))
-results_test{_('car') == 'Auto'}
+bindtextdomain('test', path: locale_folder('test'))
+results_test { _('car') == 'Auto' }
 
-#i cannot add the large file, since its an internal applications mo file
-bindtextdomain('large',:path=>locale_folder('large'))
+# i cannot add the large file, since its an internal applications mo file
+bindtextdomain('large', path: locale_folder('large'))
 results_large
