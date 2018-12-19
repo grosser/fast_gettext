@@ -21,7 +21,18 @@ module FastGettext
     # n_('apple','apples',3)
     def n_(*keys, count, &block)
       translations = FastGettext.cached_plural_find(*keys)
-      FastGettext::PluralizationHelper.pluralize(count, keys, translations, &block)
+      selected = FastGettext.pluralisation_rule.call(count)
+      selected = (selected ? 1 : 0) unless selected.is_a? Numeric # convert booleans to numbers
+
+      # If we have a translation return it
+      result = translations[selected]
+      return result if result
+
+      # If we have a block always use it in place of a translation
+      return yield if block_given?
+
+      # Fall back to the best fit translated key if it's there
+      FastGettext._(keys[selected] || keys.last)
     end
     alias ngettext n_
 
@@ -55,14 +66,14 @@ module FastGettext
       keys
     end
 
-    # translate pluralized with seperator
+    # translate pluralized with separator
     def ns_(*args)
       translation = n_(*args, &NIL_BLOCK)
-      return translation.split(NAMESPACE_SEPARATOR).last if translation
+      return translation.split(NAMESPACE_SEPARATOR).last if translation # TODO: is split here necessary ?
 
       return yield if block_given?
 
-      FastGettext::PluralizationHelper.fallback(*args).split(NAMESPACE_SEPARATOR).last
+      n_(*args).split(NAMESPACE_SEPARATOR).last
     end
     alias nsgettext ns_
 
@@ -74,7 +85,7 @@ module FastGettext
 
       return yield if block_given?
 
-      FastGettext::PluralizationHelper.fallback(plural_one, *args)
+      n_(plural_one, *args)
     end
     alias npgettext np_
   end
@@ -114,27 +125,6 @@ module FastGettext
           end
         end
       RUBY
-    end
-  end
-
-  module PluralizationHelper
-    def self.fallback(*keys, count)
-      pluralize(count, keys, [])
-    end
-
-    def self.pluralize(count, keys, translations)
-      selected = FastGettext.pluralisation_rule.call(count)
-      selected = (selected ? 1 : 0) unless selected.is_a? Numeric # convert booleans to numbers
-
-      # If we have a translation return it
-      result = translations[selected]
-      return result if result
-
-      # If we have a block always use it in place of a translation
-      return yield if block_given?
-
-      # Fall back to the best fit translated key if it's there
-      FastGettext._(keys[selected] || keys.last)
     end
   end
 end
