@@ -8,6 +8,8 @@ module FastGettext
   #  - understand / enforce namespaces
   #  - decide which plural form is used
   module Translation
+    NIL_BLOCK = -> { nil }
+
     def _(key)
       FastGettext.cached_find(key) || (block_given? ? yield : key)
     end
@@ -17,8 +19,7 @@ module FastGettext
     # some languages have up to 4 plural forms...
     # n_(singular, plural, plural form 2, ..., count)
     # n_('apple','apples',3)
-    def n_(*keys, &block)
-      count = keys.pop
+    def n_(*keys, count, &block)
       translations = FastGettext.cached_plural_find(*keys)
       FastGettext::PluralizationHelper.pluralize(count, keys, translations, &block)
     end
@@ -54,23 +55,26 @@ module FastGettext
       keys
     end
 
-    def ns_(*keys)
-      translation = n_(*keys) { nil }
+    # translate pluralized with seperator
+    def ns_(*args)
+      translation = n_(*args, &NIL_BLOCK)
       return translation.split(NAMESPACE_SEPARATOR).last if translation
 
       return yield if block_given?
 
-      FastGettext::PluralizationHelper.fallback(*keys).split(NAMESPACE_SEPARATOR).last
+      FastGettext::PluralizationHelper.fallback(*args).split(NAMESPACE_SEPARATOR).last
     end
     alias nsgettext ns_
 
-    def np_(context, *keys, separator: nil)
-      nargs = ["#{context}#{separator || CONTEXT_SEPARATOR}#{keys[0]}"] + keys[1..-1]
-      result = n_(*nargs) { nil }
+    # translate pluralized with context
+    def np_(context, plural_one, *args, separator: nil)
+      nargs = ["#{context}#{separator || CONTEXT_SEPARATOR}#{plural_one}"] + args
+      result = n_(*nargs, &NIL_BLOCK)
       return result if result
+
       return yield if block_given?
 
-      FastGettext::PluralizationHelper.fallback(*keys)
+      FastGettext::PluralizationHelper.fallback(plural_one, *args)
     end
     alias npgettext np_
   end
@@ -91,66 +95,30 @@ module FastGettext
     # gettext functions to translate in the context of given domain
     [:_, :n_, :s_, :p_, :ns_, :np_].each do |method|
       eval <<-RUBY, nil, __FILE__, __LINE__ +1
+        # translate in given domain
         def d#{method}(domain, *args, &block)
           FastGettext.with_domain(domain) { #{method}(*args, &block) }
         end
+
+        # translate with whatever domain finds a translation
+        def D#{method}(*args, &block)
+          repos = FastGettext.translation_repositories
+          last = repos.size - 1
+          repos.each_key.each_with_index do |domain, i|
+            if i == last
+              return d#{method}(domain, *args, &block)
+            else
+              result = d#{method}(domain, *args, &NIL_BLOCK)
+              return result if result
+            end
+          end
+        end
       RUBY
-    end
-
-    # gettext functions to translate in the context of any domain
-    # (note: if multiple domains contains key, first translation is returned)
-    def D_(key)
-      FastGettext.translation_repositories.each_key do |domain|
-        result = d_(domain, key) { nil }
-        return result unless result.nil?
-      end
-      block_given? ? yield : key
-    end
-
-    def Dn_(*keys)
-      FastGettext.translation_repositories.each_key do |domain|
-        result = dn_(domain, *keys) { nil }
-        return result unless result.nil?
-      end
-      block_given? ? yield : _(FastGettext::PluralizationHelper.fallback(*keys))
-    end
-
-    def Ds_(key, separator = nil)
-      FastGettext.translation_repositories.each_key do |domain|
-        result = ds_(domain, key, separator) { nil }
-        return result unless result.nil?
-      end
-      block_given? ? yield : key.split(separator || NAMESPACE_SEPARATOR).last
-    end
-
-    def Dp_(namespace, key, separator = nil)
-      FastGettext.translation_repositories.each_key do |domain|
-        result = dp_(domain, namespace, key, separator) { nil }
-        return result unless result.nil?
-      end
-      block_given? ? yield : key
-    end
-
-    def Dns_(*keys)
-      FastGettext.translation_repositories.each_key do |domain|
-        result = dns_(domain, *keys) { nil }
-        return result unless result.nil?
-      end
-      block_given? ? yield : s_(FastGettext::PluralizationHelper.fallback(*keys))
-    end
-
-    def Dnp_(context, *keys)
-      FastGettext.translation_repositories.each_key do |domain|
-        result = dnp_(domain, context, *keys) { nil }
-        return result unless result.nil?
-      end
-      block_given? ? yield : p_(context, FastGettext::PluralizationHelper.fallback(*keys))
     end
   end
 
   module PluralizationHelper
-    def self.fallback(*keys)
-      count = keys.pop
+    def self.fallback(*keys, count)
       pluralize(count, keys, [])
     end
 

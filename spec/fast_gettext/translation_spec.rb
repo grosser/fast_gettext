@@ -359,7 +359,7 @@ describe FastGettext::Translation do
 
     describe :Dnp_ do
       it "translates with context" do
-        Dnp_('Fruit','Apple','Apples',1).should == 'Apfel'
+        Dnp_('Fruit','Apple','Apples',1).should == 'Apple'
         Dnp_('Fruit','Apple','Apples',2).should == 'Apples'
       end
 
