@@ -80,7 +80,7 @@ Or database (scaleable, good for many locales/translators)
 ```Ruby
 # db access is cached <-> only first lookup hits the db
 require "fast_gettext/translation_repository/db"
-FastGettext::TranslationRepository::Db.require_models #load and include default models
+FastGettext::TranslationRepository::Db.require_models # load and include default models
 FastGettext.add_text_domain('my_app', type: :db, model: TranslationKey)
 ```
 
@@ -89,7 +89,7 @@ Do this once in every Thread. (e.g. Rails -> ApplicationController)
 
 ```Ruby
 FastGettext.text_domain = 'my_app'
-FastGettext.available_locales = ['de','en','fr','en_US','en_UK'] # only allow these locales to be set (optional)
+FastGettext.available_locales = ['de', 'en', 'fr', 'en_US', 'en_UK'] # only allow these locales to be set (optional)
 FastGettext.locale = 'de'
 ```
 
@@ -100,7 +100,7 @@ FastGetText supports all the translation methods of [ruby-gettext](http://github
 #### `_()` or `gettext()`: basic translation
 
 ```ruby
-include FastGettext::Translation
+extend FastGettext::Translation
 _('Car') == 'Auto'             # found translation for 'Car'
 _('not-found') == 'not-found'  # The msgid is returned by default
 ```
@@ -108,22 +108,22 @@ _('not-found') == 'not-found'  # The msgid is returned by default
 #### `n_()` or `ngettext()`: pluralization
 
 ```ruby
-n_('Car','Cars',1) == 'Auto'
-n_('Car','Cars',2) == 'Autos' #German plural of Cars
+n_('Car', 'Cars', 1) == 'Auto'
+n_('Car', 'Cars', 2) == 'Autos' # German plural of Cars
 ```
 
 You'll often want to interpolate the results of `n_()` using ruby builtin `%` operator.
 
 ```ruby
-n_('Car','#{n} Cars',2) % { n: count } == '2 Autos'
+n_('Car', '#{n} Cars', 2) % { n: count } == '2 Autos'
 ```
 
 
 #### `p_()` or `pgettext()`: context-aware
 
 ```ruby
-p_('File','Open') == "öffnen"
-p_('Context','not-found') == 'not-found'
+p_('File', 'Open') == "öffnen"
+p_('Context', 'not-found') == 'not-found'
 ```
 
 #### `s_()` or `sgetext()`: without context
@@ -140,15 +140,15 @@ tools.
 #### `pn_()` or `pngettext()`: context-aware pluralized
 
 ```ruby
-pn_('Fruit','Apple','Apples', 3) == 'Äpfel'
-pn_('Fruit','Apple','Apples', 1) == 'Apfel'
+pn_('Fruit', 'Apple', 'Apples', 3) == 'Äpfel'
+pn_('Fruit', 'Apple', 'Apples', 1) == 'Apfel'
 ```
 
 #### `sn_()` or `sngettext()`: without context pluralized
 
 ```ruby
-sn_('Fruit|Apple','Apples', 3) == 'Äpfel'
-sn_('Fruit|Apple','Apples', 1) == 'Apfel'
+sn_('Fruit|Apple', 'Apples', 3) == 'Äpfel'
+sn_('Fruit|Apple', 'Apples', 1) == 'Apfel'
 ```
 
 #### `N_()` and `Nn_()`: make dynamic translations available to the parser.
@@ -158,7 +158,7 @@ allow for those strings to be discovered.
 
 ```
 N_("active"); N_("inactive"); N_("paused") # possible value of status for parser to find.
-Nn_("active","inactive","paused")          # alternative method
+Nn_("active", "inactive", "paused")        # alternative method
 _("Your account is #{account_state}.") % { account_state: status }
 ```
 
@@ -207,7 +207,7 @@ class ApplicationController ...
   include FastGettext::Translation
   before_filter :set_locale
   def set_locale
-    FastGettext.available_locales = ['de','en',...]
+    FastGettext.available_locales = ['de', 'en', ...]
     FastGettext.text_domain = 'frontend'
     FastGettext.set_locale(params[:locale] || session[:locale] || request.env['HTTP_ACCEPT_LANGUAGE'])
     session[:locale] = I18n.locale = FastGettext.locale
@@ -226,7 +226,7 @@ If you have any languages that do not fit this rule, you have to add a custom pl
 Via Ruby:
 
 ```Ruby
-FastGettext.pluralisation_rule = lambda{|count| count > 5 ? 1 : (count > 2 ? 0 : 2)}
+FastGettext.pluralisation_rule = ->(count){ count > 5 ? 1 : (count > 2 ? 0 : 2)}
 ```
 
 Via mo/pofile:
@@ -266,7 +266,7 @@ repos = [
   FastGettext::TranslationRepository.build('new', path: '....'),
   FastGettext::TranslationRepository.build('old', path: '....')
 ]
-FastGettext.add_text_domain 'combined', type: :chain, :chain: repos
+FastGettext.add_text_domain 'combined', type: :chain, chain: repos
 ```
 
 ### Merge
@@ -276,8 +276,8 @@ a subordinate repository is added. This puts the burden on the load phase and sp
 
 ```Ruby
 repos = [
-  FastGettext::TranslationRepository.build('new', :path: '....'),
-  FastGettext::TranslationRepository.build('old', :path: '....')
+  FastGettext::TranslationRepository.build('new', path: '....'),
+  FastGettext::TranslationRepository.build('old', path: '....')
 ]
 domain = FastGettext.add_text_domain 'combined', type: :merge, chain: repos
 ```
@@ -295,7 +295,7 @@ When you want to know which keys could not be translated or were used, add a Log
 ```Ruby
 repos = [
   FastGettext::TranslationRepository.build('app', path: '....')
-  FastGettext::TranslationRepository.build('logger', type: :logger, callback: lambda{|key_or_array_of_ids| ... }),
+  FastGettext::TranslationRepository.build('logger', type: :logger, callback: ->(key_or_array_of_ids) { ... }),
 }
 FastGettext.add_text_domain 'combined', type: :chain, chain: repos
 ```
@@ -326,7 +326,7 @@ If you have more than one gettext domain, there are two sets of functions
 available:
 
 ```Ruby
-include FastGettext::TranslationMultidomain
+extend FastGettext::TranslationMultidomain
 
 d_("domainname", "string") # finds 'string' in domain domainname
 dn_("domainname", "string", "strings", 1) # ditto
@@ -349,7 +349,7 @@ are multiple translations in different domains, it returns them in random
 order (depends on the Ruby hash implementation).
 
 ```Ruby
-include FastGettext::TranslationMultidomain
+extend FastGettext::TranslationMultidomain
 
 D_("string") # finds 'string' in any domain
 Dn_("string", "strings", 1) # ditto
