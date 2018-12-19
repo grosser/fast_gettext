@@ -69,7 +69,7 @@ module FastGettext
     # translate pluralized with separator
     def ns_(*args)
       translation = n_(*args, &NIL_BLOCK)
-      return translation.split(NAMESPACE_SEPARATOR).last if translation # TODO: is split here necessary ?
+      return translation if translation
 
       return yield if block_given?
 
