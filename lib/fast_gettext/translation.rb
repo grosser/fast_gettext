@@ -88,6 +88,8 @@ module FastGettext
 
   # this module should be included for multi-domain support
   module TranslationMultidomain
+    include Translation
+
     # make it usable in class definition, e.g.
     # class Y
     #   include FastGettext::TranslationMultidomain
@@ -107,44 +109,16 @@ module FastGettext
     end
 
     # gettext functions to translate in the context of given domain
-    def d_(domain, key, &block)
-      _in_domain domain do
-        FastGettext::Translation._(key, &block)
-      end
-    end
-
-    def dn_(domain, *keys, &block)
-      _in_domain domain do
-        FastGettext::Translation.n_(*keys, &block)
-      end
-    end
-
-    def ds_(domain, key, separator = nil, &block)
-      _in_domain domain do
-        FastGettext::Translation.s_(key, separator, &block)
-      end
-    end
-
-    def dp_(domain, namespace, key, separator = nil, &block)
-      _in_domain domain do
-        FastGettext::Translation.p_(namespace, key, separator, &block)
-      end
-    end
-
-    def dns_(domain, *keys, &block)
-      _in_domain domain do
-        FastGettext::Translation.ns_(*keys, &block)
-      end
-    end
-
-    def dnp_(domain, context, key, *args, &block)
-      _in_domain domain do
-        FastGettext::Translation.np_(context, key, *args, &block)
-      end
+    [:_, :n_, :s_, :p_, :ns_, :np_].each do |method|
+      eval <<-RUBY, nil, __FILE__, __LINE__ +1
+        def d#{method}(domain, *args, &block)
+          _in_domain(domain) { #{method}(*args, &block) }
+        end
+      RUBY
     end
 
     # gettext functions to translate in the context of any domain
-    # (note: if mutiple domains contains key, random translation is returned)
+    # (note: if multiple domains contains key, first translation is returned)
     def D_(key)
       FastGettext.translation_repositories.each_key do |domain|
         result = d_(domain, key) { nil }
@@ -158,7 +132,7 @@ module FastGettext
         result = dn_(domain, *keys) { nil }
         return result unless result.nil?
       end
-      block_given? ? yield : FastGettext._(FastGettext::PluralizationHelper.fallback(*keys))
+      block_given? ? yield : _(FastGettext::PluralizationHelper.fallback(*keys))
     end
 
     def Ds_(key, separator = nil)
@@ -182,7 +156,7 @@ module FastGettext
         result = dns_(domain, *keys) { nil }
         return result unless result.nil?
       end
-      block_given? ? yield : FastGettext.s_(FastGettext::PluralizationHelper.fallback(*keys))
+      block_given? ? yield : s_(FastGettext::PluralizationHelper.fallback(*keys))
     end
 
     def Dnp_(context, *keys)
@@ -190,7 +164,7 @@ module FastGettext
         result = dnp_(domain, context, *keys) { nil }
         return result unless result.nil?
       end
-      block_given? ? yield : FastGettext.p_(context, FastGettext::PluralizationHelper.fallback(*keys))
+      block_given? ? yield : p_(context, FastGettext::PluralizationHelper.fallback(*keys))
     end
   end
 
