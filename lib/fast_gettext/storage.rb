@@ -14,6 +14,8 @@ module FastGettext
       end
     end
 
+    DEFAULT_PLURALIZATION_RULE = ->(i) { i != 1 }
+
     [:available_locales, :_locale, :text_domain, :pluralisation_rule].each do |method_name|
       key = "fast_gettext_#{method_name}"
       eval <<-RUBY, nil, __FILE__, __LINE__ + 1
@@ -61,7 +63,7 @@ module FastGettext
     # if overwritten by user( FastGettext.pluralisation_rule = xxx) use it,
     # otherwise fall back to repo or to default lambda
     def pluralisation_rule
-      Thread.current[:fast_gettext_pluralisation_rule] || current_repository.pluralisation_rule || ->(i) { i != 1 }
+      Thread.current[:fast_gettext_pluralisation_rule] || current_repository.pluralisation_rule || DEFAULT_PLURALIZATION_RULE
     end
 
     def cache

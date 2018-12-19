@@ -1,24 +1,21 @@
 require "spec_helper"
 
-default_setup
 class IncludeTest
   include FastGettext::Translation
   extend FastGettext::Translation
-  @@xx = _('car')
+
   def self.ext
     _('car')
   end
+
   def inc
     _('car')
-  end
-  def self.xx
-    @@xx
   end
 end
 
 describe FastGettext do
   include FastGettext::Translation
-  before :all do
+  before do
     default_setup
   end
 
@@ -38,7 +35,6 @@ describe FastGettext do
     IncludeTest.ext.should == 'Auto'
     IncludeTest.ext.should == 'Auto'
     IncludeTest.new.inc.should == 'Auto'
-    IncludeTest.xx.should == 'Auto'
   end
 
   it "loads 3-letter locales as well" do

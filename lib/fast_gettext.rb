@@ -8,9 +8,8 @@ require 'fast_gettext/vendor/string'
 require 'fast_gettext/version'
 
 module FastGettext
-  include FastGettext::Storage
+  extend FastGettext::Storage
   extend FastGettext::Translation
-  extend self # rubocop:disable Style/ModuleFunction
 
   LOCALE_REX =  /^[a-z]{2,3}$|^[a-z]{2,3}_[A-Z]{2,3}$/.freeze
   NAMESPACE_SEPARATOR = '|'

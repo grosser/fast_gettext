@@ -2,7 +2,6 @@ require "spec_helper"
 
 describe 'FastGettext::TranslationRepository::Yaml' do
   before do
-    FastGettext.pluralisation_rule = nil
     @rep = FastGettext::TranslationRepository.build('test', :path => File.join('spec', 'locale', 'yaml', 'valid'), :type => :yaml)
     @rep.is_a?(FastGettext::TranslationRepository::Yaml).should == true
     FastGettext.locale = 'de'

@@ -54,10 +54,6 @@ describe FastGettext::Translation do
   end
 
   describe :n_ do
-    before do
-      FastGettext.pluralisation_rule = nil
-    end
-
     it "translates pluralized" do
       n_('Axis','Axis',1).should == 'Achse'
       n_('Axis','Axis',2).should == 'Achsen'
@@ -221,10 +217,6 @@ describe FastGettext::Translation do
     end
 
     describe :dn_ do
-      before do
-        FastGettext.pluralisation_rule = nil
-      end
-
       it "translates pluralized" do
         dn_('test', 'Axis','Axis',1).should == 'Achse'
         dn_('test2', 'Axis','Axis',1).should == 'Achse 2'
@@ -318,10 +310,6 @@ describe FastGettext::Translation do
     end
 
     describe :Dn_ do
-      before do
-        FastGettext.pluralisation_rule = nil
-      end
-
       it "translates pluralized" do
         Dn_('Axis','Axis',1).should match('(Achse|Achse 2)')
       end
@@ -401,10 +389,6 @@ describe FastGettext::Translation do
 
   describe :pluralization_helper do
     describe :pluralize do
-      before do
-        FastGettext.pluralisation_rule = nil
-      end
-
       context "translations found" do
         let(:translations){ ['Achse', 'Achsen'] }
         it "translates pluralized" do

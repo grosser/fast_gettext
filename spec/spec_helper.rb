@@ -10,6 +10,7 @@ RSpec.configure do |config|
     FastGettext.default_available_locales = nil
     FastGettext.available_locales = nil
     FastGettext.locale = 'de'
+    FastGettext.translation_repositories.clear
   end
 
   config.expect_with(:rspec) { |c| c.syntax = :should }
