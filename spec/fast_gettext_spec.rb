@@ -3,6 +3,7 @@ require "spec_helper"
 default_setup
 class IncludeTest
   include FastGettext::Translation
+  extend FastGettext::Translation
   @@xx = _('car')
   def self.ext
     _('car')
@@ -16,7 +17,7 @@ class IncludeTest
 end
 
 describe FastGettext do
-  include FastGettext
+  include FastGettext::Translation
   before :all do
     default_setup
   end

@@ -8,17 +8,6 @@ module FastGettext
   #  - understand / enforce namespaces
   #  - decide which plural form is used
   module Translation
-    extend self # rubocop:disable Style/ModuleFunction
-
-    # make it usable in class definition, e.g.
-    # class Y
-    #   include FastGettext::Translation
-    #   @@x = _('y')
-    # end
-    def self.included(klas)
-      klas.extend self
-    end
-
     def _(key)
       FastGettext.cached_find(key) || (block_given? ? yield : key)
     end
