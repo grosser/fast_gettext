@@ -179,7 +179,7 @@ describe FastGettext::Translation do
     describe :_in_domain do
       it "changes domain via in_domain" do
         Thread.current[:fast_gettext_text_domain].should == "test"
-        _in_domain "fake" do
+        FastGettext.with_domain "fake" do
           Thread.current[:fast_gettext_text_domain].should == "fake"
         end
         Thread.current[:fast_gettext_text_domain].should == "test"

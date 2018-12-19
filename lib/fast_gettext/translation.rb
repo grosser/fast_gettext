@@ -88,20 +88,11 @@ module FastGettext
       klas.extend self
     end
 
-    # helper block for changing domains
-    def _in_domain(domain)
-      old_domain = FastGettext.text_domain
-      FastGettext.text_domain = domain
-      yield if block_given?
-    ensure
-      FastGettext.text_domain = old_domain
-    end
-
     # gettext functions to translate in the context of given domain
     [:_, :n_, :s_, :p_, :ns_, :np_].each do |method|
       eval <<-RUBY, nil, __FILE__, __LINE__ +1
         def d#{method}(domain, *args, &block)
-          _in_domain(domain) { #{method}(*args, &block) }
+          FastGettext.with_domain(domain) { #{method}(*args, &block) }
         end
       RUBY
     end

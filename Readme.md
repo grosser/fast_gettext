@@ -339,8 +339,7 @@ dns_("domainname", "context|string", "strings")
 These are helper methods so you don't need to write:
 
 ```Ruby
-FastGettext.text_domain = "domainname"
-_("string")
+FastGettext.with_domain("domainname") { _("string") }
 ```
 
 It is useful in Rails plugins in the views for example. The second set of

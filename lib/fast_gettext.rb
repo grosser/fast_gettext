@@ -15,6 +15,15 @@ module FastGettext
   NAMESPACE_SEPARATOR = '|'
   CONTEXT_SEPARATOR = "\u0004"
 
+  # helper block for changing domains
+  def self.with_domain(domain)
+    old_domain = FastGettext.text_domain
+    FastGettext.text_domain = domain
+    yield
+  ensure
+    FastGettext.text_domain = old_domain
+  end
+
   def self.add_text_domain(name, options)
     translation_repositories[name] = TranslationRepository.build(name, options)
   end
