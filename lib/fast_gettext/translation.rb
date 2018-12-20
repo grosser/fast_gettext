@@ -94,15 +94,6 @@ module FastGettext
   module TranslationMultidomain
     include Translation
 
-    # make it usable in class definition, e.g.
-    # class Y
-    #   include FastGettext::TranslationMultidomain
-    #   @@x = d_('domain', 'y')
-    # end
-    def self.included(klas) #:nodoc:
-      klas.extend self
-    end
-
     # gettext functions to translate in the context of given domain
     [:_, :n_, :s_, :p_, :ns_, :np_].each do |method|
       eval <<-RUBY, nil, __FILE__, __LINE__ +1
