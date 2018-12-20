@@ -11,7 +11,7 @@ module FastGettext
   extend FastGettext::Storage
   extend FastGettext::Translation
 
-  LOCALE_REX =  /^[a-z]{2,3}$|^[a-z]{2,3}_[A-Z]{2,3}$/.freeze
+  LOCALE_REX = /^[a-z]{2,3}$|^[a-z]{2,3}_[A-Z]{2,3}$/.freeze
   NAMESPACE_SEPARATOR = '|'
 
   # helper block for changing domains

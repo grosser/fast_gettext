@@ -18,7 +18,7 @@ module FastGettext
 
     [:available_locales, :_locale, :text_domain, :pluralisation_rule].each do |method_name|
       key = "fast_gettext_#{method_name}"
-      eval <<-RUBY, nil, __FILE__, __LINE__ + 1
+      eval <<-RUBY, nil, __FILE__, __LINE__ + 1 # rubocop:disable Security/Eval
         def #{method_name}=(value)
           switch_cache if Thread.current[:#{key}] != Thread.current[:#{key}] = value
         end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FastGettext
-  TRANSLATION_METHODS = [:_, :n_, :s_, :p_, :ns_, :np_]
+  TRANSLATION_METHODS = [:_, :n_, :s_, :p_, :ns_, :np_].freeze
   NIL_BLOCK = -> { nil }
 
   # this module should be included
@@ -90,7 +90,7 @@ module FastGettext
 
   module TranslationAliased
     include Translation
-    TRANSLATION_METHODS.each { |m| alias_method "#{m.to_s.delete("_")}gettext", m }
+    TRANSLATION_METHODS.each { |m| alias_method "#{m.to_s.delete('_')}gettext", m }
   end
 
   # this module should be included for multi-domain support
@@ -99,7 +99,7 @@ module FastGettext
 
     # gettext functions to translate in the context of given domain
     TRANSLATION_METHODS.each do |method|
-      eval <<-RUBY, nil, __FILE__, __LINE__ +1
+      eval <<-RUBY, nil, __FILE__, __LINE__ + 1 # rubocop:disable Security/Eval
         # translate in given domain
         def d#{method}(domain, *args, &block)
           FastGettext.with_domain(domain) { #{method}(*args, &block) }
