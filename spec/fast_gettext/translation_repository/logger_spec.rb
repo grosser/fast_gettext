@@ -1,5 +1,7 @@
 require "spec_helper"
 
+SingleCov.covered!
+
 describe 'FastGettext::TranslationRepository::Logger' do
   before do
     @callback = lambda{}

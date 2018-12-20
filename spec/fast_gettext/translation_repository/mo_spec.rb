@@ -1,5 +1,7 @@
 require "spec_helper"
 
+SingleCov.covered! uncovered: 1
+
 describe 'FastGettext::TranslationRepository::Mo' do
   before do
     @rep = FastGettext::TranslationRepository.build('test',:path=>File.join('spec', 'locale'))

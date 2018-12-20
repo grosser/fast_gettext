@@ -20,4 +20,6 @@ Gem::Specification.new name, FastGettext::VERSION do |s|
   s.add_development_dependency 'bump'
   s.add_development_dependency 'wwtd'
   s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'single_cov'
+  s.add_development_dependency 'forking_test_runner'
 end

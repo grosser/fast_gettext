@@ -1,5 +1,8 @@
 # $VERBOSE = true # ignore complaints in spec files
 
+require 'single_cov'
+SingleCov.setup :rspec
+
 require 'fast_gettext'
 require 'active_record'
 

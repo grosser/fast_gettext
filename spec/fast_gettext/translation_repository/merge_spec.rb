@@ -1,5 +1,6 @@
 require "spec_helper"
-require 'fast_gettext/translation_repository/merge'
+
+SingleCov.covered!
 
 describe 'FastGettext::TranslationRepository::Merge' do
   describe "empty repo" do

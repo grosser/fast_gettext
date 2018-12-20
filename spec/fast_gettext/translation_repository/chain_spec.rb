@@ -1,5 +1,7 @@
 require "spec_helper"
 
+SingleCov.covered!
+
 class MockRepo
   def [](key)#should_receive :[] does not work so well...
     singular key

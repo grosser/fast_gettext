@@ -1,5 +1,7 @@
 require "spec_helper"
 
+SingleCov.covered!
+
 describe 'FastGettext::TranslationRepository::Yaml' do
   before do
     @rep = FastGettext::TranslationRepository.build('test', :path => File.join('spec', 'locale', 'yaml', 'valid'), :type => :yaml)

@@ -1,8 +1,10 @@
 require 'spec_helper'
+
 require 'active_record'
 require 'fast_gettext/translation_repository/db'
-
 FastGettext::TranslationRepository::Db.require_models
+
+SingleCov.covered! uncovered: 3
 
 describe FastGettext::TranslationRepository::Db do
   before :all do

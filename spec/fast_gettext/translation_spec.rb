@@ -1,5 +1,7 @@
 require "spec_helper"
 
+SingleCov.covered! uncovered: 22
+
 describe FastGettext::Translation do
   include FastGettext::Translation
   include FastGettext::TranslationMultidomain

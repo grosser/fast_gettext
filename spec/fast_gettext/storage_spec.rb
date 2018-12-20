@@ -1,6 +1,10 @@
 require "spec_helper"
 require 'fast_gettext/translation_repository/base'
 
+require 'active_record'
+require 'fast_gettext/translation_repository/db'
+FastGettext::TranslationRepository::Db.require_models
+
 describe 'Storage' do
   include FastGettext::Storage
 
