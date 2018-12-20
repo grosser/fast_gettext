@@ -1,6 +1,6 @@
 FastGettext
 ===========
-GetText but 3.5 x faster, 560 x less memory, simple and threadsafe!
+GetText but 12 x faster, 530 x less garbage, clean namespace (8 vs 25), simple and threadsafe!
 
 It supports multiple backends (.mo, .po, .yml files, Database(ActiveRecord + any other), Chain, Loggers) and can easily be extended.
 
@@ -96,6 +96,7 @@ FastGettext.locale = 'de'
 ### 4. Start translating
 
 FastGetText supports all the translation methods of [ruby-gettext](http://github.com/ruby-gettext/gettext) with added support for block defaults.
+(to get `*gettext` methods, use `FastGetText::TranslationAliased`)
 
 #### `_()` or `gettext()`: basic translation
 
@@ -117,7 +118,6 @@ You'll often want to interpolate the results of `n_()` using ruby builtin `%` op
 ```ruby
 n_('Car', '#{n} Cars', 2) % { n: count } == '2 Autos'
 ```
-
 
 #### `p_()` or `pgettext()`: context-aware
 

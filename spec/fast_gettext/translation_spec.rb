@@ -1,9 +1,8 @@
 require "spec_helper"
 
-SingleCov.covered! uncovered: 22
+SingleCov.covered! uncovered: 24
 
 describe FastGettext::Translation do
-  include FastGettext::Translation
   include FastGettext::TranslationMultidomain
 
   before do
@@ -173,19 +172,34 @@ describe FastGettext::Translation do
     end
   end
 
-  describe :multi_domain do
-    before do
-      setup_extra_domain
+  describe "aliases" do
+    include FastGettext::TranslationAliased
+
+    it "provides gettext alternatives" do
+      gettext('car').should == 'Auto'
+      sgettext('car').should == 'Auto'
+    end
+  end
+
+  describe "namespace" do
+    let(:tester) { Class.new }
+
+    it "has few methods" do
+      before = tester.instance_methods
+      tester.include FastGettext::Translation
+      (tester.instance_methods - before - FastGettext::TRANSLATION_METHODS).sort.should eq [:N_, :Nn_].sort
     end
 
-    describe :_in_domain do
-      it "changes domain via in_domain" do
-        Thread.current[:fast_gettext_text_domain].should == "test"
-        FastGettext.with_domain "fake" do
-          Thread.current[:fast_gettext_text_domain].should == "fake"
-        end
-        Thread.current[:fast_gettext_text_domain].should == "test"
-      end
+    it "has few constants" do
+      before = tester.constants
+      tester.include FastGettext::Translation
+      (tester.constants - before).should eq []
+    end
+  end
+
+  describe "multi domain" do
+    before do
+      setup_extra_domain
     end
 
     describe :d_ do
@@ -282,10 +296,9 @@ describe FastGettext::Translation do
         dnp_('test2', 'Fruit', 'Banana','Bananas', 2).should == 'Bananen 2'
       end
     end
-
   end
 
-  describe :multidomain_all do
+  describe "multi domain all" do
     before do
       setup_extra_domain
     end
@@ -389,7 +402,7 @@ describe FastGettext::Translation do
     end
   end
 
-  describe :caching do
+  describe "caching" do
     describe :cache_hit do
       before do
         #singular cache keys
@@ -422,14 +435,14 @@ describe FastGettext::Translation do
       end
     end
 
-    it "caches different locales seperatly" do
+    it "caches different locales separatly" do
       FastGettext.locale = 'en'
       _('car').should == 'car'
       FastGettext.locale = 'de'
       _('car').should == 'Auto'
     end
 
-    it "caches different textdomains seperatly" do
+    it "caches different textdomains separatly" do
       _('car').should == 'Auto'
 
       FastGettext.translation_repositories['fake'] = {}
@@ -440,7 +453,7 @@ describe FastGettext::Translation do
       _('car').should == 'Auto'
     end
 
-    it "caches different textdomains seperatly for d_" do
+    it "caches different textdomains separatly for d_" do
       _('car').should == 'Auto'
 
       FastGettext.translation_repositories['fake'] = {}

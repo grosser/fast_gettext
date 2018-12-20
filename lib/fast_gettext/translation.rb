@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module FastGettext
+  TRANSLATION_METHODS = [:_, :n_, :s_, :p_, :ns_, :np_]
+  NIL_BLOCK = -> { nil }
+
   # this module should be included
   # Responsibility:
   #  - direct translation queries to the current repository
@@ -8,12 +11,9 @@ module FastGettext
   #  - understand / enforce namespaces
   #  - decide which plural form is used
   module Translation
-    NIL_BLOCK = -> { nil }
-
     def _(key)
       FastGettext.cached_find(key) || (block_given? ? yield : key)
     end
-    alias gettext _
 
     # translate pluralized
     # some languages have up to 4 plural forms...
@@ -34,7 +34,6 @@ module FastGettext
       # Fall back to the best fit translated key if it's there
       FastGettext._(keys[selected] || keys.last)
     end
-    alias ngettext n_
 
     # translate with namespace, use namespace to find key
     # 'Car','Tire' -> Tire if no translation could be found
@@ -43,7 +42,6 @@ module FastGettext
       msgid = "#{namespace}#{separator || CONTEXT_SEPARATOR}#{key}"
       FastGettext.cached_find(msgid) || (block_given? ? yield : key)
     end
-    alias pgettext p_
 
     # translate, but discard namespace if nothing was found
     # Car|Tire -> Tire if no translation could be found
@@ -54,7 +52,6 @@ module FastGettext
 
       block_given? ? yield : key.split(separator || NAMESPACE_SEPARATOR).last
     end
-    alias sgettext s_
 
     # tell gettext: this string need translation (will be found during parsing)
     def N_(translate)
@@ -75,7 +72,6 @@ module FastGettext
 
       n_(*args).split(NAMESPACE_SEPARATOR).last
     end
-    alias nsgettext ns_
 
     # translate pluralized with context
     def np_(context, plural_one, *args, separator: nil)
@@ -87,7 +83,11 @@ module FastGettext
 
       n_(plural_one, *args)
     end
-    alias npgettext np_
+  end
+
+  module TranslationAliased
+    include Translation
+    TRANSLATION_METHODS.each { |m| alias_method "#{m.to_s.delete("_")}gettext", m }
   end
 
   # this module should be included for multi-domain support
@@ -95,7 +95,7 @@ module FastGettext
     include Translation
 
     # gettext functions to translate in the context of given domain
-    [:_, :n_, :s_, :p_, :ns_, :np_].each do |method|
+    TRANSLATION_METHODS.each do |method|
       eval <<-RUBY, nil, __FILE__, __LINE__ +1
         # translate in given domain
         def d#{method}(domain, *args, &block)
