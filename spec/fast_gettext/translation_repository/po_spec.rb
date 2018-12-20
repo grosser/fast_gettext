@@ -4,6 +4,7 @@ describe 'FastGettext::TranslationRepository::Po' do
   before do
     @rep = FastGettext::TranslationRepository.build('test',:path=>File.join('spec','locale'),:type=>:po)
     @rep.is_a?(FastGettext::TranslationRepository::Po).should == true
+    FastGettext.locale = 'de'
   end
 
   it "can be built" do
