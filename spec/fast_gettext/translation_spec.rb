@@ -1,6 +1,6 @@
 require "spec_helper"
 
-SingleCov.covered! uncovered: 1
+SingleCov.covered!
 
 describe FastGettext::Translation do
   include FastGettext::TranslationMultidomain
@@ -138,10 +138,12 @@ describe FastGettext::Translation do
   end
 
   describe :ns_ do
+    before { default_setup }
+
     it "translates plural with namespace" do
-      ns_('Fruit|Apple','Apples',1).should == 'Apple'
-      ns_('Fruit|Apple','Apples',2).should == 'Apples'
-      ns_('Fruit|Apple','Apples',3).should == 'Apples'
+      ns_('Fruit|Banana', 'Bananas', 1).should == 'Banane'
+      ns_('Fruit|Banana', 'Bananas', 2).should == 'Bananen'
+      ns_('Fruit|Banana', 'Bananas', 3).should == 'Bananen'
     end
 
     it "translates pural with double namespace" do
@@ -159,7 +161,8 @@ describe FastGettext::Translation do
 
   describe :np_ do
     it "translates whith namespace" do
-      np_('Fruit','Apple','Apples',2).should == 'Apples'
+      np_('Fruit', 'Banana', 'Bananas', 1).should == 'Banane'
+      np_('Fruit', 'Banana', 'Bananas', 2).should == 'Bananen'
     end
 
     it "return key when not found" do
@@ -387,7 +390,7 @@ describe FastGettext::Translation do
 
     describe :Dns_ do
       it "translates with namespace" do
-        Dns_('Fruit|Apple','Fruit|Apples',1).should == 'Apple'
+        Dns_('Fruit|Apple','Fruit|Apples',1).should == 'Apfel 2'
         Dns_('Fruit|Apple','Fruit|Apples',2).should == 'Apples'
         Dns_('Fruit|Apple','Fruit|Apples',4).should == 'Apples'
         Dns_('Fruit|Apple','Apples',2).should == 'Apples'
@@ -407,7 +410,7 @@ describe FastGettext::Translation do
       before do
         #singular cache keys
         FastGettext.cache['xxx'] = '1'
-        FastGettext.cache["zzz\u0004qqq"] = '3'
+        FastGettext.cache["zzz|qqq"] = '3'
 
         #plural cache keys
         FastGettext.cache['||||xxx'] = ['1','2']

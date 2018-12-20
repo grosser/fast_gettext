@@ -7,6 +7,8 @@ module FastGettext
     #  - find and store mo files
     #  - provide access to translations in mo files
     class Mo < Base
+      CONTEXT_SEPARATOR = "\u0004"
+
       def initialize(name, options = {})
         super
         @eager_load = options.fetch(:eager_load, false)

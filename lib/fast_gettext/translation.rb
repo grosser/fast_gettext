@@ -19,7 +19,7 @@ module FastGettext
     # some languages have up to 4 plural forms...
     # n_(singular, plural, plural form 2, ..., count)
     # n_('apple','apples',3)
-    def n_(*keys, count, &block)
+    def n_(*keys, count)
       translations = FastGettext.cached_plural_find(*keys)
       selected = FastGettext.pluralisation_rule.call(count)
       selected = (selected ? 1 : 0) unless selected.is_a? Numeric # convert booleans to numbers
@@ -32,23 +32,26 @@ module FastGettext
       return yield if block_given?
 
       # Fall back to the best fit translated key if it's there
-      FastGettext._(keys[selected] || keys.last)
+      _(keys[selected] || keys.last)
     end
 
-    # translate with namespace, use namespace to find key
-    # 'Car','Tire' -> Tire if no translation could be found
-    # p_('Car','Tire') <=> s_('Car|Tire')
+    # translate with namespace
+    # 'Car', 'Tire' -> Tire if no translation could be found
+    # p_('Car', 'Tire') == s_('Car|Tire')
     def p_(namespace, key, separator = nil)
-      msgid = "#{namespace}#{separator || CONTEXT_SEPARATOR}#{key}"
-      FastGettext.cached_find(msgid) || (block_given? ? yield : key)
+      msgid = "#{namespace}#{separator || NAMESPACE_SEPARATOR}#{key}"
+
+      translation = FastGettext.cached_find(msgid)
+      return translation if translation
+
+      block_given? ? yield : key
     end
 
     # translate, but discard namespace if nothing was found
     # Car|Tire -> Tire if no translation could be found
     def s_(key, separator = nil)
-      if translation = FastGettext.cached_find(key)
-        return translation
-      end
+      translation = FastGettext.cached_find(key)
+      return translation if translation
 
       block_given? ? yield : key.split(separator || NAMESPACE_SEPARATOR).last
     end
@@ -75,9 +78,9 @@ module FastGettext
 
     # translate pluralized with context
     def np_(context, plural_one, *args, separator: nil)
-      nargs = ["#{context}#{separator || CONTEXT_SEPARATOR}#{plural_one}"] + args
-      result = n_(*nargs, &NIL_BLOCK)
-      return result if result
+      nargs = ["#{context}#{separator || NAMESPACE_SEPARATOR}#{plural_one}"] + args
+      translation = n_(*nargs, &NIL_BLOCK)
+      return translation if translation
 
       return yield if block_given?
 
