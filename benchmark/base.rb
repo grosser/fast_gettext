@@ -23,7 +23,7 @@ def results_test(&block)
 end
 
 def results_large
-  print "#{(result { _('login') == 'anmelden' })}s / #{memory}K"
+  print "#{(result { _('login') == 'anmelden' })}s / #{memory}K / #{namespace}"
   puts ""
 end
 
@@ -36,10 +36,23 @@ def result
 end
 
 def memory
-  (GC.stat[:total_allocated_objects] - @default_memory) / 1000
+  (calculate_memory - @default_memory) / 1000
+end
+
+def calculate_memory
+  GC.stat[:total_allocated_objects]
+end
+
+def namespace
+  calculate_namespace - @default_namespace
+end
+
+def calculate_namespace
+  methods.size
 end
 
 GC.start
 GC.disable
 
-@default_memory = GC.stat[:total_allocated_objects]
+@default_memory = calculate_memory
+@default_namespace = calculate_namespace

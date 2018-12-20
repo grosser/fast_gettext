@@ -1,6 +1,6 @@
 FastGettext
 ===========
-GetText but 12 x faster, 530 x less garbage, clean namespace (8 vs 25), simple and threadsafe!
+GetText but 12 x faster, 530 x less garbage, clean namespace (8 vs 26), simple and threadsafe!
 
 It supports multiple backends (.mo, .po, .yml files, Database(ActiveRecord + any other), Chain, Loggers) and can easily be extended.
 
