@@ -10,7 +10,7 @@ task default: "wwtd:local"
 
 desc "Run tests"
 task :spec do
-  sh "forking-test-runner spec --rspec --merge-coverage --quiet --no-fixtures"
+  sh "forking-test-runner spec --rspec --merge-coverage --quiet --no-fixtures --no-ar"
 end
 
 desc "Benchmark different translation frameworks"
