@@ -119,17 +119,17 @@ You'll often want to interpolate the results of `n_()` using ruby builtin `%` op
 n_('Car', '#{n} Cars', 2) % { n: count } == '2 Autos'
 ```
 
-#### `p_()` or `pgettext()`: context-aware
+#### `p_()` or `pgettext()`: translation with context
 
 ```ruby
-p_('File', 'Open') == "öffnen"
+p_('File', 'Open') == _("File\004Open") == "öffnen"
 p_('Context', 'not-found') == 'not-found'
 ```
 
-#### `s_()` or `sgetext()`: without context
+#### `s_()` or `sgetext()`: translation with namespace
 
 ```ruby
-s_('File|Open') == "öffnen"
+s_('File|Open') == _('File|Open') == "öffnen"
 s_('Context|not-found') == 'not-found'
 ```
 
@@ -309,7 +309,7 @@ Want a xml version ?
 Write your own TranslationRepository!
 
 ```Ruby
-# fast_gettext/translation_repository/xxx.rb
+# fast_gettext/translation_repository/wtf.rb
 module FastGettext
   module TranslationRepository
     class Wtf

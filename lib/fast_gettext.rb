@@ -13,6 +13,7 @@ module FastGettext
 
   LOCALE_REX = /^[a-z]{2,3}$|^[a-z]{2,3}_[A-Z]{2,3}$/.freeze
   NAMESPACE_SEPARATOR = '|'
+  CONTEXT_SEPARATOR = "\004"
 
   # helper block for changing domains
   def self.with_domain(domain)

@@ -56,7 +56,6 @@ module FastGettext
           FastGettext::GetText::MOFile.open(@filename, "UTF-8")
         end
       make_singular_and_plural_available
-      unify_separator
     end
 
     # (if plural==singular, prefer singular)
@@ -71,18 +70,6 @@ module FastGettext
         data[plural] ||= translation[1]
       end
       @data.merge!(data) { |_key, old, _new| old }
-    end
-
-    # improve caching and reuse by treating s_ and p_ the same
-    def unify_separator
-      unified = @data.dup
-      @data.each do |k, v|
-        if k.include?(CONTEXT_SEPARATOR)
-          unified.delete(k)
-          unified[k.tr(CONTEXT_SEPARATOR, NAMESPACE_SEPARATOR)] = v
-        end
-      end
-      @data = unified
     end
 
     def split_plurals(singular_plural)

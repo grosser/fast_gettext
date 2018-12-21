@@ -39,7 +39,7 @@ module FastGettext
     # 'Car', 'Tire' -> Tire if no translation could be found
     # p_('Car', 'Tire') == s_('Car|Tire')
     def p_(namespace, key, separator = nil)
-      msgid = "#{namespace}#{separator || NAMESPACE_SEPARATOR}#{key}"
+      msgid = "#{namespace}#{separator || CONTEXT_SEPARATOR}#{key}"
 
       translation = FastGettext.cached_find(msgid)
       return translation if translation
@@ -78,7 +78,7 @@ module FastGettext
 
     # translate pluralized with context
     def np_(context, plural_one, *args, separator: nil)
-      nargs = ["#{context}#{separator || NAMESPACE_SEPARATOR}#{plural_one}"] + args
+      nargs = ["#{context}#{separator || CONTEXT_SEPARATOR}#{plural_one}"] + args
       translation = n_(*nargs, &NIL_BLOCK)
       return translation if translation
 

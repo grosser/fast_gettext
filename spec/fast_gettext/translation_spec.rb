@@ -141,12 +141,12 @@ describe FastGettext::Translation do
     before { default_setup }
 
     it "translates plural with namespace" do
-      ns_('Fruit|Banana', 'Bananas', 1).should == 'Banane'
-      ns_('Fruit|Banana', 'Bananas', 2).should == 'Bananen'
-      ns_('Fruit|Banana', 'Bananas', 3).should == 'Bananen'
+      ns_('Cat|Foot', 'Foot', 1).should == 'Tatze'
+      ns_('Cat|Foot', 'Feet', 2).should == 'Tatzen'
+      ns_('Cat|Foo', 'Feet', 3).should == 'Tatzen'
     end
 
-    it "translates pural with double namespace" do
+    it "translates plural with double namespace" do
       # This behavior does not match gettext but
       # let's make sure it continues to work as to not introduce
       # a breaking change.
@@ -390,7 +390,7 @@ describe FastGettext::Translation do
 
     describe :Dns_ do
       it "translates with namespace" do
-        Dns_('Fruit|Apple','Fruit|Apples',1).should == 'Apfel 2'
+        Dns_('Fruit|Apple','Fruit|Apples',1).should == 'Apple'
         Dns_('Fruit|Apple','Fruit|Apples',2).should == 'Apples'
         Dns_('Fruit|Apple','Fruit|Apples',4).should == 'Apples'
         Dns_('Fruit|Apple','Apples',2).should == 'Apples'
@@ -410,7 +410,7 @@ describe FastGettext::Translation do
       before do
         #singular cache keys
         FastGettext.cache['xxx'] = '1'
-        FastGettext.cache["zzz|qqq"] = '3'
+        FastGettext.cache["zzz\004qqq"] = '3'
 
         #plural cache keys
         FastGettext.cache['||||xxx'] = ['1','2']
