@@ -95,8 +95,8 @@ FastGettext.locale = 'de'
 
 ### 4. Start translating
 
-FastGetText supports all the translation methods of [ruby-gettext](http://github.com/ruby-gettext/gettext) with added support for block defaults.
-(to get `*gettext` methods, use `FastGetText::TranslationAliased`)
+FastGettext supports all the translation methods of [ruby-gettext](http://github.com/ruby-gettext/gettext) with added support for block defaults.
+(to get `*gettext` methods, use `FastGettext::TranslationAliased`)
 
 #### `_()` or `gettext()`: basic translation
 
