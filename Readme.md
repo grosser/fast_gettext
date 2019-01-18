@@ -116,7 +116,7 @@ n_('Car', 'Cars', 2) == 'Autos' # German plural of Cars
 You'll often want to interpolate the results of `n_()` using ruby builtin `%` operator.
 
 ```ruby
-n_('Car', '#{n} Cars', 2) % { n: count } == '2 Autos'
+n_('Car', '%{n} Cars', 2) % { n: count } == '2 Autos'
 ```
 
 #### `p_()` or `pgettext()`: translation with context
@@ -159,7 +159,7 @@ allow for those strings to be discovered.
 ```
 N_("active"); N_("inactive"); N_("paused") # possible value of status for parser to find.
 Nn_("active", "inactive", "paused")        # alternative method
-_("Your account is #{account_state}.") % { account_state: status }
+_("Your account is %{account_state}.") % { account_state: status }
 ```
 
 
