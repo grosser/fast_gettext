@@ -1,4 +1,12 @@
 bundler_args: ""
+
+# rails 4.2 does not work with bundler 2
+# https://gist.github.com/tvdeyen/c0ac49c5dbf0e09e305f180d62b067d0
+before_install:
+- rvm use @global
+- gem uninstall bundler -x || gem uninstall bundler -a || true
+- gem install bundler --version 1.17.3
+
 script: "bundle exec rake spec"
 sudo: false
 rvm:
