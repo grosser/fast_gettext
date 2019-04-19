@@ -11,6 +11,7 @@ module FastGettext
     # file => path or FastGettext::GetText::MOFile
     def initialize(file, options = {})
       @filename = file
+      @data = nil
       load_data if options[:eager_load]
     end
 
