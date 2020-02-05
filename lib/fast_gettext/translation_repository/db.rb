@@ -50,7 +50,7 @@ module FastGettext
       end
 
       def self.require_models
-	require 'active_record'
+        require 'active_record'
         folder = "fast_gettext/translation_repository/db_models"
         require "#{folder}/translation_key"
         require "#{folder}/translation_text"
