@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.3 # keep in sync with minimum version
+  TargetRubyVersion: 2.4 # keep in sync with minimum version
   Exclude:
   - vendor/**/*
   - gemfiles/vendor/**/*
