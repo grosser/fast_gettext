@@ -159,7 +159,7 @@ allow for those strings to be discovered.
 ```
 N_("active"); N_("inactive"); N_("paused") # possible value of status for parser to find.
 Nn_("active", "inactive", "paused")        # alternative method
-_("Your account is %{account_state}.") % { account_state: status }
+_("Your account is %{account_state}.") % { account_state: _(status) }
 ```
 
 
