@@ -172,7 +172,7 @@ module FastGettext
       locales = locales.to_s.gsub(/\s/, '')
       found = [[]]
       locales.split(',').each do |part|
-        if part =~ /;q=/ # contains language and weight ?
+        if /;q=/.match?(part) # contains language and weight ?
           found.last << part.split(/;q=/)
           found.last.flatten!
           found << []

@@ -1,19 +1,9 @@
-bundler_args: ""
-
-# rails 4.2 does not work with bundler 2
-# https://gist.github.com/tvdeyen/c0ac49c5dbf0e09e305f180d62b067d0
-before_install:
-- rvm use @global
-- gem uninstall bundler -x || gem uninstall bundler -a || true
-- gem install bundler --version 1.17.3
-
 script: "bundle exec rake spec"
 sudo: false
 rvm:
   - 2.4
   - 2.5
   - 2.6
-  - 2.7
 gemfile:
   - gemfiles/rails42.gemfile
   - gemfiles/rails52.gemfile
@@ -21,9 +11,15 @@ branches:
   only: master
 maxtrix:
   include:
-    - rvm: 2.3.7 # keep in sync with oldest ruby
+    - name: Rubocop
+      rvm: 2.4 # keep in sync with oldest ruby
       script: bundle exec rubocop
-    - rvm: 2.5.3 # keep in sync with newest ruby
+    - name: Benchmark
+      rvm: 2.6 # keep in sync with newest ruby
       script: gem i gettext && gem i activesupport && bundle exec rake benchmark
-    - rvm: 2.5.3 # keep in sync with newest ruby
-      script: bundle exec rake namespaces
+    - name: Namespaces
+      rvm: 2.6 # keep in sync with newest ruby
+      script:
+        - echo 'gem "gettext"' >> $BUNDLE_GEMFILE
+        - echo 'gem "iconv"' >> $BUNDLE_GEMFILE
+        - bundle install --no-deployment && bundle exec rake namespaces
