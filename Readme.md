@@ -126,7 +126,7 @@ p_('File', 'Open') == _("File\004Open") == "öffnen"
 p_('Context', 'not-found') == 'not-found'
 ```
 
-#### `s_()` or `sgetext()`: translation with namespace
+#### `s_()` or `sgettext()`: translation with namespace
 
 ```ruby
 s_('File|Open') == _('File|Open') == "öffnen"
@@ -153,7 +153,7 @@ sn_('Fruit|Apple', 'Apples', 1) == 'Apfel'
 
 #### `N_()` and `Nn_()`: make dynamic translations available to the parser.
 
-In many instances, your strings will not be found the by the ruby-parse. These methods
+In many instances, your strings will not be found by the ruby parsing. These methods
 allow for those strings to be discovered.
 
 ```
@@ -180,7 +180,7 @@ Use the [original GetText](http://github.com/ruby-gettext/gettext) to create and
 
 ### Database
 [Example migration for ActiveRecord](http://github.com/grosser/fast_gettext/blob/master/examples/db/migration.rb)<br/>
-The default plural separator is `||||` but you may overwrite it (or suggest a better one..).
+The default plural separator is `||||` but you may overwrite it (or suggest a better one...).
 
 This is usable with any model DataMapper/Sequel or any other(non-database) backend, the only thing you need to do is respond to the self.translation(key, locale) call.
 If you want to use your own models, have a look at the [default models](http://github.com/grosser/fast_gettext/tree/master/lib/fast_gettext/translation_repository/db_models) to see what you want/need to implement.
@@ -305,7 +305,7 @@ Unfound may not always mean missing, if you choose not to translate a word becau
 A lambda or anything that responds to `call` will do as callback. A good starting point may be `examples/missing_translations_logger.rb`.
 
 ### Plugins
-Want a xml version ?
+Want an xml version?
 Write your own TranslationRepository!
 
 ```Ruby
@@ -362,7 +362,7 @@ Alternatively you can use [merge repository](https://github.com/grosser/fast_get
 
 #### Block defaults
 
-All the translation methods (includ MultiDomain) support a block default, a feature not provided by ruby-gettext.  When a translation is
+All the translation methods (including MultiDomain) support a block default, a feature not provided by ruby-gettext.  When a translation is
 not found, if a block is provided the block is always returned. Otherwise, a key is returned. Methods doing pluralization will attempt a simple translation of alternate keys.
 
 ```ruby
