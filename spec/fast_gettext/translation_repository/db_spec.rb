@@ -36,9 +36,9 @@ describe FastGettext::TranslationRepository::Db do
     @rep = FastGettext::TranslationRepository::Db.new('x', :model=>TranslationKey)
   end
 
-  def create_translation(key, text)
+  def create_translation(key, text, locale = "de")
     translation_key = TranslationKey.create!(:key => key)
-    TranslationText.create!(:translation_key_id => translation_key.id, :text => text, :locale => "de")
+    TranslationText.create!(:translation_key_id => translation_key.id, :text => text, :locale => locale)
   end
 
   it "reads locales from the db" do
@@ -69,6 +69,26 @@ describe FastGettext::TranslationRepository::Db do
   it "can pluralize" do
     create_translation 'Axis||||Axis', 'Achse||||Achsen'
     @rep.plural('Axis','Axis').should == ['Achse','Achsen']
+  end
+
+  it 'can pluralize with rule on model' do
+    class TranslationKey < ActiveRecord::Base
+      def self.pluralisation_rule
+        case FastGettext.locale
+        when 'en'
+          ->(n) { (n == 1) ? 0 : 1 }
+        when 'cz'
+          ->(n) { (n == 1) ? 0 : (n >= 2 && n <= 4) ? 1 : 2; }
+        else
+          nil
+        end
+      end
+    end
+
+    FastGettext.locale = 'cz'
+    create_translation 'Chicken||||Chicken', 'Kuře||||Kuřata||||Kuřat', "cz"
+    translations = @rep.plural('Chicken','Chicken')
+    translations[@rep.pluralisation_rule.call(5)].should == 'Kuřat'
   end
 
   it "can reload" do

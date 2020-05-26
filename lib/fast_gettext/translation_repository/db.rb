@@ -30,7 +30,7 @@ module FastGettext
       end
 
       def pluralisation_rule
-        @model.pluralsation_rule if @model.respond_to? :pluralsation_rule
+        @model.pluralisation_rule if @model.respond_to? :pluralisation_rule
       end
 
       def [](key)
