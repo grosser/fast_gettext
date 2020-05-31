@@ -10,16 +10,19 @@ gemfile:
 branches:
   only: [master]
 maxtrix:
+  exclude:
+  - rvm: 2.7
+    gemfile: gemfiles/rails42.gemfile
   include:
   - name: Rubocop
     rvm: 2.5 # keep in sync with oldest ruby
     script: bundle exec rubocop
   - name: Benchmark
     rvm: 2.7 # keep in sync with newest ruby
-    script: bundle exec rake benchmark
+    script: gem i gettext && gem i activesupport && bundle exec rake benchmark
   - name: Namespaces
     rvm: 2.7 # keep in sync with newest ruby
     script:
     - echo 'gem "gettext"' >> $BUNDLE_GEMFILE
     - echo 'gem "iconv"' >> $BUNDLE_GEMFILE
-    - bundle exec rake namespaces
+    - bundle && bundle exec rake namespaces
