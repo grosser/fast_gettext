@@ -27,39 +27,11 @@ describe String do
     it "does not substitute when nothing could be found" do
       ("abc" % {:x=>1}).should == 'abc'
     end
-
-    if RUBY_VERSION < '1.9' # this does not longer work in 1.9, use :"my weird string"
-      it "sustitutes strings" do
-        ("a%{b}c" % {'b'=>1}).should == 'a1c'
-      end
-
-      it "sustitutes strings with -" do
-        ("a%{b-a}c" % {'b-a'=>1}).should == 'a1c'
-      end
-
-      it "sustitutes string with ." do
-        ("a%{b.a}c" % {'b.a'=>1}).should == 'a1c'
-      end
-
-      it "sustitutes string with number" do
-        ("a%{1}c" % {'1'=>1}).should == 'a1c'
-      end
-    end
   end
 
   describe 'old sprintf style' do
     it "substitudes using % + Array" do
       ("x%sy%s" % ['a','b']).should == 'xayb'
-    end
-
-    if RUBY_VERSION < '1.9' # this does not longer work in 1.9, ArgumentError is raised
-      it "does not remove %{} style replacements" do
-        ("%{name} x%sy%s" % ['a','b']).should == '%{name} xayb'
-      end
-
-      it "does not remove %<> style replacement" do
-         ("%{name} %<num>f %s" % ['x']).should == "%{name} %<num>f x"
-      end
     end
   end
 
@@ -77,25 +49,7 @@ describe String do
     end
   end
 
-  if RUBY_VERSION >= '1.9'
-    it "does not raise when key was not found" do
-      ("%{typo} xxx" % {:something=>1}).should == "%{typo} xxx"
-    end
-  end
-
-  describe 'with i18n loaded' do
-    let(:pending_condition) { (RUBY_VERSION < "1.9" and ActiveRecord::VERSION::MAJOR == 3) or (ActiveRecord::VERSION::MAJOR == 4 and ActiveRecord::VERSION::MINOR == 0)}
-
-    it "interpolates if i18n is loaded before" do
-      pending_if pending_condition, "does not work on ree + rails 3 or rails 4"  do
-        system("bundle exec ruby spec/cases/interpolate_i18n_before_fast_gettext.rb  > /dev/null 2>&1").should == true
-      end
-    end
-
-    it "interpolates if i18n is loaded before" do
-      pending_if pending_condition, "does not work on ree + rails 3 or rails 4"  do
-        system("bundle exec ruby spec/cases/interpolate_i18n_after_fast_gettext.rb > /dev/null 2>&1").should == true
-      end
-    end
+  it "does not raise when key was not found" do
+    ("%{typo} xxx" % {:something=>1}).should == "%{typo} xxx"
   end
 end
