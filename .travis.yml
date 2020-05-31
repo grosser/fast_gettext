@@ -1,7 +1,6 @@
 script: "bundle exec rake spec"
 bundler_args: --jobs 4 --quiet --path vendor/bundle # not --deployment
 rvm:
-- 2.4
 - 2.5
 - 2.6
 - 2.7
@@ -13,7 +12,7 @@ branches:
 maxtrix:
   include:
   - name: Rubocop
-    rvm: 2.4 # keep in sync with oldest ruby
+    rvm: 2.5 # keep in sync with oldest ruby
     script: bundle exec rubocop
   - name: Benchmark
     rvm: 2.7 # keep in sync with newest ruby
