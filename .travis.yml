@@ -1,3 +1,4 @@
+cache: bundler
 script: "bundle exec rake spec"
 bundler_args: --jobs 4 --quiet --path vendor/bundle # not --deployment
 rvm:
