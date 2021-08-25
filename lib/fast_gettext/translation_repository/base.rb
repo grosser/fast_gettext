@@ -47,7 +47,7 @@ module FastGettext
         Dir[File.join(path, '*')].each do |locale_folder|
           next unless File.basename(locale_folder) =~ LOCALE_REX
 
-          file = File.join(locale_folder, relative_file_path).untaint
+          file = File.join(locale_folder, relative_file_path)
           next unless File.exist? file
 
           locale = File.basename(locale_folder)

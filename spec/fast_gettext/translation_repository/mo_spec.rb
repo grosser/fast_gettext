@@ -52,9 +52,4 @@ describe 'FastGettext::TranslationRepository::Mo' do
     rep['car'].should == 'Test'#just check it is loaded correctly
     rep.pluralisation_rule.call(2).should == 3
   end
-
-  it "can work in SAFE mode" do
-    pending
-    `ruby spec/cases/safe_mode_can_handle_locales.rb 2>&1`.should == 'true'
-  end
 end
