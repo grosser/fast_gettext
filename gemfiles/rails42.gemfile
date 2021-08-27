@@ -1,6 +1,0 @@
-source "https://rubygems.org"
-
-gemspec path: "../"
-
-gem "rails", "~> 4.2.8"
-gem "protected_attributes"

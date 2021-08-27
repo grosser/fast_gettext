@@ -1,0 +1,46 @@
+name: CI
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [ '2.5', '2.6', '2.7' ]
+        task: [ 'default' ]
+        gemfile: [ 'rails52' ]
+        include:
+        - ruby: '2.5' # lowest supported version
+          task: rubocop
+          gemfile: rails52
+    name: ${{ matrix.ruby }} ${{ matrix.gemfile }} rake ${{ matrix.task }}
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}.gemfile
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+    - run: bundle exec rake
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0
+        bundler-cache: true
+    - run: gem i gettext && gem i activesupport && bundle exec rake benchmark
+  namespaces:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0
+        bundler-cache: true
+    - run: echo 'gem "gettext"' >> Gemfile && echo 'gem "iconv"' >> Gemfile && bundle config unset deployment && bundle && bundle exec rake namespaces

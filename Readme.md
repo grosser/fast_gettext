@@ -422,4 +422,4 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
 License: MIT, some vendor parts under the same license terms as Ruby (see headers)<br/>
-[![Build Status](https://travis-ci.org/grosser/fast_gettext.png)](https://travis-ci.org/grosser/fast_gettext)
+[![CI](https://github.com/grosser/fast_gettext/actions/workflows/actions.yml/badge.svg)](https://github.com/grosser/fast_gettext/actions/workflows/actions.yml)

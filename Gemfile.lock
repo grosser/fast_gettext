@@ -64,7 +64,6 @@ GEM
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     unicode-display_width (1.4.0)
-    wwtd (1.4.1)
 
 PLATFORMS
   ruby
@@ -80,7 +79,6 @@ DEPENDENCIES
   rubocop
   single_cov
   sqlite3
-  wwtd
 
 BUNDLED WITH
    2.1.4

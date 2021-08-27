@@ -3,10 +3,8 @@
 require 'bundler/setup'
 require 'bundler/gem_tasks'
 require 'bump/tasks'
-require 'wwtd/tasks'
 
-desc "Run test matrix as defined in .travis.yml on current ruby"
-task default: "wwtd:local"
+task default: :spec
 
 desc "Run tests"
 task :spec do
