@@ -8,7 +8,7 @@ Gem::Specification.new name, FastGettext::VERSION do |s|
   s.authors = ["Michael Grosser"]
   s.email = "michael@grosser.it"
   s.homepage = "https://github.com/grosser/#{name}"
-  s.files = Dir["{lib/**/*.{rb,mo,rdoc},Readme.md,CHANGELOG}"]
+  s.files = Dir["{lib/**/*.{rb,mo,rdoc},Readme.md,CHANGELOG,LICENSE}"]
   s.licenses = ["MIT", "Ruby"]
   s.required_ruby_version = '>= 2.5.0'
 
