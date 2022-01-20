@@ -32,3 +32,10 @@ desc "Check code against ruby style guide"
 task :rubocop do
   sh "rubocop"
 end
+
+desc "Bundle all"
+task :bundle_all do
+  Dir["gemfiles/*.gemfile"].each do |gemfile|
+    Bundler.with_original_env { sh "BUNDLE_GEMFILE=#{gemfile} bundle" }
+  end
+end
