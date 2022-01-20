@@ -112,6 +112,6 @@ describe FastGettext::TranslationRepository::Db do
   it "expires the cache when updated" do
     FastGettext.should_receive(:expire_cache_for).with('car')
     translation_text = create_translation 'car', 'Auto'
-    translation_text.update_attributes :text => 'Autobot'
+    translation_text.update :text => 'Autobot'
   end
 end
