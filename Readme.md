@@ -418,6 +418,7 @@ Mo/Po-file parsing from Masao Mutoh, see vendor/README
  - [morcoteg](https://github.com/morcoteg)
  - [Daniel Schepers](https://github.com/tall-dan)
  - [Robert Graff](https://github.com/rgraff)
+ - [Peter Leitzen](https://github.com/splattael)
 
 [Michael Grosser](http://grosser.it)<br/>
 michael@grosser.it<br/>
