@@ -44,7 +44,7 @@ module FastGettext
     end
 
     def self.empty
-      MoFile.new(File.join(File.dirname(__FILE__), 'vendor', 'empty.mo'))
+      @empty ||= MoFile.new(File.join(__dir__, 'vendor', 'empty.mo'), eager_load: true).freeze
     end
 
     private

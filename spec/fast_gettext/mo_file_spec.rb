@@ -63,4 +63,37 @@ describe FastGettext::MoFile do
     end
 
   end
+
+  describe ".empty" do
+    let(:path) do
+      File.expand_path("../../lib/fast_gettext/vendor/empty.mo", __dir__)
+    end
+
+    before do
+      # clear the ivar cache
+      described_class.remove_instance_variable(:@empty) if described_class.instance_variable_defined?(:@empty)
+    end
+
+    it "is frozen" do
+      described_class.empty.should be_frozen
+    end
+
+    it "has no translations" do
+      described_class.empty["foo"].should be_nil
+      described_class.empty["bar"].should be_nil
+    end
+
+    it "is cached" do
+      described_class.empty.object_id.should eq(described_class.empty.object_id)
+    end
+
+    it "loads empty mo file eagerly only once" do
+      FastGettext::GetText::MOFile.should_receive(:open).once.with(path, "UTF-8").and_call_original
+
+      described_class.empty
+      described_class.empty
+      described_class.empty["foo"]
+      described_class.empty["bar"]
+    end
+  end
 end
