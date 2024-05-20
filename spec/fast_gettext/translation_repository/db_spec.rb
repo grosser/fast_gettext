@@ -17,7 +17,7 @@ describe FastGettext::TranslationRepository::Db do
     ActiveRecord::Migration.verbose = false
     ActiveRecord::Schema.define(:version => 1) do
       create_table :translation_keys do |t|
-        t.string :key, :unique=>true, :null=>false
+        t.string :key, :null=>false
         t.timestamps null: false
       end
 
