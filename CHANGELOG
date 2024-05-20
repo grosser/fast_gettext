@@ -1,3 +1,4 @@
+2.4.0 -- Depend on prime gem
 2.3.0 -- Load empty mo file only once
 2.2.0 -- Use update instead of update_attributes
 2.1.0 -- Remove taint checking https://github.com/grosser/fast_gettext/pull/133

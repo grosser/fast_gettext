@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fast_gettext (2.3.0)
+    fast_gettext (2.4.0)
       prime
 
 GEM
@@ -95,4 +95,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   2.3.27
+   2.5.10
