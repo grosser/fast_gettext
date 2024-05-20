@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: [ '2.5', '2.6', '2.7' ]
+        ruby: [ '2.7', '3.0' ]
         task: [ 'default' ]
         gemfile: [ 'rails52' ]
         include:
-        - ruby: '2.5' # lowest supported version
+        - ruby: '2.7' # lowest supported version
           task: rubocop
           gemfile: rails52
     name: ${{ matrix.ruby }} ${{ matrix.gemfile }} rake ${{ matrix.task }}
