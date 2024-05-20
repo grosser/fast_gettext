@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: [ '2.7', '3.0' ]
+        ruby: [ '3.0' ]
         task: [ 'default' ]
         gemfile: [ 'rails52' ]
         include:
-        - ruby: '2.7' # lowest supported version
+        - ruby: '3.0' # lowest supported version
           task: rubocop
           gemfile: rails52
     name: ${{ matrix.ruby }} ${{ matrix.gemfile }} rake ${{ matrix.task }}
@@ -32,7 +32,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.0
+        ruby-version: 3.3
         bundler-cache: true
     - run: gem i gettext && gem i activesupport && bundle exec rake benchmark
   namespaces:
@@ -41,6 +41,6 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.0
+        ruby-version: 3.3
         bundler-cache: true
     - run: echo 'gem "gettext"' >> Gemfile && echo 'gem "iconv"' >> Gemfile && bundle config unset deployment && bundle && bundle exec rake namespaces
