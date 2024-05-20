@@ -11,6 +11,7 @@ Gem::Specification.new name, FastGettext::VERSION do |s|
   s.files = Dir["{lib/**/*.{rb,mo,rdoc},Readme.md,CHANGELOG,LICENSE}"]
   s.licenses = ["MIT", "Ruby"]
   s.required_ruby_version = '>= 2.5.0'
+  s.add_runtime_dependency 'prime'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'sqlite3'
