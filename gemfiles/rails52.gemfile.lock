@@ -1,7 +1,8 @@
 PATH
   remote: ..
   specs:
-    fast_gettext (2.2.0)
+    fast_gettext (2.3.0)
+      prime
 
 GEM
   remote: https://rubygems.org/
@@ -57,6 +58,7 @@ GEM
     erubi (1.10.0)
     forking_test_runner (1.6.0)
       parallel_tests (>= 1.3.7)
+    forwardable (1.3.3)
     globalid (0.5.2)
       activesupport (>= 5.0)
     i18n (1.8.10)
@@ -71,7 +73,7 @@ GEM
     mini_mime (1.1.1)
     mini_portile2 (2.6.1)
     minitest (5.14.4)
-    nio4r (2.5.8)
+    nio4r (2.7.3)
     nokogiri (1.12.3)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
@@ -80,6 +82,9 @@ GEM
       parallel
     parser (3.1.0.0)
       ast (~> 2.4.1)
+    prime (0.1.2)
+      forwardable
+      singleton
     racc (1.5.2)
     rack (2.2.3)
     rack-test (1.1.0)
@@ -140,6 +145,7 @@ GEM
       rubocop (>= 0.89, < 2.0)
     ruby-progressbar (1.11.0)
     single_cov (1.3.2)
+    singleton (0.2.0)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -175,4 +181,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   2.1.4
+   2.3.27

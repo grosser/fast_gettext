@@ -20,6 +20,7 @@
 # Changes: Namespaced + uses FastGettext::Icvon
 
 require 'stringio'
+require 'prime'
 
 module FastGettext
   module GetText
@@ -167,19 +168,8 @@ module FastGettext
         ('1' * number) !~ /^1?$|^(11+?)\1+$/
       end
 
-      begin
-        require 'prime'
-        def next_prime(seed)
-          Prime.instance.find{|x| x > seed }
-        end
-      rescue LoadError
-        def next_prime(seed)
-          require 'mathn'
-          prime = Prime.new
-          while current = prime.succ
-            return current if current > seed
-          end
-        end
+      def next_prime(seed)
+        Prime.instance.find{|x| x > seed }
       end
 
       HASHWORDBITS = 32
