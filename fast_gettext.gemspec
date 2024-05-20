@@ -14,7 +14,7 @@ Gem::Specification.new name, FastGettext::VERSION do |s|
   s.add_runtime_dependency 'prime'
 
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'sqlite3', '~> 1.6.9' # last version with ruby 2.7 support
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'activerecord'
   s.add_development_dependency 'i18n'

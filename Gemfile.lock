@@ -28,7 +28,7 @@ GEM
     forwardable (1.3.3)
     i18n (1.2.0)
       concurrent-ruby (~> 1.0)
-    mini_portile2 (2.8.1)
+    mini_portile2 (2.8.6)
     minitest (5.11.3)
     parallel (1.21.0)
     parallel_tests (2.27.0)
@@ -71,7 +71,7 @@ GEM
     ruby-progressbar (1.11.0)
     single_cov (1.3.0)
     singleton (0.2.0)
-    sqlite3 (1.6.0)
+    sqlite3 (1.6.9)
       mini_portile2 (~> 2.8.0)
     thread_safe (0.3.6)
     tzinfo (1.2.5)
@@ -92,7 +92,7 @@ DEPENDENCIES
   rubocop
   rubocop-packaging
   single_cov
-  sqlite3
+  sqlite3 (~> 1.6.9)
 
 BUNDLED WITH
    2.5.10
