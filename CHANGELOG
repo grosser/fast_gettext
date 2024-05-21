@@ -1,4 +1,4 @@
-2.6.0 -- Drop ruby 2.x support
+3.0.0 -- Drop ruby 2.x support
 2.4.0 -- Depend on prime gem
 2.3.0 -- Load empty mo file only once
 2.2.0 -- Use update instead of update_attributes
