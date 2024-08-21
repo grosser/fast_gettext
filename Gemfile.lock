@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fast_gettext (3.0.0)
+    fast_gettext (3.1.0)
       prime
 
 GEM
