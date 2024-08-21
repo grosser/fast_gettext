@@ -93,7 +93,7 @@ GEM
     diff-lcs (1.5.1)
     drb (2.2.1)
     erubi (1.12.0)
-    forking_test_runner (1.13.0)
+    forking_test_runner (1.14.0)
       parallel_tests (>= 1.3.7)
     forwardable (1.3.3)
     globalid (1.2.1)
@@ -134,7 +134,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.16.5-x86_64-linux)
       racc (~> 1.4)
-    parallel (1.24.0)
+    parallel (1.26.3)
     parallel_tests (4.7.1)
       parallel
     parser (3.3.1.0)
