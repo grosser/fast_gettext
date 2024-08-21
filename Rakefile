@@ -33,9 +33,9 @@ task :rubocop do
   sh "rubocop"
 end
 
-desc "Bundle all"
+desc "Bundle all CMD="
 task :bundle_all do
   Dir["gemfiles/*.gemfile"].each do |gemfile|
-    Bundler.with_original_env { sh "BUNDLE_GEMFILE=#{gemfile} bundle" }
+    Bundler.with_original_env { sh "BUNDLE_GEMFILE=#{gemfile} bundle #{ENV["CMD"]}" }
   end
 end
