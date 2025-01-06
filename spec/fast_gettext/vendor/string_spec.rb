@@ -49,7 +49,19 @@ describe String do
     end
   end
 
-  it "does not raise when key was not found" do
+  it "raise when key was not found" do
+    lambda { ("%{typo} xxx" % {:something=>1}) }.should raise_error(KeyError)
+  end
+
+  it "does not raise when key was not found if allow_invalid_keys! is enabled" do
+    FastGettext.allow_invalid_keys!
     ("%{typo} xxx" % {:something=>1}).should == "%{typo} xxx"
+
+    # cleanup
+    eval(<<CODE)
+class ::String
+  alias :% :_fast_gettext_old_format_m
+end
+CODE
   end
 end
