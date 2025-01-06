@@ -28,19 +28,20 @@ module FastGettext
     translation_repositories[name] = TranslationRepository.build(name, options)
   end
 
+  # deprecated, just a crutch to migrate to new api
   def self.allow_invalid_keys!
-    eval(<<CODE)
-class ::String
-  alias :_fast_gettext_old_format_m :%
-  def %(*args)
-    begin
-      _fast_gettext_old_format_m(*args)
-    rescue KeyError
-      self
-    end
-  end
-end
-CODE
+    eval(<<~CODE)
+      class ::String
+        alias :_fast_gettext_old_format_m :%
+        def %(*args)
+          begin
+            _fast_gettext_old_format_m(*args)
+          rescue KeyError
+            self
+          end
+        end
+      end
+    CODE
   end
 
   # some repositories know where to store their locales
