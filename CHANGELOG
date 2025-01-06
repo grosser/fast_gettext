@@ -1,3 +1,4 @@
+4.1.0 -- drop EOL rubies + add racc dependency
 4.0.0 -- Remove String#% hack that would make it not blow up when using invalid keys, can temporarily restore with `FastGettext.allow_invalid_keys!`
 3.1.0 -- Work with frozen strings
 3.0.0 -- Drop ruby 2.x support

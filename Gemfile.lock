@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fast_gettext (4.0.0)
+    fast_gettext (4.1.0)
       prime
       racc
 
