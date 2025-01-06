@@ -2,7 +2,7 @@ require:
   - rubocop-packaging
 
 AllCops:
-  TargetRubyVersion: 3.0 # keep in sync with minimum version
+  TargetRubyVersion: 3.1 # keep in sync with minimum version
   Exclude:
   - vendor/**/*
   - gemfiles/vendor/**/*

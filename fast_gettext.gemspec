@@ -10,11 +10,12 @@ Gem::Specification.new name, FastGettext::VERSION do |s|
   s.homepage = "https://github.com/grosser/#{name}"
   s.files = Dir["{lib/**/*.{rb,mo,rdoc},Readme.md,CHANGELOG,LICENSE}"]
   s.licenses = ["MIT", "Ruby"]
-  s.required_ruby_version = '>= 3.0.0'
+  s.required_ruby_version = '>= 3.1.0'
   s.add_runtime_dependency 'prime'
+  s.add_runtime_dependency 'racc'
 
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'sqlite3', '~> 1.4' # need to match what activerecord requires
+  s.add_development_dependency 'sqlite3', '~> 2.1' # need to match what activerecord requires
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'activerecord'
   s.add_development_dependency 'i18n'
