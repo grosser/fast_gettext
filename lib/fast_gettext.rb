@@ -28,6 +28,21 @@ module FastGettext
     translation_repositories[name] = TranslationRepository.build(name, options)
   end
 
+  def self.allow_invalid_keys!
+    eval(<<CODE)
+class ::String
+  alias :_fast_gettext_old_format_m :%
+  def %(*args)
+    begin
+      _fast_gettext_old_format_m(*args)
+    rescue KeyError
+      self
+    end
+  end
+end
+CODE
+  end
+
   # some repositories know where to store their locales
   def self.locale_path
     translation_repositories[text_domain].instance_variable_get(:@options)[:path]
