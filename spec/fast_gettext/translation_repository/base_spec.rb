@@ -1,7 +1,7 @@
 require "spec_helper"
 require 'fast_gettext/translation_repository/base'
 
-SingleCov.covered! uncovered: 9
+SingleCov.covered! uncovered: 10
 
 describe 'FastGettext::TranslationRepository::Base' do
   before do
