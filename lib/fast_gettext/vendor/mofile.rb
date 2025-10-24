@@ -179,7 +179,6 @@ module FastGettext
       # 1986, 1987 Bell Telephone Laboratories, Inc.]
       def hash_string(str)
         hval = 0
-        i = 0
         str.each_byte do |b|
           break if b == '\0'
           hval <<= 4
