@@ -111,7 +111,7 @@ DEPENDENCIES
   rubocop
   rubocop-packaging
   single_cov
-  sqlite3 (~> 2.1)
+  sqlite3
 
 BUNDLED WITH
    2.5.10

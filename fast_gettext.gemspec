@@ -15,7 +15,7 @@ Gem::Specification.new name, FastGettext::VERSION do |s|
   s.add_runtime_dependency 'racc'
 
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'sqlite3', '~> 2.1' # need to match what latest activerecord requires
+  s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'activerecord'
   s.add_development_dependency 'i18n'
