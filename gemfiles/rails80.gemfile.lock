@@ -121,7 +121,9 @@ GEM
     marcel (1.1.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
-    minitest (5.26.0)
+    minitest (6.0.6)
+      drb (~> 2.0)
+      prism (~> 1.5)
     net-imap (0.5.12)
       date
       net-protocol
@@ -246,7 +248,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
-    unicode-emoji (4.1.0)
+    unicode-emoji (4.3.0)
     uri (1.0.4)
     useragent (0.16.11)
     websocket-driver (0.8.0)
