@@ -134,7 +134,8 @@ module FastGettext
     # IE6/7 de
     # nil if nothing matches
     def best_locale_in(locales)
-      formatted_sorted_locales(locales).each do |candidate|
+      candidates = plain_locale(locales) || formatted_sorted_locales(locales)
+      candidates.each do |candidate|
         return candidate unless available_locales
         return candidate if available_locales.include?(candidate)
         return candidate[0..1] if available_locales.include?(candidate[0..1]) # available locales include a langauge
@@ -159,6 +160,15 @@ module FastGettext
     end
 
     private
+
+    # A single locale already in the de / de_DE form, as set_locale gets it on
+    # every I18n.locale= or with_locale (gettext_i18n_rails): parsing it as
+    # an Accept-Language header would give the same one candidate.
+    PLAIN_LOCALE = /\A[a-z]{2,3}(?:_[A-Z]{2,3})?\z/
+    def plain_locale(locale)
+      locale = locale.name if locale.is_a?(Symbol)
+      [locale.dup] if locale.is_a?(String) && PLAIN_LOCALE.match?(locale)
+    end
 
     # de-de,DE-CH;q=0.9 -> ['de_DE','de_CH']
     def formatted_sorted_locales(locales)
