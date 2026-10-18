@@ -38,6 +38,6 @@ end
 desc "Bundle all CMD="
 task :bundle_all do
   Dir["gemfiles/*.gemfile"].each do |gemfile|
-    Bundler.with_original_env { sh "BUNDLE_GEMFILE=#{gemfile} bundle #{ENV["CMD"]}" }
+    Bundler.with_original_env { sh "BUNDLE_GEMFILE=#{gemfile} bundle #{ENV['CMD']}" }
   end
 end

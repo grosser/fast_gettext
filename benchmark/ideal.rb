@@ -15,6 +15,7 @@ module FastestGettext
 end
 
 include FastestGettext # rubocop:disable Style/MixinUsage
+
 set_domain(locale_folder('test'), 'test', 'de')
 puts "Ideal: (primitive Hash lookup)"
 results_test { _('car') == 'Auto' }

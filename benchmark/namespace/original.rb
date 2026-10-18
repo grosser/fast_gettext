@@ -9,6 +9,7 @@ require 'gettext'
 GetText.locale = 'de'
 GetText.bindtextdomain('test', path: 'spec/locale')
 include GetText # rubocop:disable Style/MixinUsage
+
 raise unless _('car') == 'Auto'
 
 puts "GetText"

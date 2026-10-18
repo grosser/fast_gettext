@@ -23,7 +23,7 @@ def results_test(&block)
 end
 
 def results_large
-  print "#{(result { _('login') == 'anmelden' })}s / #{memory}K / #{namespace}"
+  print "#{result { _('login') == 'anmelden' }}s / #{memory}K / #{namespace}"
   puts ""
 end
 

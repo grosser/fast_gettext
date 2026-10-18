@@ -27,8 +27,8 @@ module FastGettext
       def pluralisation_rule
         return unless rule = self['pluralisation_rule']
 
-        ->(n) do # rubocop:disable Lint/UnusedBlockArgument n can be used from pluralisation_rule code
-          eval(rule) # rubocop:disable Security/Eval TODO remove eval
+        ->(n) do # rubocop:disable Lint/UnusedBlockArgument -- n can be used from pluralisation_rule code
+          eval(rule) # rubocop:disable Security/Eval -- TODO remove eval
         end
       end
 
@@ -79,7 +79,7 @@ module FastGettext
         result
       end
 
-      def yaml_dot_notation(a, b) # rubocop:disable Naming/UncommunicativeMethodParamName
+      def yaml_dot_notation(a, b)
         a ? "#{a}.#{b}" : b
       end
     end

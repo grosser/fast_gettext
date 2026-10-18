@@ -11,7 +11,7 @@ module FastGettext
   extend FastGettext::Storage
   extend FastGettext::Translation
 
-  LOCALE_REX = /^[a-z]{2,3}$|^[a-z]{2,3}_[A-Z]{2,3}$/.freeze
+  LOCALE_REX = /^[a-z]{2,3}$|^[a-z]{2,3}_[A-Z]{2,3}$/
   NAMESPACE_SEPARATOR = '|'
   CONTEXT_SEPARATOR = "\004"
 
@@ -30,7 +30,7 @@ module FastGettext
 
   # deprecated, just a crutch to migrate to new api
   def self.allow_invalid_keys!
-    eval(<<~CODE)
+    eval(<<~CODE, binding, __FILE__, __LINE__ + 1)
       class ::String
         alias :_fast_gettext_old_format_m :%
         def %(*args)
