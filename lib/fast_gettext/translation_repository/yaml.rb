@@ -24,12 +24,13 @@ module FastGettext
         end
       end
 
+      # Compiled once per rule (n_() asks for it on every call); the rule can
+      # differ per locale.
       def pluralisation_rule
         return unless rule = self['pluralisation_rule']
 
-        ->(n) do # rubocop:disable Lint/UnusedBlockArgument -- n can be used from pluralisation_rule code
-          eval(rule) # rubocop:disable Security/Eval -- TODO remove eval
-        end
+        (@pluralisation_rules ||= {})[rule] ||=
+          eval("->(n) { #{rule} }", nil, __FILE__, __LINE__) # rubocop:disable Security/Eval -- TODO remove eval
       end
 
       def reload

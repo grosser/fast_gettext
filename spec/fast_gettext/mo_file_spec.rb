@@ -64,6 +64,54 @@ describe FastGettext::MoFile do
 
   end
 
+  describe "#pluralisation_rule" do
+    # Plural-Forms of the languages in the gettext manual
+    RULES = [
+      "n != 1", "n>1", "0", "n==1 ? 0 : 1",
+      "n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2", # ru, uk
+      "n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2", # pl
+      "(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2", # cs, sk
+      "n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3", # sl
+      "n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4", # ga
+      "n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5", # ar
+    ].freeze
+
+    def mo_file(header)
+      data = FastGettext::GetText::MOFile.new
+      data[''] = header
+      FastGettext::MoFile.new(data)
+    end
+
+    # How the rule was evaluated before it was compiled once.
+    def reference(expression)
+      ->(n) { eval(expression) } # rubocop:disable Security/Eval
+    end
+
+    it "gives the same plural index as evaluating the Plural-Forms expression" do
+      RULES.each do |expression|
+        rule = mo_file("Content-Type: text/plain; charset=UTF-8\nPlural-Forms: nplurals=6; plural=#{expression};\n").pluralisation_rule
+        (0..300).each { |n| rule.call(n).should == reference(expression).call(n) }
+      end
+    end
+
+    it "is compiled once per file" do
+      mo = mo_file("Plural-Forms: nplurals=2; plural=n != 1;\n")
+      mo.pluralisation_rule.should equal(mo.pluralisation_rule)
+    end
+
+    it "is nil without Plural-Forms, also on later calls" do
+      mo = mo_file("Content-Type: text/plain; charset=UTF-8\n")
+      2.times { mo.pluralisation_rule.should == nil }
+      FastGettext::MoFile.empty.pluralisation_rule.should == nil
+    end
+
+    it "only fails when the rule is used, if it does not compile" do
+      mo = mo_file("Plural-Forms: nplurals=2; plural=n ? : 1;\n")
+      mo[''].should include("Plural-Forms")
+      -> { mo.pluralisation_rule.call(1) }.should raise_error(SyntaxError)
+    end
+  end
+
   describe ".empty" do
     let(:path) do
       File.expand_path("../../lib/fast_gettext/vendor/empty.mo", __dir__)

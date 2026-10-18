@@ -12,6 +12,7 @@ module FastGettext
     def initialize(file, options = {})
       @filename = file
       @data = nil
+      @pluralisation_rule = nil
       load_data if options[:eager_load]
     end
 
@@ -25,17 +26,15 @@ module FastGettext
       split_plurals(self[msgids * PLURAL_SEPARATOR].to_s)
     end
 
+    # n_() asks for this on every call: read from the header and compiled the
+    # first time, then kept (false: the file has none).
     def pluralisation_rule
-      # gettext uses 0 as default rule, which would turn off all pluralisation, very clever...
-      # additionally parsing fails when directly accessing po files, so this line was taken from gettext/mofile
-      (data[''] || '').split("\n").each do |line|
-        if /^Plural-Forms:\s*nplurals\s*=\s*(\d*);\s*plural\s*=\s*([^;]*)\n?/ =~ line
-          return ->(n) do # rubocop:disable Lint/UnusedBlockArgument
-            eval($2) # rubocop:disable Security/Eval
-          end
-        end
-      end
-      nil
+      rule = @pluralisation_rule
+      return rule || nil unless rule.nil?
+
+      rule = read_pluralisation_rule || false
+      @pluralisation_rule = rule unless frozen?
+      rule || nil
     end
 
     def data
@@ -44,10 +43,21 @@ module FastGettext
     end
 
     def self.empty
-      @empty ||= MoFile.new(File.join(__dir__, 'vendor', 'empty.mo'), eager_load: true).freeze
+      @empty ||= MoFile.new(File.join(__dir__, 'vendor', 'empty.mo'), eager_load: true).tap(&:pluralisation_rule).freeze
     end
 
     private
+
+    def read_pluralisation_rule
+      # gettext uses 0 as default rule, which would turn off all pluralisation, very clever...
+      # additionally parsing fails when directly accessing po files, so this line was taken from gettext/mofile
+      (data[''] || '').split("\n").each do |line|
+        if /^Plural-Forms:\s*nplurals\s*=\s*(\d*);\s*plural\s*=\s*([^;]*)\n?/ =~ line
+          return eval("->(n) { #{$2} }", nil, __FILE__, __LINE__) # rubocop:disable Security/Eval
+        end
+      end
+      nil
+    end
 
     def load_data
       @data =
