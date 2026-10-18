@@ -214,6 +214,32 @@ describe 'Storage' do
       FastGettext.locale.should == 'de'
     end
 
+    it "sets a single locale as it would from a header with only that locale" do
+      [nil, ['de_DE', 'en', 'pt']].each do |available|
+        FastGettext.available_locales = available
+        ['en', :en, 'de_DE', :de_DE, 'de-de', 'de_AT', 'pt_BR', 'fr', 'EN', 'zh_Hant', ''].each do |input|
+          from_header = FastGettext.send(:best_locale_in, "#{input},") # not a single locale: parsed
+          FastGettext.send(:best_locale_in, input).should == from_header
+        end
+      end
+    end
+
+    it "does not parse a single locale as a header" do
+      FastGettext.available_locales = ['de', 'en']
+      FastGettext.should_not_receive(:formatted_sorted_locales)
+      FastGettext.locale = :de
+      FastGettext.locale.should == 'de'
+    end
+
+    it "does not hand out the string it was given" do
+      FastGettext.available_locales = nil
+      given = +'en'
+      FastGettext.locale = given
+      FastGettext.locale.should == 'en'
+      FastGettext.locale.should_not equal(given)
+      FastGettext.locale.should_not be_frozen
+    end
+
     it "sets locale from comma seperated" do
       FastGettext.available_locales = ['de_DE','en','xx']
       FastGettext.locale = "de,de-de,en"
