@@ -2,7 +2,7 @@
 
 module FastGettext
   TRANSLATION_METHODS = [:_, :n_, :s_, :p_, :ns_, :np_].freeze
-  NIL_BLOCK = -> { nil }
+  NIL_BLOCK = -> {}
 
   # this module should be included
   # Responsibility:
@@ -90,6 +90,7 @@ module FastGettext
 
   module TranslationAliased
     include Translation
+
     TRANSLATION_METHODS.each { |m| alias_method "#{m.to_s.delete('_')}gettext", m }
   end
 

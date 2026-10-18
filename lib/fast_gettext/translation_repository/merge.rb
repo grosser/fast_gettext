@@ -11,7 +11,7 @@ module FastGettext
     class Merge < Base
       def initialize(name, options = {})
         clear
-        super(name, options)
+        super
         options.fetch(:chain, []).each do |repo|
           add_repo(repo)
         end

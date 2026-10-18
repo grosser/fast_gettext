@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Iconv will not be defined, unless it is found -> normalize test results for users that have Iconv/those who do not have it
+# Iconv will not be defined, unless it is found
+# -> normalize test results for users that have Iconv/those who do not have it
 begin; require 'iconv'; rescue StandardError; LoadError; end
 initial = methods.count + Module.constants.count
 
@@ -11,6 +12,7 @@ FastGettext.locale = 'de'
 FastGettext.add_text_domain 'test', path: 'spec/locale'
 FastGettext.text_domain = 'test'
 include FastGettext::Translation # rubocop:disable Style/MixinUsage
+
 raise unless _('car') == 'Auto'
 
 puts "FastGettext"

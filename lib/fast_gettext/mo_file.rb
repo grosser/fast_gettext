@@ -29,7 +29,7 @@ module FastGettext
       # gettext uses 0 as default rule, which would turn off all pluralisation, very clever...
       # additionally parsing fails when directly accessing po files, so this line was taken from gettext/mofile
       (data[''] || '').split("\n").each do |line|
-        if /^Plural-Forms:\s*nplurals\s*\=\s*(\d*);\s*plural\s*\=\s*([^;]*)\n?/ =~ line
+        if /^Plural-Forms:\s*nplurals\s*=\s*(\d*);\s*plural\s*=\s*([^;]*)\n?/ =~ line
           return ->(n) do # rubocop:disable Lint/UnusedBlockArgument
             eval($2) # rubocop:disable Security/Eval
           end

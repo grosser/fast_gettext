@@ -8,7 +8,9 @@ class TranslationKey < ActiveRecord::Base
   validates_uniqueness_of :key
   validates_presence_of :key
 
-  attr_accessible :key, :translations, :translations_attributes if ActiveRecord::VERSION::MAJOR == 3 || defined?(ProtectedAttributes)
+  if ActiveRecord::VERSION::MAJOR == 3 || defined?(ProtectedAttributes)
+    attr_accessible :key, :translations, :translations_attributes
+  end
 
   before_save :normalize_newlines
 
@@ -20,13 +22,11 @@ class TranslationKey < ActiveRecord::Base
   end
 
   def self.available_locales
-    @available_locales ||= begin
-      if ActiveRecord::VERSION::MAJOR >= 3
-        TranslationText.group(:locale).count
-      else
-        TranslationText.count(group: :locale)
-      end.keys.sort
-    end
+    @available_locales ||= if ActiveRecord::VERSION::MAJOR >= 3
+                             TranslationText.group(:locale).count
+                           else
+                             TranslationText.count(group: :locale)
+                           end.keys.sort
   end
 
   def self.newline_normalize(string)

@@ -63,7 +63,9 @@ module FastGettext
     # if overwritten by user( FastGettext.pluralisation_rule = xxx) use it,
     # otherwise fall back to repo or to default lambda
     def pluralisation_rule
-      Thread.current[:fast_gettext_pluralisation_rule] || current_repository.pluralisation_rule || DEFAULT_PLURALIZATION_RULE
+      Thread.current[:fast_gettext_pluralisation_rule] ||
+        current_repository.pluralisation_rule ||
+        DEFAULT_PLURALIZATION_RULE
     end
 
     def cache
@@ -72,7 +74,7 @@ module FastGettext
 
     def reload!
       cache.reload!
-      translation_repositories.values.each(&:reload)
+      translation_repositories.each_value(&:reload)
     end
 
     # global, since re-parsing whole folders takes too much time...
@@ -94,7 +96,7 @@ module FastGettext
     end
 
     def cached_plural_find(*keys)
-      key = '||||' + keys * '||||'
+      key = "||||#{keys * '||||'}"
       cache.fetch(key) { current_repository.plural(*keys) }
     end
 
@@ -165,6 +167,8 @@ module FastGettext
     # every I18n.locale= or with_locale (gettext_i18n_rails): parsing it as
     # an Accept-Language header would give the same one candidate.
     PLAIN_LOCALE = /\A[a-z]{2,3}(?:_[A-Z]{2,3})?\z/
+    private_constant :PLAIN_LOCALE
+
     def plain_locale(locale)
       locale = locale.name if locale.is_a?(Symbol)
       [locale.dup] if locale.is_a?(String) && PLAIN_LOCALE.match?(locale)
@@ -172,7 +176,8 @@ module FastGettext
 
     # de-de,DE-CH;q=0.9 -> ['de_DE','de_CH']
     def formatted_sorted_locales(locales)
-      found = weighted_locales(locales).reject(&:empty?).sort_by(&:last).reverse # sort them by weight which is the last entry
+      # sort them by weight which is the last entry
+      found = weighted_locales(locales).reject(&:empty?).sort_by(&:last).reverse
       found.flatten.map { |l| format_locale(l) }
     end
 
@@ -183,7 +188,7 @@ module FastGettext
       found = [[]]
       locales.split(',').each do |part|
         if part.include? ';q=' # contains language and weight ?
-          found.last << part.split(/;q=/)
+          found.last << part.split(';q=')
           found.last.flatten!
           found << []
         else
@@ -195,7 +200,7 @@ module FastGettext
 
     # de-de -> de_DE
     def format_locale(locale)
-      locale.sub(/^([a-zA-Z]{2,3})[-_]([a-zA-Z]{2,3})$/) { $1.downcase + '_' + $2.upcase }
+      locale.sub(/^([a-zA-Z]{2,3})[-_]([a-zA-Z]{2,3})$/) { "#{$1.downcase}_#{$2.upcase}" }
     end
 
     def switch_cache
