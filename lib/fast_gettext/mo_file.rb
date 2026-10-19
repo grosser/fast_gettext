@@ -12,7 +12,6 @@ module FastGettext
     def initialize(file, options = {})
       @filename = file
       @data = nil
-      @pluralisation_rule = nil
       load_data if options[:eager_load]
     end
 
@@ -27,14 +26,11 @@ module FastGettext
     end
 
     # n_() asks for this on every call: read from the header and compiled the
-    # first time, then kept (false: the file has none).
+    # first time, then kept (nil when the file has none).
     def pluralisation_rule
-      rule = @pluralisation_rule
-      return rule || nil unless rule.nil?
+      return @pluralisation_rule if defined?(@pluralisation_rule)
 
-      rule = read_pluralisation_rule || false
-      @pluralisation_rule = rule unless frozen?
-      rule || nil
+      @pluralisation_rule = read_pluralisation_rule
     end
 
     def data
@@ -43,7 +39,13 @@ module FastGettext
     end
 
     def self.empty
-      @empty ||= MoFile.new(File.join(__dir__, 'vendor', 'empty.mo'), eager_load: true).tap(&:pluralisation_rule).freeze
+      @empty ||= begin
+        empty = MoFile.new(File.join(__dir__, 'vendor', 'empty.mo'), eager_load: true)
+        # pluralisation_rule keeps what it computed in an instance variable, which
+        # it can't set once the object is frozen: compute it first
+        empty.pluralisation_rule
+        empty.freeze
+      end
     end
 
     private

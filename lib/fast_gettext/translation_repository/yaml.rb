@@ -24,8 +24,9 @@ module FastGettext
         end
       end
 
-      # Compiled once per rule (n_() asks for it on every call); the rule can
-      # differ per locale.
+      # n_() asks for this on every call: each rule is compiled once, keyed by
+      # its text, so locales with different rules get their own lambda and
+      # locales with the same rule share one.
       def pluralisation_rule
         return unless rule = self['pluralisation_rule']
 
