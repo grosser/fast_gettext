@@ -9,6 +9,17 @@ describe 'FastGettext::TranslationRepository::Yaml' do
     FastGettext.locale = 'de'
   end
 
+  it "compiles each locale's pluralisation rule once" do
+    FastGettext.locale = 'en'
+    rule = @rep.pluralisation_rule
+    [0, 1, 2, 3, 7].map { |n| rule.call(n) }.should == [0, 1, 2, 0, 0] # n<3?n:0
+    @rep.pluralisation_rule.should equal(rule)
+    FastGettext.locale = 'de'
+    @rep.pluralisation_rule.should == nil
+    FastGettext.locale = 'en'
+    @rep.pluralisation_rule.should equal(rule)
+  end
+
   it "can be built" do
     @rep.available_locales.sort.should == ['de', 'en', 'zh_CN']
   end
