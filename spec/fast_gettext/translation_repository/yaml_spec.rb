@@ -1,4 +1,5 @@
 require "spec_helper"
+require "tmpdir"
 
 SingleCov.covered!
 
@@ -98,6 +99,21 @@ describe 'FastGettext::TranslationRepository::Yaml' do
     FastGettext.locale = 'en'
     {0 => 0, 1 => 1, 2 => 2, 3 => 0}.each do |input, expected|
       @rep.pluralisation_rule.call(input).should == expected
+    end
+  end
+
+  it "does not evaluate the pluralisation rule" do
+    Dir.mktmpdir do |dir|
+      marker = File.join(dir, "ran")
+      File.write(File.join(dir, "xx.yml"), <<~YAML)
+        xx:
+          pluralisation_rule: '(File.write("#{marker}", "ran") && 0)'
+          simple: easy
+      YAML
+      repo = FastGettext::TranslationRepository.build("test", :path => dir, :type => :yaml)
+      FastGettext.locale = "xx"
+      -> { repo.pluralisation_rule }.should raise_error(SyntaxError)
+      File.exist?(marker).should == false
     end
   end
 

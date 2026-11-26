@@ -1,5 +1,6 @@
 # encoding: utf-8
 require "spec_helper"
+require "tmpdir"
 
 de_file = File.join('spec','locale','de','LC_MESSAGES','test.mo')
 
@@ -109,6 +110,14 @@ describe FastGettext::MoFile do
       mo = mo_file("Plural-Forms: nplurals=2; plural=n ? : 1;\n")
       mo[''].should include("Plural-Forms")
       -> { mo.pluralisation_rule.call(1) }.should raise_error(SyntaxError)
+    end
+
+    it "does not evaluate the header as Ruby code" do
+      marker = File.join(Dir.tmpdir, "plural-mo-#{Process.pid}")
+      File.unlink(marker) if File.exist?(marker)
+      mo = mo_file("Plural-Forms: nplurals=2; plural=(File.write(#{marker.dump}, 'ran') && 0);\n")
+      -> { mo.pluralisation_rule }.should raise_error(SyntaxError)
+      File.exist?(marker).should == false
     end
   end
 

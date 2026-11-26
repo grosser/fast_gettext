@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'fast_gettext/translation_repository/base'
+require 'fast_gettext/plural_expression'
 require 'yaml'
 
 module FastGettext
@@ -31,7 +32,7 @@ module FastGettext
         return unless rule = self['pluralisation_rule']
 
         (@pluralisation_rules ||= {})[rule] ||=
-          eval("->(n) { #{rule} }", nil, __FILE__, __LINE__) # rubocop:disable Security/Eval -- TODO remove eval
+          PluralExpression.compile(rule)
       end
 
       def reload

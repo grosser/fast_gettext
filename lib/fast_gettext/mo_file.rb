@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'fast_gettext/vendor/mofile'
+require 'fast_gettext/plural_expression'
 module FastGettext
   # Responsibility:
   #  - abstract mo files for Mo Repository
@@ -55,7 +56,7 @@ module FastGettext
       # additionally parsing fails when directly accessing po files, so this line was taken from gettext/mofile
       (data[''] || '').split("\n").each do |line|
         if /^Plural-Forms:\s*nplurals\s*=\s*(\d*);\s*plural\s*=\s*([^;]*)\n?/ =~ line
-          return eval("->(n) { #{$2} }", nil, __FILE__, __LINE__) # rubocop:disable Security/Eval
+          return PluralExpression.compile($2)
         end
       end
       nil
